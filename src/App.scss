@@ -1,0 +1,139 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+
+  input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    box-shadow: none;
+    border: 1px solid #fff;
+  }
+
+  ul,
+  li {
+    padding: 0px;
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  table {
+    border-collapse: collapse;
+    /* Đảm bảo các border không chồng lên nhau */
+    width: 100%;
+    /* Tùy chọn: Đặt chiều rộng của table */
+  }
+
+  th,
+  td {
+    border: none;
+    /* Loại bỏ border */
+    padding: 8px;
+    /* Tùy chọn: Đặt padding cho các ô */
+    text-align: left;
+    /* Tùy chọn: Căn chỉnh văn bản bên trái */
+  }
+
+  // thead {
+  //   background-color: #f2f2f2; /* Tùy chọn: Đặt màu nền cho tiêu đề */
+  // }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input {
+  border: none;
+  outline: none;
+}
+
+label {
+  display: block;
+}
+
+.btn-primary {
+  height: 36px;
+  line-height: 36px;
+  padding: 0 16px;
+  background-color: #0068ff;
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: 3px;
+  cursor: pointer;
+  &:hover {
+    background-color: #004bb9;
+  }
+}
+
+.btn-dash {
+  height: 36px;
+  line-height: 36px;
+  padding: 0 16px;
+  font-weight: 500;
+  font-size: 16px;
+  border: 1px solid #0088FF;
+  color: #0088FF;
+  background-color: transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  &:hover {
+    background-color: #E6F4FF;
+  }
+}
+
+.btn-dash.danger {
+  color: #FF4D4D;
+  background-color: transparent;
+  border: 1px solid #FF4D4D;
+}
+
+.btn-primary.danger {
+  color: white;
+  background-color: #FF4D4D;
+  border: 1px solid #FF4D4D;
+}
+
+:root {
+  --primary-color: #0189FF;
+  --gray-color: #e6e6e6;
+  --boder-dividing: 1px solid #e6e6e6;
+  --box-shadow-default: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+
+  &::-webkit-scrollbar:vertical {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar:horizontal {
+    height: 0px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba($color: #000000, $alpha: 0.2);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
