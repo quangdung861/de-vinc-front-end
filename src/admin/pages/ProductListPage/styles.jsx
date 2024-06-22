@@ -8,5 +8,4 @@ export const Wraper = styled.div`
         height: 60px;
         padding: 16px 16px 0 16px;
     }
-    
 `

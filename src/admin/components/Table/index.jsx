@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import { useState, useRef, useEffect, useContext } from 'react'
 // import LiveSearch from './LiveSearch';
 import { Wraper } from './styles';
 import clsx from 'clsx';
+import { AdminContext } from 'admin/contexts/AdminProvider';
 
 const Table = (props) => {
     const {
@@ -28,6 +29,10 @@ const Table = (props) => {
     const [searchString, setSearchString] = useState('')
     const boxSearchRef = useRef(null);
     const tableRef = useRef(null);
+    const containerRef = useRef(null);
+    const [scrollbarValue, setScrollbarValue] = useState(0);
+    const [windowWidth, setWindowWidth] = useState(document.querySelector(".table-block")?.offsetWidth);
+
     const renderHeaders = () => {
         return columns.map((col, index) => <th key={index} style={{ minWidth: col.width }}>{col.name}</th>)
     }
@@ -126,8 +131,7 @@ const Table = (props) => {
         return () => clearTimeout(delayDebouce)
     }, [searchString])
 
-    const containerRef = useRef(null);
-    const [scrollbarValue, setScrollbarValue] = useState(0);
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -148,7 +152,6 @@ const Table = (props) => {
         };
     }, []);
 
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
         const handleResize = () => {

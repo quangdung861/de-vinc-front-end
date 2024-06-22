@@ -52,7 +52,6 @@ export const Wraper = styled.div`
     height: 100%;
     overflow: hidden;
 
-
     table {
       thead {
         background-color: #f4f6f8;
