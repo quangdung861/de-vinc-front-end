@@ -26,9 +26,34 @@ function* getProductListSaga(action) {
     }
 }
 
+function* createProductSaga(action) {
+    try {
+        const data = action.payload;
+        let formData = new FormData();
+        for (let key in data) {
+            if (key == 'images') {
+                data.images.forEach((file) => {
+                    formData.append('images', file);
+                });
+            } else {
+                formData.append(key, data[key])
+            }
+        }
+        yield requestApi(`/products`, 'POST', formData, 'json', 'multipart/form-data')
+        yield put({
+            type: SUCCESS(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),
+        });
+    } catch (error) {
+        yield put({
+            type: FAIL(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),
+            payload: {
+                errors: error,
+            },
+        });
+    }
+}
+
 export default function* productSaga() {
-    yield takeEvery(
-        REQUEST(PRODUCT_ADMIN_ACTION.GET_PRODUCT_LIST),
-        getProductListSaga
-    );
+    yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.GET_PRODUCT_LIST), getProductListSaga);
+    yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), createProductSaga);
 }

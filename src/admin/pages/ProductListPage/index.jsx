@@ -9,30 +9,40 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProductListAction } from 'admin/redux/actions'
 import styled from 'styled-components'
 import { ROUTER_ADMIN } from 'admin/routes'
+import { NstatusProducts, NstatusProductsSTring } from './constant'
+import clsx from 'clsx'
 
 const HoverableSpan = styled.span`
-color: #0088FF;
-&:hover {
-    text-decoration: underline; 
-}
+    color: #0088FF;
+    &:hover {
+        text-decoration: underline; 
+    }
 `;
+
+const thumbnail = {
+    height: "35px", width: "35px", objectFit: "cover", borderRadius: "2px"
+}
 
 const ProductListPage = () => {
     const navigate = useNavigate();
-    const { setBreadcrum } = useContext(AdminContext)
     const dispatch = useDispatch();
+    const { setBreadcrum } = useContext(AdminContext)
+
     const { productList } = useSelector(state => state.productReducer);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(3)
-    const [searchKeyword, setSearchKeyword] = useState("");
-    const [selectedRows, setSelectedRows] = useState([])
     const lastPage = productList.meta.lastPage;
     const totalOfPage = productList.meta.total;
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(50)
+    const [searchKeyword, setSearchKeyword] = useState("");
+    const [selectedRows, setSelectedRows] = useState([]);
 
     const columns = [
         {
             name: "Ảnh",
-            element: row => <img style={{ height: "35px", width: "35px", objectFit: "cover", borderRadius: "2px" }} src={row.images ? process.env.REACT_APP_API_URL + '/' + row.images : require('admin/assets/images/placeholder-1.png')} alt='' />,
+            element: row => <img style={thumbnail}
+                src={row.images ? process.env.REACT_APP_API_URL + '/' + row.images.split('<&space>')[0]
+                    : require('admin/assets/images/placeholder-1.png')} alt='' />,
             width: "150px"
         },
         {
@@ -57,7 +67,7 @@ const ProductListPage = () => {
         // },
         {
             name: "Trạng thái",
-            element: row => row.status === 1 ? "Active" : "Inactive",
+            element: row => <div className={clsx({'tag-warning': row.status === NstatusProducts.ACTIVE, 'tag-danger': row.status === NstatusProducts.INACTIVE})}>{NstatusProductsSTring[row.status]}</div>,
             width: "150px"
         },
         {
@@ -110,7 +120,6 @@ const ProductListPage = () => {
                     <Button text={"Thêm sản phẩm"} icon={<i className="fa-solid fa-plus"></i>} onClick={() => navigate(ROUTER_ADMIN.CREATE_PRODUCT)} />
                 </div>
             </div>
-            <div className="table-container">
                 <Table
                     name='Tất cả sản phẩm'
                     data={productList.data}
@@ -129,7 +138,6 @@ const ProductListPage = () => {
                     setSelectedRows={setSelectedRows}
                     selectedRows={selectedRows}
                 />
-            </div>
         </Wraper>
     )
 }

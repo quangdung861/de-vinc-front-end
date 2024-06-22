@@ -67,7 +67,7 @@ label {
 
 .btn-primary {
   height: 36px;
-  line-height: 36px;
+  line-height: 1;
   padding: 0 16px;
   background-color: #0068ff;
   color: white;
@@ -75,6 +75,7 @@ label {
   font-size: 16px;
   border-radius: 3px;
   cursor: pointer;
+
   &:hover {
     background-color: #004bb9;
   }
@@ -82,15 +83,16 @@ label {
 
 .btn-dash {
   height: 36px;
-  line-height: 36px;
+  line-height: 1;
   padding: 0 16px;
   font-weight: 500;
   font-size: 16px;
   border: 1px solid #0088FF;
   color: #0088FF;
-  background-color: transparent;
+  background-color: #fff;
   border-radius: 3px;
   cursor: pointer;
+
   &:hover {
     background-color: #E6F4FF;
   }
@@ -98,7 +100,7 @@ label {
 
 .btn-dash.danger {
   color: #FF4D4D;
-  background-color: transparent;
+  background-color: #fff;
   border: 1px solid #FF4D4D;
 }
 
@@ -106,6 +108,36 @@ label {
   color: white;
   background-color: #FF4D4D;
   border: 1px solid #FF4D4D;
+}
+
+.tag {
+  display: inline-block;
+  line-height: 1;
+  padding: 4px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.tag-danger {
+  @extend .tag;
+  color: rgb(238, 71, 71);
+  border: 1px solid rgb(255, 184, 184);
+  background-color: rgb(255, 246, 246);
+}
+
+.tag-warning {
+  @extend .tag;
+  border: 1px solid rgb(255, 223, 155);
+  color: rgb(228, 156, 6);
+  background-color: rgb(255, 247, 231);
+}
+
+.tag-success {
+  @extend .tag;
+  border: 1px solid rgb(159, 237, 207);
+  color: rgb(13, 180, 115);
+  background-color: rgb(243, 252, 249);
 }
 
 :root {

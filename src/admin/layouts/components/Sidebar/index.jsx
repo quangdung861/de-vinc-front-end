@@ -4,10 +4,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from 'routes';
 import clsx from 'clsx';
 
-const Sidebar = () => {
+const Sidebar = ({isShowSidebar, setIsShowSidebar}) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [isShowSidebar, setIsShowSidebar] = useState(true);
   const [opening, setOpening] = useState("")
   const newPathname = pathname.split("/").slice(0, 3).join("/");
 
@@ -141,7 +140,10 @@ const Sidebar = () => {
           action.data.length === 0 && navigate(action.path)
         }} >
           <div className="menu-name-left">
-            {action.icon} {action.name}
+            {action.icon}
+            <span>
+              {action.name}
+            </span>
           </div>
           {
             action.data.length > 0 && (<div className="menu-name-right">
@@ -155,7 +157,7 @@ const Sidebar = () => {
           opening === action.path &&
           action.data.map((item, index) => {
             return (
-              <div key={index} className={clsx("menu-item", item.path === pathname && "active")} onClick={() => {
+              <div key={index} className={clsx("menu-item", item.path === newPathname && "active")} onClick={() => {
                 navigate(item.path)
               }}>
                 {item.name}
@@ -169,14 +171,16 @@ const Sidebar = () => {
 
   return (
     <Wraper $isshowsidebar={isShowSidebar}>
-      <div className="header">
-        {
-          isShowSidebar && <div className="header-logo" onClick={() => navigate(ROUTES.ADMIN.DASHBOARD)}>DE VINC</div>
-        }
-        <i className="fa-solid fa-ellipsis-vertical" onClick={() => setIsShowSidebar(!isShowSidebar)}></i>
-      </div>
-      <div className="menu-list">
-        {RenderMenuAction}
+      <div className={clsx("container")}>
+        <div className="header">
+          {
+            isShowSidebar && <div className="header-logo" onClick={() => navigate(ROUTES.ADMIN.DASHBOARD)}>DE VINC</div>
+          }
+          <i className="fa-solid fa-ellipsis-vertical" onClick={() => setIsShowSidebar(!isShowSidebar)}></i>
+        </div>
+        <div className="menu-list">
+          {RenderMenuAction}
+        </div>
       </div>
     </Wraper>
   )

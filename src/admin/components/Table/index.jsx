@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 // import LiveSearch from './LiveSearch';
 import { Wraper } from './styles';
 import clsx from 'clsx';
@@ -16,7 +16,7 @@ const Table = (props) => {
 
         totalOfPage,
 
-        setSearchKeyword,  
+        setSearchKeyword,
 
         itemsPerPage,
         setItemsPerPage,
@@ -27,6 +27,7 @@ const Table = (props) => {
     const [isShowItemPerPageDropdown, setIsShowItemPerPageDropdown] = useState(false);
     const [searchString, setSearchString] = useState('')
     const boxSearchRef = useRef(null);
+    const tableRef = useRef(null);
     const renderHeaders = () => {
         return columns.map((col, index) => <th key={index} style={{ minWidth: col.width }}>{col.name}</th>)
     }
@@ -37,7 +38,7 @@ const Table = (props) => {
                 <tr key={index} className='row-item'>
                     <td><input type='checkbox' checked={selectedRows.includes(String(item.id))} value={item.id} className='' onChange={onClickCheckbox} /></td>
                     {
-                        columns.map((col, index) => <td key={index} >{col.element(item)}</td>)
+                        columns.map((col, index) => <td key={index} style={{}}>{col.element(item)}</td>)
                     }
                 </tr>
             ))
@@ -107,7 +108,7 @@ const Table = (props) => {
     }
 
     const itemPerPageOptions =
-        [1, 2, 3, 4, 5, 10].map((option, index) => (
+        [5, 20, 50, 100].map((option, index) => (
             <div
                 className={clsx("per-page-item", itemsPerPage === option && "active")}
                 key={index}
@@ -125,62 +126,124 @@ const Table = (props) => {
         return () => clearTimeout(delayDebouce)
     }, [searchString])
 
+    const containerRef = useRef(null);
+    const [scrollbarValue, setScrollbarValue] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (containerRef.current) {
+                const value = containerRef.current.scrollLeft;
+                setScrollbarValue(value);
+            }
+        };
+
+        if (containerRef.current) {
+            containerRef.current.addEventListener("scroll", handleScroll);
+        }
+
+        return () => {
+            if (containerRef.current) {
+                containerRef.current.removeEventListener("scroll", handleScroll);
+            }
+        };
+    }, []);
+
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const width = document.querySelector(".table-block")?.offsetWidth;
+            setWindowWidth(width);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
     return (
         <Wraper>
-            <div className="table-name">
-                {name}
-            </div>
-            <div className="filter-container">
-                <div className="box-search" onClick={() => boxSearchRef.current.focus()}>
-                    <i className="fa-solid fa-magnifying-glass icon-search"></i>
-                    <input
-                        className="input-search"
-                        placeholder="Tìm kiếm sản phẩm..."
-                        ref={boxSearchRef}
-                        onChange={(e) => setSearchString(e.target.value)}
-                    />
+            <div className="table-wraper">
+
+                <div className="table-name">
+                    {name}
                 </div>
-            </div>
-            <div className="table-block">
-                <table>
-                    <thead>
-                        <tr>
-                            <td><input checked={selectedRows?.length === data?.length && data?.length > 0} type='checkbox' className='' onChange={onSelectAll} /></td>
-                            {renderHeaders()}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {renderData()}
-                    </tbody>
-                </table>
-                <div className="table-footer">
-                    <div className="per-page">
-                        <div>
-                            Hiển thị
-                        </div>
-                        <div className={clsx('per-page-block', isShowItemPerPageDropdown && "active")}>
-                            <div className='per-page-current' onClick={() => setIsShowItemPerPageDropdown(!isShowItemPerPageDropdown)}>
-                                {itemsPerPage} <i className={clsx("fa-solid", isShowItemPerPageDropdown ? "fa-sort-up" : "fa-sort-down")}></i>
-                            </div>
-                            <div className="per-page-list">
-                                {itemPerPageOptions}
-                            </div>
-                        </div>
-                        <div>
-                            kết quả
-                        </div>
+
+                <div className="filter-container">
+                    <div className="box-search" onClick={() => boxSearchRef.current.focus()}>
+                        <i className="fa-solid fa-magnifying-glass icon-search"></i>
+                        <input
+                            className="input-search"
+                            placeholder="Tìm kiếm sản phẩm..."
+                            ref={boxSearchRef}
+                            onChange={(e) => setSearchString(e.target.value)}
+                        />
                     </div>
-                    {lastPage > 1 &&
-                        <div className='pagination-block'>
-                            Từ {((currentPage - 1) * itemsPerPage) + 1} đến {((currentPage - 1) * itemsPerPage) + data?.length} trên tổng {totalOfPage}
-                            <ul className="pagination-list">
-                                {renderPagination()}
-                            </ul>
+                </div>
+
+                <div className="table-block">
+                    <table
+                        id="table"
+                        ref={tableRef}
+                        style={{ transform: `translateX(-${scrollbarValue}px)` }}
+                    >
+                        <thead>
+                            <tr>
+                                <td><input checked={selectedRows?.length === data?.length && data?.length > 0} type='checkbox' className='' onChange={onSelectAll} /></td>
+                                {renderHeaders()}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {renderData()}
+                        </tbody>
+                    </table>
+
+                    <div className="table-footer">
+                        <div className="per-page">
+                            <div>
+                                Hiển thị
+                            </div>
+                            <div className={clsx('per-page-block', isShowItemPerPageDropdown && "active")}>
+                                <div className='per-page-current' onClick={() => setIsShowItemPerPageDropdown(!isShowItemPerPageDropdown)}>
+                                    {itemsPerPage} <i className={clsx("fa-solid", isShowItemPerPageDropdown ? "fa-sort-up" : "fa-sort-down")}></i>
+                                </div>
+                                <div className="per-page-list">
+                                    {itemPerPageOptions}
+                                </div>
+                            </div>
+                            <div>
+                                kết quả
+                            </div>
                         </div>
-                    }
+                        {lastPage > 1 &&
+                            <div className='pagination-block'>
+                                Từ {((currentPage - 1) * itemsPerPage) + 1} đến {((currentPage - 1) * itemsPerPage) + data?.length} trên tổng {totalOfPage}
+                                <ul className="pagination-list">
+                                    {renderPagination()}
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div
+                    className="scrollbar-container"
+                    ref={containerRef}
+                    style={{
+                        width: windowWidth,
+                        height: "20px",
+                    }}
+                >
+                    <div
+                        className="scrollbar-x"
+                        style={{
+                            width: tableRef.current?.offsetWidth,
+                            height: "20px",
+                        }}
+                    ></div>
                 </div>
             </div>
-        </Wraper>
+        </Wraper >
     )
 }
 

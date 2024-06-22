@@ -105,8 +105,15 @@ export const Wraper = styled.div`
             }
             .content-block-main-describe {
                 padding: 20px 24px;
+                width: 100%;
+                * {
+                    width: auto;
+                }
+                .ck-content {
+                    max-height: 500px;
+                    min-height: 200px;
+                }
             }
-          
     }
     .content-block.status {
         .content-block-main {
@@ -209,19 +216,11 @@ export const Wraper = styled.div`
     }
 }
 
-.custom-quill .ql-toolbar {
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border: 1px solid var(--gray-color);
-}
-.custom-quill .ql-container {
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    border: 1px solid var(--gray-color);
-}
-.custom-quill .ql-editor {
-  min-height: 200px;
-  max-height: 400px; /* Chiều cao tùy chỉnh */
+.footer-content {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 0 32px 24px;
 }
 
 `

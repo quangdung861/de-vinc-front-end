@@ -5,5 +5,5 @@ export const ROUTER_ADMIN = {
     UPDATE_PRODUCT: "/admin/products/:id/update",
     CREATE_PRODUCT: "/admin/products/create",
     CUSTOMER_LIST: "/admin/customers",
-    PURCHASE_ORDERS: "/admin/products/purchase_orders",
+    PURCHASE_ORDERS: "/admin/purchase_orders",
 }

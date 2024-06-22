@@ -43,6 +43,17 @@ const productReducer = createReducer(initialState, (builder) => {
                     loading: false,
                 },
             };
+        })
+        // CREATE 
+        .addCase(REQUEST(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), (state) => {
+           
+        })
+        .addCase(SUCCESS(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), (state, action) => {
+           
+        })
+        .addCase(FAIL(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), (state, action) => {
+            const { error } = action.payload;
+            console.log(error);
         });
 })
 

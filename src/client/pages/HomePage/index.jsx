@@ -59,19 +59,22 @@ const HomePage = () => {
 
   return (
     <Wrapper>
-      {/* <Carousel /> */}
+      <Carousel />
       <div className="wraper-typical-products">
         <TypicalProduct data={bestSellerData} />
       </div>
-      {/* <BannerBlock {...data[0]} /> */}
-      {/* <div className="wraper-typical-products">
+      <BannerBlock {...data[0]} />
+      <div className="wraper-typical-products">
         <TypicalProduct data={bestSellerData} />
       </div>
       <BannerBlock {...data[1]} />
       <div className="wraper-typical-products">
         <TypicalProduct data={bestSellerData} />
       </div>
-      <BannerBlock {...data[2]} /> */}
+      <BannerBlock {...data[2]} />
+      <div className="wraper-typical-products">
+        <TypicalProduct data={bestSellerData} />
+      </div>
       <BtnToTop />
     </Wrapper>
   )

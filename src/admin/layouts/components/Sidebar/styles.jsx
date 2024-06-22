@@ -8,6 +8,7 @@ export const Wraper = styled.div`
     transition: 0.3s all ease;
     color: #fff;
     .header {
+        height: 61px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -24,9 +25,13 @@ export const Wraper = styled.div`
             font-size: 24px;
             color: #fff;
             cursor: pointer;
+            width: ${({ $isshowsidebar }) => $isshowsidebar ? "auto" : "100%"};
+            text-align: ${({ $isshowsidebar }) => $isshowsidebar ? "start" : "center"};
         }
     }
     .menu-list {
+        pointer-events: ${({ $isshowsidebar }) => $isshowsidebar ? "auto" : "none"};
+        overflow: hidden;
         .menu-action {
             .menu-name {   
                 display: flex;
@@ -42,11 +47,17 @@ export const Wraper = styled.div`
                     background-color: #243041;
                 }
                 .menu-name-left {
+                    flex: 1;
+                    text-align: ${({ $isshowsidebar }) => $isshowsidebar ? "inline-block" : "center"};
+                    > span {
+                        display: ${({ $isshowsidebar }) => $isshowsidebar ? "inline-block" : "none"};
+                    }
                     > i {
                         margin: 0 10px;
                     }
                 }
                 .menu-name-right {
+                    display: ${({ $isshowsidebar }) => $isshowsidebar ? "block" : "none"};
                     > i {
                         margin: 0 10px;
                     }
@@ -56,7 +67,7 @@ export const Wraper = styled.div`
                 background-color: #0088FF;
             }
             .menu-item {
-                display: flex;
+                display: ${({ $isshowsidebar }) => $isshowsidebar ? "flex" : "none"};
                 align-items: center;
                 height: 40px;
                 padding-left: 44px;
