@@ -16,11 +16,8 @@ const Footer = () => {
               Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến đóng
               góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản
               phẩm tốt hơn nữa.
-              <br />
-              Đóng góp ý kiến
             </p>
             <div className="feedback-btn" style={{ marginTop: 32 }}>
-              {/* <Button text={`Đóng góp ý kiến`} /> */}
               <span>Đóng góp ý kiến</span>
             </div>
           </div>
