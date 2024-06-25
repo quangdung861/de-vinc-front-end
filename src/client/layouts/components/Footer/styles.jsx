@@ -26,7 +26,6 @@ export const Wrapper = styled.div`
         }
       }
       .content {
-        line-height: 1.5;
         color: #a9b3bb;
       }
     }

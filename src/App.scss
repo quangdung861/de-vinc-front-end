@@ -48,6 +48,10 @@ body {
   //   background-color: #f2f2f2; /* Tùy chọn: Đặt màu nền cho tiêu đề */
   // }
 
+  p {
+    line-height: 1.5;
+  }
+
   .spinner {
     animation: spin infinite 3s linear;
     font-size: 30px;

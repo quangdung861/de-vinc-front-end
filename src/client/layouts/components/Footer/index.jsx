@@ -12,12 +12,16 @@ const Footer = () => {
         <div className="footer-top">
           <div className="foo-item feed-back">
             <div className="feed-back-title">DE VINC lắng nghe bạn!</div>
-            <div>Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến đóng góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản phẩm tốt hơn nữa.<br />Đóng góp ý kiến</div>
+            <p>
+              Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến đóng
+              góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản
+              phẩm tốt hơn nữa.
+              <br />
+              Đóng góp ý kiến
+            </p>
             <div className="feedback-btn" style={{ marginTop: 32 }}>
               {/* <Button text={`Đóng góp ý kiến`} /> */}
-              <span>
-                Đóng góp ý kiến
-              </span>
+              <span>Đóng góp ý kiến</span>
             </div>
           </div>
           <div className="foo-item contact">
@@ -26,7 +30,8 @@ const Footer = () => {
               <div className="foo-top-center_item-right">
                 <div className="title">Hotline</div>
                 <div className="detail">0935.411.853 (8:30 - 22:00)</div>
-              </div></div>
+              </div>
+            </div>
             <div className="foo-item-email">
               <i className="fa-solid fa-envelope"></i>
               <div className="foo-top-center_item-right">
@@ -45,7 +50,7 @@ const Footer = () => {
         <div className="container-item-start">
           <div className="title title-first">
             <img
-              src={require('../../../assets/images/new-logo-devinc.png')}
+              src={require("../../../assets/images/new-logo-devinc.png")}
               alt=""
             />
             <h3>De Vinc</h3>
@@ -131,8 +136,11 @@ const Footer = () => {
             <ul className="list-content">
               <li>Ngày thành lập: 28/12/2016</li>
               <li>
-                Lĩnh vực: Thời trang, phân phối và sản xuất quần áo. De Vinc xây dựng và phát
-                triển những sản phẩm mang lại giá trị cho cộng đồng.
+                <p>
+                  Lĩnh vực: Thời trang, phân phối và sản xuất quần áo. De Vinc
+                  xây dựng và phát triển những sản phẩm mang lại giá trị cho
+                  cộng đồng.
+                </p>
               </li>
             </ul>
           </div>
