@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.scss";
 import "_variables.scss";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { ROUTES } from "./routes";
 import ClientLayout from "./client/layouts/ClientLayout";
 import HomePage from "./client/pages/HomePage";
@@ -10,10 +10,20 @@ import DashboardPage from "admin/pages/DashboardPage";
 import PurchaseOrderPage from "admin/pages/PurchaseOrderPage";
 import ProductListPage from "admin/pages/ProductListPage";
 import CreateProductPage from "admin/pages/CreateProductPage";
+import AuthProvider from "contexts/AuthProvider";
 
 function App() {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+    });
+  }, [pathname]);
+
   return (
-    <BrowserRouter>
+    <AuthProvider>
       <Routes>
         {/* CLIENT */}
         <Route element={<ClientLayout />}>
@@ -26,7 +36,10 @@ function App() {
             path={ROUTES.ADMIN.PRODUCT_LIST}
             element={<ProductListPage />}
           />
-           <Route path={ROUTES.ADMIN.CREATE_PRODUCT} element={<CreateProductPage />} />
+          <Route
+            path={ROUTES.ADMIN.CREATE_PRODUCT}
+            element={<CreateProductPage />}
+          />
           {/* <Route path={ROUTES.ADMIN.UPDATE_PRODUCT} element={<HomePage />} />  */}
           <Route
             path={ROUTES.ADMIN.PURCHASE_ORDERS}
@@ -34,7 +47,7 @@ function App() {
           />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </AuthProvider>
   );
 }
 
