@@ -47,6 +47,23 @@ body {
   // thead {
   //   background-color: #f2f2f2; /* Tùy chọn: Đặt màu nền cho tiêu đề */
   // }
+
+  .spinner {
+    animation: spin infinite 3s linear;
+    font-size: 30px;
+    color: #007bff;
+    margin-bottom: 24px;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 /* Chrome, Safari, Edge, Opera */

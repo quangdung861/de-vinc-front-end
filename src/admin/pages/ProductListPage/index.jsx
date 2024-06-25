@@ -32,11 +32,11 @@ const ProductListPage = () => {
   const { setBreadcrum } = useContext(AdminContext);
 
   const { productList } = useSelector((state) => state.productReducer);
-  const lastPage = productList.meta.lastPage;
-  const totalOfPage = productList.meta.total;
+  const lastPage = productList.meta?.lastPage;
+  const totalOfPage = productList.meta?.total;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(50);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
 

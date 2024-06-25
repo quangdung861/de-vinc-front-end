@@ -4,10 +4,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from 'routes';
 import clsx from 'clsx';
 
-const Sidebar = ({isShowSidebar, setIsShowSidebar}) => {
+const Sidebar = ({ isShowSidebar, setIsShowSidebar }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [opening, setOpening] = useState("")
+  const [opening, setOpening] = useState("");
+  const [isShowDropdowMenu, setIsShowDropdowMenu] = useState('')
   const newPathname = pathname.split("/").slice(0, 3).join("/");
 
   const actionList = [
@@ -132,13 +133,20 @@ const Sidebar = ({isShowSidebar, setIsShowSidebar}) => {
     // }
   ];
 
+  const handleActionSidebar = (action) => {
+    if (isShowSidebar) {
+      opening === action.path ? setOpening('') : setOpening(action.path);
+      action.data.length === 0 && navigate(action.path)
+    } else {
+      opening === action.path ? setOpening('') : setOpening(action.path);
+      action.data.length === 0 && navigate(action.path)
+    }
+  }
+
   const RenderMenuAction = actionList.map((action, index) => {
     return (
-      <div className="menu-action" key={index}>
-        <div className={clsx("menu-name", action.path === newPathname && "active")} onClick={() => {
-          opening === action.path ? setOpening('') : setOpening(action.path);
-          action.data.length === 0 && navigate(action.path)
-        }} >
+      <div className={clsx("menu-action")} key={index}>
+        <div className={clsx("menu-name", action.data.some(item => item.path === newPathname) || action.path === newPathname ? "active" : "disabled")} onClick={() => handleActionSidebar(action)} >
           <div className="menu-name-left">
             {action.icon}
             <span>
@@ -165,7 +173,28 @@ const Sidebar = ({isShowSidebar, setIsShowSidebar}) => {
             )
           })
         }
-      </div>
+        {
+          !isShowSidebar && action.data[0] && <div className="dropdown-menu">
+            <div className="dropdown-list">
+              <div className="dropdown-header">
+                <div className='dropdown-header-name'>{action.name}</div>
+                <i className="fa-solid fa-ellipsis-vertical" onClick={() => setIsShowSidebar(!isShowSidebar)}></i>
+              </div>
+              {
+                action.data.map((item, index) => {
+                  return (
+                    <div key={index} className={clsx("dropdown-item", item.path === newPathname && "active")} onClick={() => {
+                      navigate(item.path)
+                    }}>
+                      {item.name}
+                    </div>
+                  )
+                })
+              }
+            </div>
+          </div>
+        }
+      </div >
     )
   })
 

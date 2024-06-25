@@ -223,4 +223,10 @@ export const Wraper = styled.div`
     padding: 0 32px 24px;
 }
 
+.error-message {
+    display: inline-block;
+    color: rgb(238, 77, 45);
+    margin-top: 6px;
+    font-size: 13px;
+}
 `

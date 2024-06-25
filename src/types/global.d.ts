@@ -1,19 +1,19 @@
-declare global {
-    interface R {
-      loading: () => void;
-    }
-  }
+// declare global {
+//     interface $$ {
+//       loading: (value: boolean) => void;
+//     }
+//   }
 
-declare global {
-    interface Window {
-        R: typeof R
-    }
-}
+// declare global {
+//     interface Window {
+//         $$: typeof $$
+//     }
+// }
 
-declare global {
-  interface String {
-      logString(...replacements: string[]) : string;
-  }
-}
+// declare global {
+//   interface String {
+//       logString(...replacements: string[]) : string;
+//   }
+// }
 
-export {}; 
+// export {}; 

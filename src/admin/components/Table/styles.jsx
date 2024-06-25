@@ -4,7 +4,6 @@ export const Wraper = styled.div`
   .table-wraper {
     margin: 16px;
     background-color: #fff;
-    position: relative;
     .table-name {
       display: flex;
       align-items: center;
@@ -26,7 +25,6 @@ export const Wraper = styled.div`
         transition: border-color 0.2s ease-in-out;
         display: flex;
         align-items: center;
-        position: relative;
         &:focus-within {
           border-color: #444;
         }
@@ -179,7 +177,7 @@ export const Wraper = styled.div`
       bottom: 10px;
       overflow: hidden;
       overflow-x: scroll;
-      z-index: 998;
+      z-index: 100;
 
       &::-webkit-scrollbar {
         -webkit-appearance: none;

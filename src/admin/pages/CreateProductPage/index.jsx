@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 import CustomUploadAdapter from "common/Editor/CustomUploadAdapter";
@@ -23,12 +23,17 @@ const CreateProductPage = () => {
         isShowModalConfirmRemoveImageAll,
         setIsShowModalConfirmRemoveImageAll,
     ] = useState(false);
+    const [formatObj, setFormatObj] = useState({
+        price: '',
+        cost: '',
+    });
 
     const {
         register,
         handleSubmit,
         control,
         setValue,
+        getValues,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -70,9 +75,10 @@ const CreateProductPage = () => {
         setImages([]);
     }
 
-    const handleFileUpload = (event) => {
-        const files = Array.from(event.target.files);
+    const handleFileUpload = (e, field) => {
+        const files = Array.from(e.target.files);
         setImages([...images, ...files]);
+        field.onChange([...images, ...files]);
     };
 
     function uploadPlugin(editor) {
@@ -83,7 +89,13 @@ const CreateProductPage = () => {
     }
 
     const handleCreateProduct = (data) => {
-        dispatch(createProductAction({...data, images, status: active}))
+        const formatData = {
+            ...data,
+            status: active,
+            price: Number(data.price.replace(/,/g, '')),
+            cost: Number(data.cost.replace(/,/g, ''))
+        }
+        dispatch(createProductAction(formatData))
     };
 
     const renderProductImage = () => {
@@ -104,9 +116,13 @@ const CreateProductPage = () => {
         ));
     };
 
+    const formatNumberWithCommas = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
     return (
-        <Wraper>
-            <form onSubmit={handleSubmit((data) => handleCreateProduct(data))}>
+        <Wraper>l
+            <form id='create-form' onSubmit={handleSubmit((data) => handleCreateProduct(data))}>
                 <div className="create-product-header">
                     <Link to={ROUTER_ADMIN.PRODUCT_LIST}>
                         <div className="header-content-left">
@@ -135,11 +151,15 @@ const CreateProductPage = () => {
                                         Tên sản phẩm <i className="fa-solid fa-circle-info"></i>
                                     </label>
                                     <input
-                                        {...register("name")}
+                                        {...register("name", {
+                                            required: "Vui lòng nhập tên sản phẩm"
+                                        })}
                                         type="text"
                                         id="product-name"
                                         placeholder="Nhập tên sản phẩm"
+                                        autoComplete="off"
                                     />
+                                    {errors.name && <span className="error-message">{errors.name.message}</span>}
                                 </div>
                             </div>
                         </div>
@@ -152,22 +172,58 @@ const CreateProductPage = () => {
                                     <label htmlFor="price">
                                         Giá bán lẻ <i className="fa-solid fa-circle-info"></i>
                                     </label>
-                                    <input
-                                        {...register("price")}
-                                        type="text"
-                                        id="price"
-                                        placeholder="Nhập tên sản phẩm"
+                                    <Controller
+                                        name="price"
+                                        control={control}
+                                        rules={{ required: "Vui lòng nhập giá bán lẻ" }}
+                                        render={({ field, fieldState: { error } }) => (
+                                            <>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Nhập giá bán lẻ"
+                                                    autoComplete="off"
+                                                    value={field.value ? formatNumberWithCommas(field.value) : ''}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value.replace(/,/g, '');
+                                                        if (/^\d*$/.test(value)) {
+                                                            const formattedValue = formatNumberWithCommas(value);
+                                                            setValue('price', formattedValue);
+                                                            field.onChange(value);
+                                                        }
+                                                    }}
+                                                />
+                                                {error && <span className="error-message">{error.message}</span>}
+                                            </>
+                                        )}
                                     />
                                 </div>
                                 <div className="content-section">
                                     <label htmlFor="cost">
                                         Giá nhập <i className="fa-solid fa-circle-info"></i>
                                     </label>
-                                    <input
-                                        {...register("cost")}
-                                        type="text"
-                                        id="cost"
-                                        placeholder="Nhập tên sản phẩm"
+                                    <Controller
+                                        name="cost"
+                                        control={control}
+                                        rules={{ required: "Vui lòng nhập giá nhập" }}
+                                        render={({ field, fieldState: { error } }) => (
+                                            <>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Nhập giá bán nhập"
+                                                    autoComplete="off"
+                                                    value={field.value ? formatNumberWithCommas(field.value) : ''}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value.replace(/,/g, '');
+                                                        if (/^\d*$/.test(value)) {
+                                                            const formattedValue = formatNumberWithCommas(value);
+                                                            setValue('cost', formattedValue);
+                                                            field.onChange(value);
+                                                        }
+                                                    }}
+                                                />
+                                                {error && <span className="error-message">{error.message}</span>}
+                                            </>
+                                        )}
                                     />
                                 </div>
                             </div>
@@ -192,13 +248,20 @@ const CreateProductPage = () => {
                                     >
                                         <i className="fa-solid fa-plus"></i>
                                     </label>
-                                    <input
-                                        id="input-upload-image"
-                                        type="file"
-                                        multiple
-                                        onChange={handleFileUpload}
-                                    />
+                                    <Controller
+                                        name="images"
+                                        control={control}
+                                        rules={{ required: "Vui lòng nhập ảnh sản phẩm" }}
+                                        render={({ field }) => (
+                                            <input
+                                                id="input-upload-image"
+                                                type="file"
+                                                multiple
+                                                onChange={(e) => handleFileUpload(e, field)}
+                                                autoComplete="off"
+                                            />)} />
                                     {renderProductImage()}
+                                    {errors.images && <span className="error-message">{errors.images.message}</span>}
                                 </div>
                             </div>
                         </div>
@@ -210,36 +273,45 @@ const CreateProductPage = () => {
                                 </div>
                             </div>
                             <div className="content-block-main-describe">
-                                <CKEditor
-                                    editor={ClassicEditor}
-                                    // data={field.value}
-                                    onReady={(editor) => { }}
-                                    config={{
-                                        extraPlugins: [uploadPlugin],
-                                        toolbar: {
-                                            items: [
-                                                "heading",
-                                                "|",
-                                                "bold",
-                                                "italic",
-                                                "|",
-                                                "bulletedList",
-                                                "numberedList",
-                                                "|",
-                                                "blockQuote",
-                                                "imageUpload",
-                                                "|",
-                                                "undo",
-                                                "redo",
-                                            ],
-                                            shouldNotGroupWhenFull: true,
-                                        },
-                                    }}
-                                    onChange={(event, editor) => {
-                                        const data = editor.getData();
-                                        setValue("description", data);
-                                    }}
+                                <Controller
+                                    name="description"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: "Vui lòng nhập mô tả" }}
+                                    render={({ field }) => (
+                                        <CKEditor
+                                            editor={ClassicEditor}
+                                            data={field.value}
+                                            onReady={(editor) => { }}
+                                            config={{
+                                                extraPlugins: [uploadPlugin],
+                                                toolbar: {
+                                                    items: [
+                                                        "heading",
+                                                        "|",
+                                                        "bold",
+                                                        "italic",
+                                                        "|",
+                                                        "bulletedList",
+                                                        "numberedList",
+                                                        "|",
+                                                        "blockQuote",
+                                                        "imageUpload",
+                                                        "|",
+                                                        "undo",
+                                                        "redo",
+                                                    ],
+                                                    shouldNotGroupWhenFull: true,
+                                                },
+                                            }}
+                                            onChange={(event, editor) => {
+                                                const data = editor.getData();
+                                                setValue("description", data);
+                                                field.onChange(data);
+                                            }}
+                                        />)}
                                 />
+                                {errors.description && <span className="error-message">{errors.description.message}</span>}
                             </div>
                         </div>
                     </div>
@@ -257,6 +329,7 @@ const CreateProductPage = () => {
                                         type="text"
                                         id="product-name"
                                         placeholder="Nhập loại sản phẩm"
+                                        autoComplete="off"
                                     />
                                 </div>
                             </div>

@@ -8,11 +8,15 @@ export const Wraper = styled.div`
   min-height: 100vh;
   .sidebar {
     position: fixed;
+    z-index: 2;
+
   }
   .main {
     width: calc(100% - 230px);
     margin-left: 230px;
-    transition: all 0.3s ease;
+    transition: width 0.3s ease;
+    position: relative;
+    z-index: 1;
   }
   .main.disabled {
     width: calc(100% - 52px);

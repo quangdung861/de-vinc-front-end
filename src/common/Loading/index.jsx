@@ -1,16 +1,23 @@
 import React from 'react';
 import { useLoading } from 'admin/contexts/AdminProvider';
-import './styles.scss'; // Import CSS cho loading
+import './styles.scss';
+
+const spinner = {
+    fontSize: "30px",
+    color: "#007bff",
+    marginBottom: "24px",
+};
 
 const Loading = () => {
     const { isLoading } = useLoading();
+    console.log("🚀 ~ Loading ~ isLoading:", isLoading)
 
     if (!isLoading) return null;
 
     return (
         <div className="loading-overlay">
             <div className="loading-spinner">
-                Loading...
+                <i className="fas fa-spinner fa-spin spinner" style={spinner}></i>
             </div>
         </div>
     );

@@ -167,7 +167,6 @@ const Table = (props) => {
     return (
         <Wraper>
             <div className="table-wraper">
-
                 <div className="table-name">
                     {name}
                 </div>

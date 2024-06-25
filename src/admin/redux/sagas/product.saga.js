@@ -5,6 +5,7 @@ import requestApi from "admin/helpers/api";
 
 function* getProductListSaga(action) {
     try {
+        $$.loading(true);
         const { params: { itemsPerPage, currentPage, searchKeyword } } = action.payload;
         let query = `?items_per_page=${itemsPerPage}&page=${currentPage}&search=${searchKeyword}`
         const result = yield requestApi(`/products/${query}`, 'GET', [])
@@ -16,6 +17,7 @@ function* getProductListSaga(action) {
                 meta,
             },
         });
+        $$.loading(false);
     } catch (error) {
         yield put({
             type: FAIL(PRODUCT_ADMIN_ACTION.GET_PRODUCT_LIST),
@@ -23,11 +25,13 @@ function* getProductListSaga(action) {
                 errors: error,
             },
         });
+        $$.loading(false);
     }
 }
 
 function* createProductSaga(action) {
     try {
+        $$.loading(true);
         const data = action.payload;
         let formData = new FormData();
         for (let key in data) {
@@ -43,6 +47,7 @@ function* createProductSaga(action) {
         yield put({
             type: SUCCESS(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),
         });
+        $$.loading(false);
     } catch (error) {
         yield put({
             type: FAIL(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),
@@ -50,6 +55,7 @@ function* createProductSaga(action) {
                 errors: error,
             },
         });
+        $$.loading(false);
     }
 }
 
