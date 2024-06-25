@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import * as S from "./styles";
 
-import { useNavigate, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 import { ROUTES } from "routes";
 
 const EmailFormLogin = ({ setLoginWay, setIsShow }) => {
-    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         email: {

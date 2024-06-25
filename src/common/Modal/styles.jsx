@@ -24,7 +24,7 @@ export const Container = styled.div`
         bottom: 0;
         left: 0;
         right: 0;
-        margin: auto;
+        margin: 6% auto auto ;
         border-radius: 6px;
         background-color: #fff;
         display: flex;

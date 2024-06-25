@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -23,17 +23,12 @@ const CreateProductPage = () => {
         isShowModalConfirmRemoveImageAll,
         setIsShowModalConfirmRemoveImageAll,
     ] = useState(false);
-    const [formatObj, setFormatObj] = useState({
-        price: '',
-        cost: '',
-    });
 
     const {
         register,
         handleSubmit,
         control,
         setValue,
-        getValues,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -121,7 +116,7 @@ const CreateProductPage = () => {
     };
 
     return (
-        <Wraper>l
+        <Wraper>
             <form id='create-form' onSubmit={handleSubmit((data) => handleCreateProduct(data))}>
                 <div className="create-product-header">
                     <Link to={ROUTER_ADMIN.PRODUCT_LIST}>
