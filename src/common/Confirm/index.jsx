@@ -38,22 +38,22 @@ const Confirm = ({ isShow, setIsShow, modalName, action, children, footer }) => 
                             <div className="action">
                                 {footer || <>
                                     <div
-                                    className="btn-dash danger"
-                                    onClick={() => setIsShow(false)}
-                                >
-                                    Thoát
-                                </div>
-                                <div
-                                    className="btn-primary danger"
-                                    onClick={() => {
-                                        if (action) action()
-                                        setIsShow(false);
-                                    }}
-                                >
-                                    Xoá
-                                </div>
+                                        className="btn-dash danger"
+                                        onClick={() => setIsShow(false)}
+                                    >
+                                        Thoát
+                                    </div>
+                                    <div
+                                        className="btn-primary danger"
+                                        onClick={() => {
+                                            if (action) action()
+                                            setIsShow(false);
+                                        }}
+                                    >
+                                        Xoá
+                                    </div>
                                 </>}
-                                
+
                             </div>
                         </div>
                     </div>

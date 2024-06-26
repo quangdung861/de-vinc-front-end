@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import CustomUploadAdapter from "common/Editor/CustomUploadAdapter";
 import { ROUTER_ADMIN } from "admin/routes";
 import { Button } from "admin/components";
-import { Confirm } from "@common";
+import { Confirm, Dropdown } from "@common";
 import { Wraper } from "./styles";
 import { createProductAction } from "admin/redux/actions";
 
@@ -23,6 +23,12 @@ const CreateProductPage = () => {
         isShowModalConfirmRemoveImageAll,
         setIsShowModalConfirmRemoveImageAll,
     ] = useState(false);
+    const [isShowCategoryDropdown, setIsShowCategoryDropdown] = useState(false);
+    const [isShowCreateCategoryModal, setIsShowCreateCategoryModal] = useState(false)
+
+    const [categoryData, setCategoryData] = useState({})
+    const [categoryErrors, setCategoryErrors] = useState({});
+    const [isSubmitedCategory, setIsSubmitedCategory] = useState(false);
 
     const {
         register,
@@ -115,6 +121,46 @@ const CreateProductPage = () => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     };
 
+    const onChange = (e) => {
+        let target = e.target;
+        setCategoryData({
+            ...categoryData, [target.name]: target.value
+        })
+    }
+
+    useEffect(() => {
+        if (isSubmitedCategory) {
+            validateForm()
+        }
+    }, [categoryData])
+
+    const validateForm = () => {
+        let isValid = true;
+        const errors = {};
+        if (categoryData?.category === '' || categoryData?.category === undefined) {
+            errors.category = "Tên loại sản phẩm không được để trống"
+        }
+
+        if (Object.keys(errors).length > 0) {
+            setCategoryErrors(errors);
+            isValid = false;
+        } else {
+            setCategoryErrors({})
+        }
+
+        return isValid;
+    }
+
+    const handleCreateCategory = () => {
+        let isValid = validateForm();
+        if (isValid) {
+            console.log(categoryData.category);
+        } else {
+            $$.toast('Tên loại sản phẩm không được để trống', 'danger');
+        }
+        setIsSubmitedCategory(true);
+    }
+
     return (
         <Wraper>
             <form id='create-form' onSubmit={handleSubmit((data) => handleCreateProduct(data))}>
@@ -147,7 +193,7 @@ const CreateProductPage = () => {
                                     </label>
                                     <input
                                         {...register("name", {
-                                            required: "Vui lòng nhập tên sản phẩm"
+                                            required: "Tên sản phẩm không được để trống"
                                         })}
                                         type="text"
                                         id="product-name"
@@ -170,7 +216,7 @@ const CreateProductPage = () => {
                                     <Controller
                                         name="price"
                                         control={control}
-                                        rules={{ required: "Vui lòng nhập giá bán lẻ" }}
+                                        rules={{ required: "Giá bán lẻ không được để trống" }}
                                         render={({ field, fieldState: { error } }) => (
                                             <>
                                                 <input
@@ -199,7 +245,7 @@ const CreateProductPage = () => {
                                     <Controller
                                         name="cost"
                                         control={control}
-                                        rules={{ required: "Vui lòng nhập giá nhập" }}
+                                        rules={{ required: "Giá nhập không được để trống" }}
                                         render={({ field, fieldState: { error } }) => (
                                             <>
                                                 <input
@@ -246,7 +292,7 @@ const CreateProductPage = () => {
                                     <Controller
                                         name="images"
                                         control={control}
-                                        rules={{ required: "Vui lòng nhập ảnh sản phẩm" }}
+                                        rules={{ required: "Ảnh sản phẩm không được để trống" }}
                                         render={({ field }) => (
                                             <input
                                                 id="input-upload-image"
@@ -272,7 +318,7 @@ const CreateProductPage = () => {
                                     name="description"
                                     control={control}
                                     defaultValue=""
-                                    rules={{ required: "Vui lòng nhập mô tả" }}
+                                    rules={{ required: "Mô tả không được để trống" }}
                                     render={({ field }) => (
                                         <CKEditor
                                             editor={ClassicEditor}
@@ -320,12 +366,61 @@ const CreateProductPage = () => {
                                     <label htmlFor="product-name" style={{ fontWeight: 500 }}>
                                         Loại sản phẩm
                                     </label>
-                                    <input
+                                    {/* <input
                                         type="text"
                                         id="product-name"
                                         placeholder="Nhập loại sản phẩm"
                                         autoComplete="off"
-                                    />
+                                    /> */}
+
+                                    <div className="category-block">
+                                        <div className={clsx("category-box", isShowCategoryDropdown && "active")} onClick={() => setIsShowCategoryDropdown(!isShowCategoryDropdown)}>
+                                            <div>Chọn loại sản phẩm</div>
+                                            <i className={clsx("fa-solid", !isShowCategoryDropdown ? "fa-caret-down" : "fa-caret-up")}></i>
+                                        </div>
+                                        <Dropdown
+                                            isShow={isShowCategoryDropdown}
+                                            setIsShow={setIsShowCategoryDropdown}
+                                            render={() => {
+                                                return (
+                                                    <div className="category-dropdown">
+                                                        <div className="catergory-search-keyword">
+                                                            <i className="fa-solid fa-magnifying-glass"></i>
+                                                            <input type="text" className="input-category-keyword" placeholder="Tìm kiếm hoặc nhập mới" />
+                                                        </div>
+                                                        <div className="btn-add-category" onClick={() => setIsShowCreateCategoryModal(true)}>
+                                                            <i className="fa-solid fa-circle-plus"></i>
+                                                            <div>
+                                                                Thêm mới loại sản phẩm
+                                                            </div>
+                                                        </div>
+                                                        <div className="category-list">
+                                                            <div className="category-item">
+                                                                Quần Jean
+                                                            </div>
+                                                            <div className="category-item">
+                                                                Quần Jean
+                                                            </div>
+                                                            <div className="category-item">
+                                                                Quần Jean
+                                                            </div>
+                                                            <div className="category-item">
+                                                                Quần Jean
+                                                            </div>
+                                                            <div className="category-item">
+                                                                Quần Jean
+                                                            </div>
+                                                            <div className="category-item">
+                                                                Quần Jean
+                                                            </div>
+                                                            <div className="category-item">
+                                                                Quần Jean
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -368,7 +463,35 @@ const CreateProductPage = () => {
                 Bạn có chắc chắn muốn xóa tất cả ảnh sản phẩm? Thao tác này không thể
                 khôi phục.
             </Confirm>
-        </Wraper>
+
+            <Confirm
+                isShow={isShowCreateCategoryModal}
+                setIsShow={setIsShowCreateCategoryModal}
+                modalName="Thêm loại sản phẩm"
+                footer={(
+                    <>
+                        <div
+                            className="btn-dash"
+                            onClick={() => setIsShowCreateCategoryModal(false)}
+                        >
+                            Thoát
+                        </div>
+                        <div
+                            className="btn-primary"
+                            onClick={() => {
+                                handleCreateCategory();
+                            }}
+                        >
+                            Thêm loại sản phẩm
+                        </div>
+                    </>
+                )}
+            >
+                <label htmlFor="category-name" className="category-name" style={{ marginBottom: "8px" }}>Tên loại sản phẩm <span style={{ color: "rgb(238, 77, 45)" }}>*</span></label>
+                <input type="text" id="category-name" name="category" onChange={(e) => onChange(e)} />
+                {categoryErrors.category && <span className="error-message">{categoryErrors.category}</span>}
+            </Confirm>
+        </Wraper >
     );
 };
 
