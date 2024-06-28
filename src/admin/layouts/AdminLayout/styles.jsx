@@ -9,7 +9,6 @@ export const Wraper = styled.div`
   .sidebar {
     position: fixed;
     z-index: 2;
-
   }
   .main {
     width: calc(100% - 230px);

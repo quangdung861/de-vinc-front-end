@@ -3,7 +3,6 @@ import { Wraper } from './styles'
 import bgTemplate from "client/assets/images/bg-template.png"
 
 const BannerBlock = ({ title, describe, textBtn, image } ) => {
-    console.log("🚀 ~ BannerBlock ~ title:", title)
     const bannerImage = image || bgTemplate
 
     return (

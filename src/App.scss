@@ -166,15 +166,49 @@ label {
   background-color: rgb(243, 252, 249);
 }
 
-.toast {
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
+.error-message {
+  display: inline-block;
+  color: rgb(238, 77, 45);
+  margin: 6px 0px 0px 10px;
+  font-size: 13px;
 }
-.toast.show {
-  opacity: 1;
+
+#toastDiv {
+  position: fixed;
+  top: 5%;
+  left: 0px;
+  right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin: 0 auto;
+  color: white;
+  width: 585px;
+  height: auto;
+  padding: 14px 64px;
+  border-radius: 3px;
+  box-shadow: var(--box-shadow-default);
+  z-index: 999;
+  user-select: none;
+  animation-name: fadeIn, move;
+  animation-duration: 0.4s;
 }
-.toast.hide {
-  opacity: 0;
+
+@keyframes move {
+  0% {
+    transform: translateY(-30px);
+  }
+  100% {}
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 :root {

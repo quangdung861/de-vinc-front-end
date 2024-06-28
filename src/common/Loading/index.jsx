@@ -10,7 +10,6 @@ const spinner = {
 
 const Loading = () => {
     const { isLoading } = useLoading();
-    console.log("🚀 ~ Loading ~ isLoading:", isLoading)
 
     if (!isLoading) return null;
 

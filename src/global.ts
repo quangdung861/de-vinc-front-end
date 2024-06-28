@@ -1,8 +1,13 @@
+enum ToastType {
+    Danger = "danger",
+    Success = "success",
+    Warning = "warning"
+}
 
 declare global {
     interface $$ {
         loading: (value: boolean) => void;
-        toast: (message: string, type: string) => void;
+        toast: (message: string, type: ToastType) => void;
     }
 }
 
@@ -28,7 +33,6 @@ const $$ = {
             overlayDiv.style.left = "0";
             overlayDiv.style.width = "100%";
             overlayDiv.style.height = "100%";
-            // overlayDiv.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
             overlayDiv.style.zIndex = "999";
             overlayDiv.style.pointerEvents = "auto";
 
@@ -60,20 +64,20 @@ const $$ = {
             }
         }
     },
-    toast: (message: string, type: string) => {
+    toast: (message: string, type: ToastType) => {
         let backgroundColor;
         let icon;
 
         switch (type) {
-            case "danger":
+            case ToastType.Danger:
                 backgroundColor = "#EE4747"
                 icon = "fa-solid fa-circle-info";
                 break;
-            case "success":
+            case ToastType.Success:
                 backgroundColor = "#0DB473"
                 icon = "fa-regular fa-circle-check";
                 break;
-            case "warning":
+            case ToastType.Warning:
                 backgroundColor = "#e49c06"
                 icon = "fa-solid fa-triangle-exclamation";
                 break;
@@ -85,23 +89,7 @@ const $$ = {
 
         const toastDiv = document.createElement("div");
         toastDiv.id = "toastDiv";
-        toastDiv.className = "toast";
-        toastDiv.style.position = "fixed";
-        toastDiv.style.display = "flex";
-        toastDiv.style.justifyContent = "center";
-        toastDiv.style.gap = "6px";
-        toastDiv.style.alignItems = "center";
-        toastDiv.style.top = "5%";
-        toastDiv.style.left = "50%";
-        toastDiv.style.transform = "translate(-50%, -50%)";
-        toastDiv.style.width = "585px";
-        toastDiv.style.padding = "14px 64px";
-        toastDiv.style.borderRadius = "3px";
-        toastDiv.style.color = "#fff";
-        toastDiv.style.transition = "all 1s ease";
         toastDiv.style.backgroundColor = backgroundColor;
-        toastDiv.style.zIndex = "1000";
-        toastDiv.style.pointerEvents = "none";
         toastDiv.innerHTML = message;
 
         const prefixIcon = document.createElement("i");
@@ -112,16 +100,8 @@ const $$ = {
         document.body.appendChild(toastDiv);
 
         setTimeout(() => {
-            toastDiv.classList.add("show");
-          }, 10);
-
-        setTimeout(() => {
-            toastDiv.classList.remove("show");
-            toastDiv.classList.add("hide");
-            setTimeout(() => {
-              document.body.removeChild(toastDiv);
-            }, 1000); 
-          }, 4000);
+            document.body.removeChild(toastDiv);
+        }, 4000);
     }
 }
 

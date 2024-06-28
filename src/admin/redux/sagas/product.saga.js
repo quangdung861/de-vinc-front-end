@@ -29,10 +29,34 @@ function* getProductListSaga(action) {
     }
 }
 
+function* getProductDetailSaga(action) {
+    try {
+        $$.loading(true);
+        const { data, ...meta } = action.payload;
+        const result = yield requestApi(`/products/${data.id}`, 'GET')
+        yield put({
+            type: SUCCESS(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL),
+            payload: {
+                data: result.data,
+                meta,
+            },
+        });
+        $$.loading(false);
+    } catch (error) {
+        yield put({
+            type: FAIL(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL),
+            payload: {
+                errors: error,
+            },
+        });
+        $$.loading(false);
+    }
+}
+
 function* createProductSaga(action) {
     try {
         $$.loading(true);
-        const data = action.payload;
+        const { data, callback } = action.payload;
         let formData = new FormData();
         for (let key in data) {
             if (key == 'images') {
@@ -48,6 +72,8 @@ function* createProductSaga(action) {
             type: SUCCESS(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),
         });
         $$.loading(false);
+        $$.toast('Tạo sản phẩm mới thành công', 'success');
+        callback.redirect();
     } catch (error) {
         yield put({
             type: FAIL(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),
@@ -59,7 +85,25 @@ function* createProductSaga(action) {
     }
 }
 
+function* updateProductDetailSaga(action) {
+    try {
+        $$.loading(true);
+        const { id, data, callback } = action.payload;
+        console.log("🚀 ~ function*updateProductDetailSaga ~ data:", data)
+        yield requestApi(`/products/${id}`, 'PUT', data)
+        $$.loading(false);
+        $$.toast('Cập nhập sản phẩm thành công', 'success');
+        callback.redirect();
+    } catch (error) {
+        $$.loading(false);
+        $$.toast('Cập nhập sản phẩm không thành công', 'danger');
+        throw new error;
+    }
+}
+
 export default function* productSaga() {
     yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.GET_PRODUCT_LIST), getProductListSaga);
     yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), createProductSaga);
+    yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL), getProductDetailSaga);
+    yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.UPDATE_PRODUCT_DETAIL), updateProductDetailSaga);
 }

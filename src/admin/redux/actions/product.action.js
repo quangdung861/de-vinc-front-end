@@ -8,3 +8,11 @@ export const getProductListAction = createAction(
 export const createProductAction = createAction(
   REQUEST(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT)
 )
+
+export const getProductDetailAction = createAction(
+  REQUEST(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL)
+)
+
+export const updateProductDetailAction = createAction(
+  REQUEST(PRODUCT_ADMIN_ACTION.UPDATE_PRODUCT_DETAIL)
+)

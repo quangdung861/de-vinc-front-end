@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useContext } from 'react'
-// import LiveSearch from './LiveSearch';
-import { Wraper } from './styles';
+import { Link, generatePath, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
-import { AdminContext } from 'admin/contexts/AdminProvider';
+import { Wraper } from './styles';
+import { ROUTER_ADMIN } from 'admin/routes';
 
 const Table = (props) => {
     const {
@@ -23,8 +23,11 @@ const Table = (props) => {
         setItemsPerPage,
 
         selectedRows,
-        setSelectedRows
+        setSelectedRows,
+
+        path
     } = props;
+    const navigate = useNavigate();
     const [isShowItemPerPageDropdown, setIsShowItemPerPageDropdown] = useState(false);
     const [searchString, setSearchString] = useState('')
     const boxSearchRef = useRef(null);
@@ -32,6 +35,10 @@ const Table = (props) => {
     const containerRef = useRef(null);
     const [scrollbarValue, setScrollbarValue] = useState(0);
     const [windowWidth, setWindowWidth] = useState(document.querySelector(".table-block")?.offsetWidth);
+
+    const handleClickRow = (id) => {
+        if (path) navigate(generatePath(path, { id }));
+    };
 
     const renderHeaders = () => {
         return columns.map((col, index) => <th key={index} style={{ minWidth: col.width }}>{col.name}</th>)
@@ -43,7 +50,9 @@ const Table = (props) => {
                 <tr key={index} className='row-item'>
                     <td><input type='checkbox' checked={selectedRows.includes(String(item.id))} value={item.id} className='' onChange={onClickCheckbox} /></td>
                     {
-                        columns.map((col, index) => <td key={index} style={{}}>{col.element(item)}</td>)
+                        columns.map((col, index) =>
+                            <td key={index} onClick={() => handleClickRow(item.id)}>{col.element(item)}</td>
+                        )
                     }
                 </tr>
             ))

@@ -11,6 +11,7 @@ import PurchaseOrderPage from "admin/pages/PurchaseOrderPage";
 import ProductListPage from "admin/pages/ProductListPage";
 import CreateProductPage from "admin/pages/CreateProductPage";
 import AuthProvider from "contexts/AuthProvider";
+import UpdateProductPage from "admin/pages/UpdateProductPage";
 
 function App() {
   const { pathname } = useLocation();
@@ -40,7 +41,7 @@ function App() {
             path={ROUTES.ADMIN.CREATE_PRODUCT}
             element={<CreateProductPage />}
           />
-          {/* <Route path={ROUTES.ADMIN.UPDATE_PRODUCT} element={<HomePage />} />  */}
+          <Route path={ROUTES.ADMIN.UPDATE_PRODUCT} element={<UpdateProductPage />} /> 
           <Route
             path={ROUTES.ADMIN.PURCHASE_ORDERS}
             element={<PurchaseOrderPage />}

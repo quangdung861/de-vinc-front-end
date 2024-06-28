@@ -13,7 +13,7 @@ const AdminLayout = () => {
 
   return (
     <AdminProvider>
-      <Wraper>
+      <Wraper isshowsidebar={isShowSidebar}>
         <div className="sidebar">
           <Sidebar
             isShowSidebar={isShowSidebar}

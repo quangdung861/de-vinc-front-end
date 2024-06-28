@@ -33,8 +33,8 @@ export const Wraper = styled.div`
     }
   }
   .menu-list {
-    overflow: hidden;
     .menu-action {
+      cursor: pointer;
       .menu-name {
         display: flex;
         justify-content: flex-start;

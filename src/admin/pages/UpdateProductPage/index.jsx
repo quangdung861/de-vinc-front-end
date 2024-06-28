@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import clsx from "clsx";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -11,9 +11,11 @@ import { ROUTER_ADMIN } from "admin/routes";
 import { Button } from "admin/components";
 import { Confirm, Dropdown } from "@common";
 import { Wraper } from "./styles";
-import { createCategoryAction, createProductAction, getCategoryListAction } from "admin/redux/actions";
+import { createCategoryAction, createProductAction, getCategoryListAction, getProductDetailAction, updateProductDetailAction } from "admin/redux/actions";
+import requestApi from "admin/helpers/api";
 
-const CreateProductPage = () => {
+const UpdateProductPage = () => {
+    let { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [active, setActive] = useState(1);
@@ -30,6 +32,7 @@ const CreateProductPage = () => {
     const [categoryErrors, setCategoryErrors] = useState({});
     const [isSubmitedCategory, setIsSubmitedCategory] = useState(false);
     const { categoryList } = useSelector((state) => state.categoryReducer);
+    const { productDetail } = useSelector((state) => state.productReducer);
     const [categoryKeywords, setCategoryKeywords] = useState("");
     const [categorySelected, setCategorySelected] = useState({})
 
@@ -52,7 +55,21 @@ const CreateProductPage = () => {
 
     useEffect(() => {
         dispatch(getCategoryListAction())
+        dispatch(getProductDetailAction({ data: { id } }))
     }, [])
+
+    useEffect(() => {
+        const fields = ['name', 'cost', 'description', 'price', 'status']
+        fields.forEach((field) => setValue(field, productDetail.data[field]))
+        setCategorySelected(productDetail.data.category)
+
+        if (productDetail.data.images) {
+            const imageUrls = productDetail.data.images?.split("<&space>")
+            setImages([...imageUrls])
+            setValue('images', [...imageUrls])
+        }
+
+    }, [productDetail.data])
 
     const handleDragStart = (index) => {
         setDraggingIndex(index);
@@ -83,11 +100,16 @@ const CreateProductPage = () => {
         setImages([]);
     }
 
-    const handleFileUpload = (e, field) => {
+    const handleFileUpload = async (e, field) => {
         const files = Array.from(e.target.files);
-        console.log("🚀 ~ handleFileUpload ~ files:", files)
-        setImages([...images, ...files]);
-        field.onChange([...images, ...files]);
+        let formData = new FormData();
+        files.forEach((file) => {
+            formData.append('images', file);
+        });
+
+        const result = await requestApi(`/products/uploads`, 'POST', formData, 'json', 'multipart/form-data')
+        setImages([...images, ...result.data]);
+        field.onChange([...images, ...result.data]);
     };
 
     function uploadPlugin(editor) {
@@ -97,15 +119,17 @@ const CreateProductPage = () => {
         };
     }
 
-    const handleCreateProduct = (data) => {
+    const handleUpdateProduct = (data) => {
         const formatData = {
             ...data,
             status: active,
-            price: Number(data.price.replace(/,/g, '')),
-            cost: Number(data.cost.replace(/,/g, '')),
-            categoryId: categorySelected.id || null
+            price: Number(isNaN(data.price) ? data.price.replace(/,/g, '') : data.price),
+            cost: Number(isNaN(data.cost) ? data.cost.replace(/,/g, '') : data.cost),
+            images,
+            categoryId: categorySelected?.id || null
         }
-        dispatch(createProductAction({
+        dispatch(updateProductDetailAction({
+            id,
             data: formatData,
             callback: {
                 redirect: () => navigate(ROUTER_ADMIN.PRODUCT_LIST)
@@ -115,7 +139,7 @@ const CreateProductPage = () => {
 
     const renderProductImage = () => {
         return images.map((image, index) => {
-          return  (
+            return (
                 <div
                     className={clsx("box")}
                     key={index}
@@ -127,7 +151,7 @@ const CreateProductPage = () => {
                     <span className="box-close" onClick={() => handleRemoveImage(index)}>
                         <i className={clsx("fa-solid fa-circle-xmark")}></i>
                     </span>
-                    <img src={URL.createObjectURL(image)} alt="" className="image" />
+                    <img src={process.env.REACT_APP_API_URL + "/" + image} alt="" className="image" />
                 </div>
             )
         });
@@ -202,7 +226,7 @@ const CreateProductPage = () => {
 
     return (
         <Wraper>
-            <form id='create-form' onSubmit={handleSubmit((data) => handleCreateProduct(data))}>
+            <form id='create-form' onSubmit={handleSubmit((data) => handleUpdateProduct(data))}>
                 <div className="create-product-header">
                     <Link to={ROUTER_ADMIN.PRODUCT_LIST}>
                         <div className="header-content-left">
@@ -414,7 +438,7 @@ const CreateProductPage = () => {
 
                                     <div className="category-block">
                                         <div className={clsx("category-box", isShowCategoryDropdown && "active")} onClick={() => setIsShowCategoryDropdown(!isShowCategoryDropdown)}>
-                                            <div> {categorySelected.name || 'Chọn loại sản phẩm'}</div>
+                                            <div> {categorySelected?.name || 'Chọn loại sản phẩm'}</div>
                                             <i className={clsx("fa-solid", !isShowCategoryDropdown ? "fa-caret-down" : "fa-caret-up")}></i>
                                         </div>
                                         <Dropdown
@@ -514,4 +538,4 @@ const CreateProductPage = () => {
     );
 };
 
-export default CreateProductPage;
+export default UpdateProductPage;

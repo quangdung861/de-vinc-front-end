@@ -36,7 +36,7 @@ const ProductListPage = () => {
   const totalOfPage = productList.meta?.total;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
 
@@ -117,10 +117,6 @@ const ProductListPage = () => {
   }, []);
 
   useEffect(() => {
-    // console.log(window);
-    // window.$$.loading(true);
-    // console.log($$)
-    // R.loading();
     dispatch(
       getProductListAction({
         params: {
@@ -131,12 +127,6 @@ const ProductListPage = () => {
       })
     );
   }, [itemsPerPage, currentPage, searchKeyword]);
-
-  // useEffect(() => {
-  //     setLastPage(productList.meta.lastPage);
-  //     setTotalOfPage(productList.meta.total);
-  //     setCurrentPage(productList.meta.currentPage);
-  // }, [productList])
 
   return (
     <Wraper>
@@ -164,6 +154,7 @@ const ProductListPage = () => {
           setSearchKeyword={setSearchKeyword}
           setSelectedRows={setSelectedRows}
           selectedRows={selectedRows}
+          path={ROUTER_ADMIN.UPDATE_PRODUCT}
         />
       </div>
     </Wraper>

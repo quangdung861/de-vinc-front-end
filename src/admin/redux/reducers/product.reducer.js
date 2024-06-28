@@ -8,6 +8,12 @@ const initialState = {
         loading: false,
         errors: null,
     },
+    productDetail: {
+        data: {},
+        meta: {},
+        loading: false,
+        errors: null,
+    },
 };
 
 const productReducer = createReducer(initialState, (builder) => {
@@ -52,9 +58,40 @@ const productReducer = createReducer(initialState, (builder) => {
            
         })
         .addCase(FAIL(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), (state, action) => {
+        })
+        // DETAIL
+        .addCase(REQUEST(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL), (state) => {
+            return {
+                ...state,
+                productDetail: {
+                    ...state.productDetail,
+                    loading: true,
+                },
+            };
+        })
+        .addCase(SUCCESS(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL), (state, action) => {
+            const { data, meta } = action.payload;
+            return {
+                ...state,
+                productDetail: {
+                    ...state.productDetail,
+                    data,
+                    meta,
+                    loading: false,
+                },
+            };
+        })
+        .addCase(FAIL(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL), (state, action) => {
             const { error } = action.payload;
-            console.log(error);
-        });
+            return {
+                ...state,
+                productDetail: {
+                    ...state.productDetail,
+                    error,
+                    loading: false,
+                },
+            };
+        })
 })
 
 export default productReducer;
