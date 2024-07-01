@@ -69,14 +69,14 @@ const Header = () => {
                 <i className="fa-solid fa-user"></i>
               </div>
               <div className="btn-cart">
-                <i className="fa-solid fa-cart-shopping"></i>
+                <i className="fa-solid fa-bag-shopping"></i>
               </div>
             </div>
           </div>
         </div>
       </div>
       <Modal isShow={isShowModal} setIsShow={setIsShowModal} >
-        <Login setIsShow={setIsShowModal}/>
+        <Login setIsShow={setIsShowModal} />
       </Modal>
     </Wrapper>
   )

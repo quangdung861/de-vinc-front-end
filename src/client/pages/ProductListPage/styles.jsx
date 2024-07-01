@@ -1,17 +1,16 @@
-.typical-products-container {
-    .typical-products-centent {
-        .typical-products-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-        .typical-products-list {
+import styled from "styled-components";
+
+export const Wrapper = styled.div`
+    padding: 64px; 
+  .typical-products-list {
             display: flex;
             justify-content: flex-start;
             align-items: center;
+            flex-wrap: wrap;
             gap: 24px;
+            margin-left: 24px;
             .typical-product-item {
-                width: 25%;
+                width: calc(25% - 24px);
                 .typical-product-box-image {
                     position: relative;
                     overflow: hidden;
@@ -45,5 +44,6 @@
                
             }
         }
-    }
- }
+`;
+
+

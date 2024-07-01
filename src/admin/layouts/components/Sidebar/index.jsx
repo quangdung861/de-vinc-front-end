@@ -83,6 +83,12 @@ const Sidebar = ({ isShowSidebar, setIsShowSidebar }) => {
         }
       ]
     },
+    {
+      name: "Trang khách hàng",
+      icon: <i className="fa-solid fa-arrow-right-arrow-left"></i>,
+      path: ROUTES.CLIENT.HOME,
+      data: []
+    },
     // {
     //   name: "Marketing",
     //   icon: <i className="fa-solid fa-wallet"></i>,

@@ -7,9 +7,14 @@ import bgTemplate1 from "client/assets/images/mceclip2_67.webp"
 import bgTemplate2 from "client/assets/images/mceclip1_85.webp"
 import bgTemplate3 from "client/assets/images/mceclip0_71.webp"
 import BtnToTop from 'client/components/BtnToTop'
+import { getCategoryListAction } from 'admin/redux/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { getProductListAction } from 'client/redux/actions'
 
 const HomePage = () => {
-
+  const dispatch = useDispatch();
+  const { productList } = useSelector(state => state.client.productReducer)
+  console.log("🚀 ~ HomePage ~ productList:", productList)
   const data = [
     {
       title: "ĐỒ CHẠY BỘ",
@@ -57,23 +62,31 @@ const HomePage = () => {
     ]
   }
 
+  useEffect(() => {
+    dispatch(getProductListAction({
+      params: {
+        itemsPerPage: 4
+      },
+    }))
+  }, [])
+
   return (
     <Wrapper>
       <Carousel />
       <div className="wraper-typical-products">
-        <TypicalProduct data={bestSellerData} />
+        <TypicalProduct data={productList.data} />
       </div>
       <BannerBlock {...data[0]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={bestSellerData} />
+        <TypicalProduct data={productList.data} />
       </div>
       <BannerBlock {...data[1]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={bestSellerData} />
+        <TypicalProduct data={productList.data} />
       </div>
       <BannerBlock {...data[2]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={bestSellerData} />
+        <TypicalProduct data={productList.data} />
       </div>
       <BtnToTop />
     </Wrapper>

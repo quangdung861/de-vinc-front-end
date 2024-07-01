@@ -4,7 +4,7 @@ import bgTemplate from "client/assets/images/bg-template.png"
 export const Wraper = styled.div`
   /* background-color: rgba(0, 0, 0, 0.2); */
   background-blend-mode: multiply; /* Áp dụng chế độ blend */
-  background-image: url(${props => props.image});
+  background-image: url(${props => props.$image});
   background-repeat: no-repeat;
   background-size: cover;
   padding-top: 30%;

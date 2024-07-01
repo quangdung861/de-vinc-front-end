@@ -31,7 +31,7 @@ const ProductListPage = () => {
   const dispatch = useDispatch();
   const { setBreadcrum } = useContext(AdminContext);
 
-  const { productList } = useSelector((state) => state.productReducer);
+  const { productList } = useSelector((state) => state.admin.productReducer);
   const lastPage = productList.meta?.lastPage;
   const totalOfPage = productList.meta?.total;
 

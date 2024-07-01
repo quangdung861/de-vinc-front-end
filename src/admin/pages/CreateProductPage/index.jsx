@@ -29,7 +29,7 @@ const CreateProductPage = () => {
     const [categoryData, setCategoryData] = useState({})
     const [categoryErrors, setCategoryErrors] = useState({});
     const [isSubmitedCategory, setIsSubmitedCategory] = useState(false);
-    const { categoryList } = useSelector((state) => state.categoryReducer);
+    const { categoryList } = useSelector((state) => state.admin.categoryReducer);
     const [categoryKeywords, setCategoryKeywords] = useState("");
     const [categorySelected, setCategorySelected] = useState({})
 

@@ -1,3 +1,4 @@
 export const ROUTER_CLIENT = {
-    HOME: "/"
+    HOME: "/",
+    PRODUCT_LIST: "/products"
 }

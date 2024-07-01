@@ -31,8 +31,8 @@ const UpdateProductPage = () => {
     const [categoryData, setCategoryData] = useState({})
     const [categoryErrors, setCategoryErrors] = useState({});
     const [isSubmitedCategory, setIsSubmitedCategory] = useState(false);
-    const { categoryList } = useSelector((state) => state.categoryReducer);
-    const { productDetail } = useSelector((state) => state.productReducer);
+    const { categoryList } = useSelector((state) => state.admin.categoryReducer);
+    const { productDetail } = useSelector((state) => state.admin.productReducer);
     const [categoryKeywords, setCategoryKeywords] = useState("");
     const [categorySelected, setCategorySelected] = useState({})
 

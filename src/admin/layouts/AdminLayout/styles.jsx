@@ -9,11 +9,11 @@ export const Wraper = styled.div`
   .sidebar {
     position: fixed;
     z-index: 2;
+    transition: width 0.3s ease;
   }
   .main {
     width: calc(100% - 230px);
     margin-left: 230px;
-    transition: width 0.3s ease;
     position: relative;
     z-index: 1;
   }

@@ -6,7 +6,7 @@ const BannerBlock = ({ title, describe, textBtn, image } ) => {
     const bannerImage = image || bgTemplate
 
     return (
-        <Wraper image={bannerImage}>
+        <Wraper $image={bannerImage}>
             <div className="banner-container">
                 <div className="banner-content">
                     <div className="banner-content-left">
