@@ -6,7 +6,6 @@ import BannerBlock from 'client/layouts/components/BannerBlock'
 import bgTemplate1 from "client/assets/images/mceclip2_67.webp"
 import bgTemplate2 from "client/assets/images/mceclip1_85.webp"
 import bgTemplate3 from "client/assets/images/mceclip0_71.webp"
-import BtnToTop from 'client/components/BtnToTop'
 import { getCategoryListAction } from 'admin/redux/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProductListAction } from 'client/redux/actions'
@@ -14,7 +13,6 @@ import { getProductListAction } from 'client/redux/actions'
 const HomePage = () => {
   const dispatch = useDispatch();
   const { productList } = useSelector(state => state.client.productReducer)
-  console.log("🚀 ~ HomePage ~ productList:", productList)
   const data = [
     {
       title: "ĐỒ CHẠY BỘ",
@@ -36,32 +34,6 @@ const HomePage = () => {
     }
   ]
 
-  const bestSellerData = {
-    title: "SẢN PHẨM BÁN CHẠY",
-    data: [
-      {
-        name: "Quần Jean Straight Patchwork Style",
-        img_URL: require('client/assets/images/160_polo_1m_-3_ff63f40d38384af8b52b763b1a77f512_1024x1024.jpg'),
-        price: "380.000đ",
-      },
-      {
-        name: "Quần Jean Straight Patchwork Style",
-        img_URL: require('client/assets/images/160_polo_1m_-3_ff63f40d38384af8b52b763b1a77f512_1024x1024.jpg'),
-        price: "380.000đ",
-      },
-      {
-        name: "Quần Jean Straight Patchwork Style",
-        img_URL: require('client/assets/images/160_polo_1m_-3_ff63f40d38384af8b52b763b1a77f512_1024x1024.jpg'),
-        price: "380.000đ",
-      },
-      {
-        name: "Quần Jean Straight Patchwork Style",
-        img_URL: require('client/assets/images/160_polo_1m_-3_ff63f40d38384af8b52b763b1a77f512_1024x1024.jpg'),
-        price: "380.000đ",
-      }
-    ]
-  }
-
   useEffect(() => {
     dispatch(getProductListAction({
       params: {
@@ -74,21 +46,20 @@ const HomePage = () => {
     <Wrapper>
       <Carousel />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList.data} />
+        <TypicalProduct data={productList} />
       </div>
       <BannerBlock {...data[0]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList.data} />
+        <TypicalProduct data={productList} />
       </div>
       <BannerBlock {...data[1]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList.data} />
+        <TypicalProduct data={productList} />
       </div>
       <BannerBlock {...data[2]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList.data} />
+        <TypicalProduct data={productList} />
       </div>
-      <BtnToTop />
     </Wrapper>
   )
 }

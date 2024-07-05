@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-`;
-
-export const MainContainer = styled.div`
+.btn-default {
   font-size: 14px;
   line-height: 14px;
   padding: 9px 16px;
@@ -21,7 +19,6 @@ export const MainContainer = styled.div`
   &:hover {
     opacity: 0.9;
   }
+}
 `;
 
-export const MainContent = styled.div`
-`;

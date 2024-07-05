@@ -4,11 +4,9 @@ import { MainContainer, MainContent, Wrapper } from './styles'
 const Button = ({ text, action }) => {
     return (
         <Wrapper>
-            <MainContainer>
-                <MainContent>
-                    {text}
-                </MainContent>
-            </MainContainer>
+            <div className="btn-default" onClick={() => action && action()}>
+                {text}
+            </div>
         </Wrapper>
     )
 }

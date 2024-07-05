@@ -6,8 +6,15 @@ import requestApi from "client/helpers/api";
 function* getProductListSaga(action) {
     try {
         $$.loading(true);
-        const { params: { itemsPerPage = 10, currentPage = 1, searchKeyword = '', categoryId = '', sort = "desc" } } = action.payload;
-        let query = `?items_per_page=${itemsPerPage}&page=${currentPage}&search=${searchKeyword}&categoryId=${categoryId}&sort=${sort}`
+        const { params: {
+            itemsPerPage = 10,
+            currentPage = 1,
+            searchKeyword = '',
+            categoryId = '',
+            order = '',
+            sortValue = '' 
+        } } = action.payload;
+        let query = `?items_per_page=${itemsPerPage}&page=${currentPage}&search=${searchKeyword}&categoryId=${categoryId}&order=${order}&sortValue=${sortValue}`
         const result = yield requestApi(`/products/${query}`, 'GET', [])
         const { data, ...meta } = result.data;
         yield put({

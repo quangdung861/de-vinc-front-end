@@ -9,8 +9,7 @@ export const Wrapper = styled.div`
 `;
 
 export const MainContainer = styled.div`
-  /* min-height: calc(100vh - 156px);
-  background-color: #fff; */
+  min-height: calc(100vh - 144px);
 `;
 
 export const MainContent = styled.div``;

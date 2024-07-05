@@ -31,7 +31,7 @@ export const Container = styled.div`
         flex-direction: column;
         .header {
           height: 48px;
-          padding: 0 8px 0 16px;
+          padding: 16px 16px 0 16px;
           display: flex;
           justify-content: space-between;
           align-items: center;

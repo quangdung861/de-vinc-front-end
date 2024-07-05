@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import * as S from "./styles";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-// import BackToTopButton from "../../components/BackToTopButton/BackToTopButton";
-
+import BtnToTop from "client/components/BtnToTop";
 
 const UserLayout = () => {
   return (
@@ -18,7 +16,7 @@ const UserLayout = () => {
         </S.MainContent>
       </S.MainContainer>
       <Footer />
-      {/* <BackToTopButton /> */}
+      <BtnToTop />
     </S.Wrapper>
   );
 };
