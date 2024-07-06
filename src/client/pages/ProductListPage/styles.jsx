@@ -60,7 +60,7 @@ export const Wrapper = styled.div`
             align-items: center;
             flex-wrap: wrap;
             .product-item {
-                width: 25%;
+                width: 20%;
                 padding: 12px;
                 .product-box-image {
                     position: relative;
@@ -94,6 +94,11 @@ export const Wrapper = styled.div`
                         } 
                 }
                
+            } 
+            @media only screen and (max-width: 998px) {
+                .product-item {
+                    width: 25%;
+                }
             }
             @media only screen and (max-width: 768px) {
                 .product-item {

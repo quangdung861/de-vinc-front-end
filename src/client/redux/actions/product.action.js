@@ -16,3 +16,11 @@ export const getProductDetailAction = createAction(
 export const updateProductDetailAction = createAction(
   REQUEST(PRODUCT_CLIENT_ACTION.UPDATE_PRODUCT_DETAIL)
 )
+
+export const clearProductListAction = createAction(
+  REQUEST(PRODUCT_CLIENT_ACTION.CLEAR_PRODUCT_LIST)
+);
+
+export const getSearchListAction = createAction(
+  REQUEST(SEARCH_ACTION.GET_SEARCH_LIST)
+);

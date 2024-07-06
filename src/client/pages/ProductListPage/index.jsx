@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import * as S from "./styles";
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductListAction } from 'client/redux/actions';
+import { clearProductListAction, getProductListAction } from 'client/redux/actions';
 import { ROUTER_CLIENT } from 'client/routes';
 import { generatePath, useNavigate } from 'react-router-dom';
 import { Dropdown } from '@common';
 import { NFilterProducts, NFilterProductsSTring } from './constant';
 import Button from 'client/components/Button';
+import SkeletonProduct from './Skeleton/SkeletonProduct';
 
 const filterItems = [
   {
@@ -33,15 +34,17 @@ const ProductListPage = () => {
   const [isShowFilterList, setIsShowFilterList] = useState(false);
   const [filterData, setFilterData] = useState({
     sort: filterItems[0],
+    currentPage: 1,
     itemsPerPage: 10,
   });
 
   useEffect(() => {
     dispatch(getProductListAction({
       params: {
+        currentPage: filterData.currentPage,
+        itemsPerPage: filterData.itemsPerPage,
         order: filterData.sort.order,
         sortValue: filterData.sort.sortValue,
-        itemsPerPage: filterData.itemsPerPage
       }
     }))
   }, [filterData])
@@ -51,7 +54,7 @@ const ProductListPage = () => {
   };
 
   const renderProductList = useMemo(() => {
-    return productList.data.map((item, index) => {
+    return productList.data?.map((item, index) => {
       return (
         <div className="product-item" key={index}>
           <div className="product-box-image" >
@@ -59,7 +62,7 @@ const ProductListPage = () => {
           </div>
           <div className="product-describe">
             <span className="product-name">{item.name}</span>
-            <div className="product-price">{item.price.toLocaleString()}đ</div>
+            <div className="product-price">{item?.price?.toLocaleString()}đ</div>
           </div>
         </div>
       )
@@ -67,8 +70,10 @@ const ProductListPage = () => {
   }, [productList.data])
 
   const handleFilterProduct = (item) => {
+    dispatch(clearProductListAction())
     setFilterData({
-      ...filterData,
+      currentPage: 1,
+      itemsPerPage: 10,
       sort: item
     });
     setIsShowFilterList(false);
@@ -85,7 +90,7 @@ const ProductListPage = () => {
   const handleSeeMore = () => {
     setFilterData({
       ...filterData,
-      itemsPerPage: filterData.itemsPerPage + 10
+      currentPage: filterData.currentPage + 1,
     })
   }
 
@@ -120,12 +125,12 @@ const ProductListPage = () => {
         </div>
         <div className="products-list">
           {renderProductList}
+          {productList.loading && <SkeletonProduct />}
         </div>
         <div className='btn-container'>
-          <Button text="XEM THÊM" action={handleSeeMore}/>
+          {productList.data?.length < productList.meta?.total && <Button text="XEM THÊM" action={handleSeeMore}/>}
           <div className='describe-per-page'>
             {productList.meta?.total ? `Hiển thị  ${productList.data?.length} trên tổng ${productList.meta?.total} sản phẩm` : "Không có sản phẩm nào được hiển thị, hãy thử bộ lọc khác."}
-           
           </div>
         </div>
       </div>

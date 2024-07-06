@@ -3,6 +3,34 @@ import { put, takeEvery } from "redux-saga/effects";
 import { REQUEST, SUCCESS, FAIL, PRODUCT_CLIENT_ACTION } from "../constants";
 import requestApi from "client/helpers/api";
 
+function* getSearchListSaga(action) {
+    try {
+        $$.loading(true);
+        const { params: {
+            searchKeyword = '',
+        } } = action.payload;
+        let query = `?search=${searchKeyword}`
+        const result = yield requestApi(`/products/search/${query}`, 'GET', [])
+        const { data, ...meta } = result.data;
+        yield put({
+            type: SUCCESS(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST),
+            payload: {
+                data: result.data.data,
+                meta,
+            },
+        });
+        $$.loading(false);
+    } catch (error) {
+        yield put({
+            type: FAIL(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST),
+            payload: {
+                errors: error,
+            },
+        });
+        $$.loading(false);
+    }
+}
+
 function* getProductListSaga(action) {
     try {
         $$.loading(true);
@@ -63,4 +91,5 @@ function* getProductDetailSaga(action) {
 export default function* productSaga() {
     yield takeEvery(REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST), getProductListSaga);
     yield takeEvery(REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_DETAIL), getProductDetailSaga);
+    yield takeEvery(REQUEST(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST), getSearchListSaga);
 }

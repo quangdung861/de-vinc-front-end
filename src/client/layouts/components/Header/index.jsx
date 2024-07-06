@@ -12,6 +12,7 @@ const Header = () => {
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [lastLoggedPosition, setLastLoggedPosition] = useState(0);
   const [isShow, setIsShow] = useState(true);
+  const { searchList } = useSelector((state) => state.searchReducer);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -89,13 +90,56 @@ const Header = () => {
           </div>
         </div>
         <div className="header-right">
-          <div className="box-search">
-            <i className="fa-solid fa-magnifying-glass icon-search"></i>
-            <input
-              className="input-search"
-              placeholder="Tìm kiếm sản phẩm, bài viết , video, ..."
-            />
-          </div>
+        <div className="box-search">
+              <i className="fa-solid fa-magnifying-glass icon-search"></i>
+              <input
+                className="input-search"
+                placeholder="Tìm kiếm khóa học, bài viết , video, ..."
+                onChange={(e) => setKeyword(e.target.value)}
+                onFocus={(e) => handleFocusSearch(e)}
+                ref={inputRef}
+              />
+              {inputRef.current?.value && (
+                <i
+                  className="fa-solid fa-xmark icon-close"
+                  onClick={() => handleCloseSearch()}
+                ></i>
+              )}
+
+              <div
+                className={
+                  !keyword
+                    ? "container-search-result"
+                    : "container-search-result  container-search-result--active"
+                }
+              >
+                <div className="top">
+                  {!searchList.loading ? (
+                    <i
+                      className="fa-solid fa-magnifying-glass icon-search"
+                      style={{ fontSize: "14px" }}
+                    ></i>
+                  ) : (
+                    <i className="fa-solid fa-spinner icon-spin--active"></i>
+                  )}
+
+                  {searchList.loading ? (
+                    <span>Tìm '{keyword}'</span>
+                  ) : !!searchList.data.courses[0] === false &&
+                    !!searchList.data.posts[0] === false &&
+                    !!searchList.data.videos[0] === false ? (
+                    <span>Không có kết quả cho '{keyword}'</span>
+                  ) : (
+                    <span>Kết quả cho '{keyword}'</span>
+                  )}
+                </div>
+                <div className="center">
+                  <div className="content-list">
+                  
+                  </div>
+                </div>
+              </div>
+            </div>
           <div className="header-action">
             <div className="btn-search">
               <i className="fa-solid fa-magnifying-glass icon-search"></i>

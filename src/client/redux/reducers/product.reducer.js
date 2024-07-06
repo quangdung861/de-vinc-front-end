@@ -14,6 +14,11 @@ const initialState = {
         loading: false,
         errors: null,
     },
+    searchList: {
+        data: [],
+        loading: false,
+        error: null,
+      },
 };
 
 const productReducer = createReducer(initialState, (builder) => {
@@ -33,7 +38,10 @@ const productReducer = createReducer(initialState, (builder) => {
                 ...state,
                 productList: {
                     ...state.productList,
-                    data,
+                    data: [
+                        ...state.productList.data,
+                        ...data
+                    ],
                     meta,
                     loading: false,
                 },
@@ -47,6 +55,17 @@ const productReducer = createReducer(initialState, (builder) => {
                     ...state.postList,
                     error,
                     loading: false,
+                },
+            };
+        })
+        //CLEAR
+        .addCase(REQUEST(PRODUCT_CLIENT_ACTION.CLEAR_PRODUCT_LIST), (state) => {
+            return {
+                ...state,
+                productList: {
+                    ...state.productList,
+                    data: [],
+                    loading: true,
                 },
             };
         })
@@ -83,6 +102,38 @@ const productReducer = createReducer(initialState, (builder) => {
                 },
             };
         })
+        // SEARCH
+        .addCase(REQUEST(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST), (state, action) => {
+            return {
+              ...state,
+              searchList: {
+                ...state.searchList,
+                loading: true,
+              },
+            };
+          })
+          .addCase(SUCCESS(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST), (state, action) => {
+            const { data } = action.payload;
+            return {
+              ...state,
+              searchList: {
+                ...state.searchList,
+                loading: false,
+                data,
+              },
+            };
+          })
+          .addCase(FAIL(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST), (state, action) => {
+            const { error } = action.payload;
+            return {
+              ...state,
+              searchList: {
+                ...state.searchList,
+                loading: false,
+                error,
+              },
+            };
+          });
 })
 
 export default productReducer;
