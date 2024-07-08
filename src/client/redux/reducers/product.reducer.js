@@ -18,7 +18,7 @@ const initialState = {
         data: [],
         loading: false,
         error: null,
-      },
+    },
 };
 
 const productReducer = createReducer(initialState, (builder) => {
@@ -113,13 +113,14 @@ const productReducer = createReducer(initialState, (builder) => {
             };
           })
           .addCase(SUCCESS(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST), (state, action) => {
-            const { data } = action.payload;
+            const { data, meta } = action.payload;
             return {
               ...state,
               searchList: {
                 ...state.searchList,
                 loading: false,
                 data,
+                meta
               },
             };
           })

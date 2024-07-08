@@ -1,4 +1,4 @@
-import { put, takeEvery } from "redux-saga/effects";
+import { debounce, put, takeEvery } from "redux-saga/effects";
 
 import { REQUEST, SUCCESS, FAIL, PRODUCT_CLIENT_ACTION } from "../constants";
 import requestApi from "client/helpers/api";
@@ -7,13 +7,16 @@ function* getSearchListSaga(action) {
     try {
         $$.loading(true);
         const { params: {
-            searchKeyword = '',
+            search = '',
+            items_per_page = 5,
+            page = 1,
         } } = action.payload;
-        let query = `?search=${searchKeyword}`
+        let query = `?search=${search}&page=${page}&items_per_page=${items_per_page}`
         const result = yield requestApi(`/products/search/${query}`, 'GET', [])
         const { data, ...meta } = result.data;
+        console.log("🚀 ~ function*getSearchListSaga ~ data:", data)
         yield put({
-            type: SUCCESS(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST),
+            type: SUCCESS(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST),
             payload: {
                 data: result.data.data,
                 meta,
@@ -22,7 +25,7 @@ function* getSearchListSaga(action) {
         $$.loading(false);
     } catch (error) {
         yield put({
-            type: FAIL(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST),
+            type: FAIL(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST),
             payload: {
                 errors: error,
             },
@@ -91,5 +94,9 @@ function* getProductDetailSaga(action) {
 export default function* productSaga() {
     yield takeEvery(REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST), getProductListSaga);
     yield takeEvery(REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_DETAIL), getProductDetailSaga);
-    yield takeEvery(REQUEST(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST), getSearchListSaga);
+    yield debounce(
+        300,
+        REQUEST(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST),
+        getSearchListSaga
+    );
 }

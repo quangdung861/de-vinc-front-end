@@ -138,8 +138,8 @@
         display: flex;
         align-items: center;
         position: relative;
+        z-index: 3;
         .container-search-result {
-          display: none;
           position: absolute;
           left: 0;
           top: 50px;
@@ -241,9 +241,6 @@
             }
           }
         }
-        .container-search-result--active {
-          display: block;
-        }
         &:focus-within {
           border-color: #444;
         }
@@ -313,3 +310,11 @@
   transform: translateY(-100%);
 }
 
+@keyframes mymove {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

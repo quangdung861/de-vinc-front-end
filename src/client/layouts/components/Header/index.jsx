@@ -1,27 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Modal } from '@common';
 import Login from '../Login';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ROUTER_CLIENT } from 'client/routes';
 import '../Header/styles.scss'
 import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSearchListAction } from 'client/redux/actions';
+import { getImage } from 'client/utils';
+import { ClientContext } from 'client/contexts/ClientProvider';
 
 const Header = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isBoxSearch } = useContext(ClientContext);
   const [isShowModal, setIsShowModal] = useState(false);
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [lastLoggedPosition, setLastLoggedPosition] = useState(0);
   const [isShow, setIsShow] = useState(true);
-  const { searchList } = useSelector((state) => state.searchReducer);
+  const [isOverlayModal, setIsOverlayModal] = useState(false);
+  const [keyword, setKeyword] = useState('');
+  const { searchList } = useSelector((state) => state.client.productReducer);
+
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollTop = window.scrollY;
-      
+
       if (Math.abs(currentScrollTop - lastLoggedPosition) >= 100) {
         if (currentScrollTop > lastScrollTop) {
           if (currentScrollTop >= 200) {
             setIsShow(false)
+            setIsOverlayModal(false);
           }
         } else {
           setIsShow(true)
@@ -39,62 +50,131 @@ const Header = () => {
     };
   }, [lastScrollTop, lastLoggedPosition]);
 
+  useEffect(() => {
+    if (keyword.length > 1) {
+      dispatch(
+        getSearchListAction({
+          params: {
+            search: keyword,
+          },
+        })
+      );
+    } else {
+      dispatch(
+        getSearchListAction({
+          params: {
+            search: "",
+          },
+        })
+      );
+    }
+  }, [keyword]);
+
+  useEffect(() => {
+    return () => {inputRef.current.value = ""; setKeyword("")}
+  }, [])
+
+  const handleCloseSearch = () => {
+    inputRef.current.value = "";
+    setKeyword("");
+    setIsOverlayModal(false);
+  };
+
+  const handleFocusSearch = (e) => {
+    setKeyword(e.target.value);
+    setIsOverlayModal(true);
+  };
+
+  const handleOverlayModal = () => {
+    setKeyword("");
+    setIsOverlayModal(false);
+  };
+
+  const renderProducts = () => {
+    if (searchList.data[0]) {
+      const product = searchList.data?.map((item, index) => {
+        return (
+          <div className="result-item" key={index}>
+            <img src={getImage(item?.images)} alt="" />
+            <span>{item.name}</span>
+          </div>
+        );
+      });
+      return (
+        <div className="content-item">
+          <div className="result-header">
+            <h4 className="result-header__left">SẢN PHẨM</h4>
+            <Link
+              className="result-header__right"
+              state={{ keyword }}
+              to={ROUTER_CLIENT.SEARCH_PAGE}
+            >
+              Xem thêm
+            </Link>
+          </div>
+          <div className="result-list">{product}</div>
+        </div>
+      );
+    }
+  };
+
   return (
-    <div className={clsx("container", !isShow && "disabled")}>
-      <div className="container-top">
-        <div className="header-left"></div>
-        <div className="header-center">
-          <div className="promotion-description">
-            Miễn phí giao hàng với đơn hàng từ 499K
+    <>
+      <div className={clsx("container", !isShow && "disabled")}>
+        <div className="container-top">
+          <div className="header-left"></div>
+          <div className="header-center">
+            <div className="promotion-description">
+              Miễn phí giao hàng với đơn hàng từ 499K
+            </div>
+          </div>
+          <div className="header-right">
+            <div className="btn btn-login" onClick={() => setIsShowModal(true)}>Đăng nhập</div>
+            <div className="btn btn-register" onClick={() => setIsShowModal(true)}>Đăng ký</div>
           </div>
         </div>
-        <div className="header-right">
-          <div className="btn btn-login" onClick={() => setIsShowModal(true)}>Đăng nhập</div>
-          <div className="btn btn-register" onClick={() => setIsShowModal(true)}>Đăng ký</div>
-        </div>
-      </div>
-      <div className="container-bottom">
-        <div className="header-left" onClick={() => navigate(ROUTER_CLIENT.HOME)}>
-          <div className="header-logo">
-            <span>DE VINC</span>
+        <div className="container-bottom">
+          <div className="header-left" onClick={() => navigate(ROUTER_CLIENT.HOME)}>
+            <div className="header-logo">
+              <span>DE VINC</span>
+            </div>
           </div>
-        </div>
-        <div className="header-center">
-          <div className="header-menu">
-            <div className="header-menu-dropdown">
-              <div className="dropdown-title" onClick={() => navigate(ROUTER_CLIENT.PRODUCT_LIST)}>SẢN PHẨM</div>
-              <div className="dropdown-list">
-                <div className="dropdown-item">
-                  Áo thun
-                </div>
-                <div className="dropdown-item">
-                  Áo sơmi
-                </div>
-                <div className="dropdown-item">
-                  Áo khoác
-                </div>
-                <div className="dropdown-item">
-                  Quần tây
-                </div>
-                <div className="dropdown-item">
-                  Quần jean
-                </div>
-                <div className="dropdown-item">
-                  Quần short
+          <div className="header-center">
+            <div className="header-menu">
+              <div className="header-menu-dropdown">
+                <div className="dropdown-title" onClick={() => navigate(ROUTER_CLIENT.PRODUCT_LIST)}>SẢN PHẨM</div>
+                <div className="dropdown-list">
+                  <div className="dropdown-item">
+                    Áo thun
+                  </div>
+                  <div className="dropdown-item">
+                    Áo sơmi
+                  </div>
+                  <div className="dropdown-item">
+                    Áo khoác
+                  </div>
+                  <div className="dropdown-item">
+                    Quần tây
+                  </div>
+                  <div className="dropdown-item">
+                    Quần jean
+                  </div>
+                  <div className="dropdown-item">
+                    Quần short
+                  </div>
                 </div>
               </div>
             </div>
+            <div className="btn-menu-mobile">
+              <i className="fa-solid fa-bars"></i>
+            </div>
           </div>
-          <div className="btn-menu-mobile">
-            <i className="fa-solid fa-bars"></i>
-          </div>
-        </div>
-        <div className="header-right">
-        <div className="box-search">
+          <div className="header-right">
+            {isBoxSearch && <div className="box-search" onClick={() => inputRef.current.focus()}>
               <i className="fa-solid fa-magnifying-glass icon-search"></i>
               <input
                 className="input-search"
-                placeholder="Tìm kiếm khóa học, bài viết , video, ..."
+                placeholder="Tìm kiếm tên, ảnh, video sản phẩm ..."
                 onChange={(e) => setKeyword(e.target.value)}
                 onFocus={(e) => handleFocusSearch(e)}
                 ref={inputRef}
@@ -108,7 +188,7 @@ const Header = () => {
 
               <div
                 className={
-                  !keyword
+                
                     ? "container-search-result"
                     : "container-search-result  container-search-result--active"
                 }
@@ -125,9 +205,7 @@ const Header = () => {
 
                   {searchList.loading ? (
                     <span>Tìm '{keyword}'</span>
-                  ) : !!searchList.data.courses[0] === false &&
-                    !!searchList.data.posts[0] === false &&
-                    !!searchList.data.videos[0] === false ? (
+                  ) : !!searchList?.data[0] === false ? (
                     <span>Không có kết quả cho '{keyword}'</span>
                   ) : (
                     <span>Kết quả cho '{keyword}'</span>
@@ -135,20 +213,21 @@ const Header = () => {
                 </div>
                 <div className="center">
                   <div className="content-list">
-                  
+                    {renderProducts()}
                   </div>
                 </div>
               </div>
-            </div>
-          <div className="header-action">
-            <div className="btn-search">
-              <i className="fa-solid fa-magnifying-glass icon-search"></i>
-            </div>
-            <div className="btn-profile">
-              <i className="fa-solid fa-user"></i>
-            </div>
-            <div className="btn-cart">
-              <i className="fa-solid fa-bag-shopping"></i>
+            </div>}
+            <div className="header-action">
+              <div className="btn-search">
+                <i className="fa-solid fa-magnifying-glass icon-search"></i>
+              </div>
+              <div className="btn-profile">
+                <i className="fa-solid fa-user"></i>
+              </div>
+              <div className="btn-cart">
+                <i className="fa-solid fa-bag-shopping"></i>
+              </div>
             </div>
           </div>
         </div>
@@ -156,9 +235,8 @@ const Header = () => {
       <Modal isShow={isShowModal} setIsShow={setIsShowModal} >
         <Login setIsShow={setIsShowModal} />
       </Modal>
-    </div>
+    </>
   )
-
 }
 
 export default Header

@@ -22,5 +22,5 @@ export const clearProductListAction = createAction(
 );
 
 export const getSearchListAction = createAction(
-  REQUEST(SEARCH_ACTION.GET_SEARCH_LIST)
+  REQUEST(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST)
 );
