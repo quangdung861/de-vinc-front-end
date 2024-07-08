@@ -8,7 +8,7 @@ import bgTemplate2 from "client/assets/images/mceclip1_85.webp"
 import bgTemplate3 from "client/assets/images/mceclip0_71.webp"
 import { getCategoryListAction } from 'admin/redux/actions'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProductListAction } from 'client/redux/actions'
+import { clearProductListAction, getProductListAction } from 'client/redux/actions'
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -40,6 +40,7 @@ const HomePage = () => {
         itemsPerPage: 4
       },
     }))
+    return () => dispatch(clearProductListAction())
   }, [])
 
   return (
