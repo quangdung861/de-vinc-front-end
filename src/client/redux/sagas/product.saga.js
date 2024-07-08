@@ -8,13 +8,12 @@ function* getSearchListSaga(action) {
         $$.loading(true);
         const { params: {
             search = '',
-            items_per_page = 5,
+            items_per_page = 6,
             page = 1,
         } } = action.payload;
         let query = `?search=${search}&page=${page}&items_per_page=${items_per_page}`
         const result = yield requestApi(`/products/search/${query}`, 'GET', [])
         const { data, ...meta } = result.data;
-        console.log("🚀 ~ function*getSearchListSaga ~ data:", data)
         yield put({
             type: SUCCESS(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST),
             payload: {

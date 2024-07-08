@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 99;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   .container-top {
     height: 70px;
     display: flex;
@@ -27,7 +27,7 @@
       justify-content: flex-end;
       align-items: center;
       gap: 12px;
-      .btn { 
+      .btn {
         height: 30px;
         line-height: 30px;
         padding: 0px 16px;
@@ -47,7 +47,7 @@
         }
       }
       .btn-login {
-        background-color: rgba(0, 0, 0, 0.0);
+        background-color: rgba(0, 0, 0, 0);
         color: #000;
       }
     }
@@ -98,13 +98,12 @@
           white-space: nowrap;
         }
         .header-menu-dropdown {
-          .dropdown-title{
+          .dropdown-title {
             cursor: pointer;
           }
           .dropdown-list {
             display: none;
             .dropdown-item {
-
             }
           }
         }
@@ -118,10 +117,10 @@
         cursor: pointer;
       }
       @media only screen and (max-width: 768px) {
-          flex: 0;
-          .btn-menu-mobile {
-            display: block;
-          }
+        flex: 0;
+        .btn-menu-mobile {
+          display: block;
+        }
       }
     }
     .header-right {
@@ -138,8 +137,8 @@
         display: flex;
         align-items: center;
         position: relative;
-        z-index: 3;
         .container-search-result {
+          display: none;
           position: absolute;
           left: 0;
           top: 50px;
@@ -241,6 +240,9 @@
             }
           }
         }
+        .container-search-result--active {
+          display: block;
+        }
         &:focus-within {
           border-color: #444;
         }
@@ -260,7 +262,7 @@
           padding: 0px;
         }
         @media only screen and (max-width: 820px) {
-            display: none;
+          display: none;
         }
       }
       .header-action {
@@ -272,7 +274,7 @@
           display: none;
           cursor: pointer;
           > i {
-          font-size: 16px;
+            font-size: 16px;
           }
           @media only screen and (max-width: 820px) {
             display: block;
@@ -281,13 +283,13 @@
         .btn-profile {
           cursor: pointer;
           > i {
-          font-size: 16px;
+            font-size: 16px;
           }
         }
         .btn-cart {
           cursor: pointer;
           > i {
-          font-size: 16px;
+            font-size: 16px;
           }
         }
       }
@@ -308,6 +310,12 @@
 
 .container.disabled {
   transform: translateY(-100%);
+}
+
+.modal-login {
+  .modal-content {
+    background-image: linear-gradient(-225deg, #e3fdf5 0%, #ffe6fa 100%);
+  }
 }
 
 @keyframes mymove {

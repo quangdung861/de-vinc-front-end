@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+`;
 
 export const Container = styled.div`
   .modal-overlay {
@@ -17,7 +18,7 @@ export const Container = styled.div`
         animation-name: zoom;
         animation-duration: 0.5s;
         position: absolute;
-        height: 70vh;
+        height: fit-content;
         width: 520px;
         max-width: 100%;
         top: 0;
@@ -30,7 +31,9 @@ export const Container = styled.div`
         display: flex;
         flex-direction: column;
         .header {
-          height: 48px;
+          width: 100%;
+          position: absolute;
+          z-index: 1;
           padding: 16px 16px 0 16px;
           display: flex;
           justify-content: space-between;
@@ -51,6 +54,9 @@ export const Container = styled.div`
               background-color: #f1f1f1;
             }
           }
+        }
+        .children {
+          margin-top: 48px;
         }
       }
     }

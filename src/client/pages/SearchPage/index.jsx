@@ -12,6 +12,7 @@ const SearchPage = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const [keyword, setKeyword] = useState('');
+    console.log("🚀 ~ SearchPage ~ keyword:", keyword)
     const { setIsBoxSearch } = useContext(ClientContext);
     const { searchList } = useSelector((state) => state.client.productReducer);
 
@@ -30,7 +31,7 @@ const SearchPage = () => {
     }, []);
 
     useEffect(() => {
-        if (keyword.length > 1) {
+        if (keyword.length >= 1) {
             dispatch(
                 getSearchListAction({
                     params: {

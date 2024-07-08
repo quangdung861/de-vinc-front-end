@@ -67,6 +67,8 @@ export const Container = styled.div`
         &__left {
           img {
             width: 280px;
+            height: 160px;
+            object-fit: cover;
             border-radius: 16px;
             overflow: hidden;
             cursor: pointer;
