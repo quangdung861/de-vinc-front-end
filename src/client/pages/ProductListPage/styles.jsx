@@ -116,7 +116,7 @@ export const Wrapper = styled.div`
     }
     .btn-container {
         text-align: center;
-        .btn-default {
+        .--btn-default {
             padding: 14px 46px;
         }
         .describe-per-page {

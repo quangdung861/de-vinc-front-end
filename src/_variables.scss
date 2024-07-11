@@ -1,7 +1,7 @@
 
 .--btn-default {
     display: inline-block;
-    padding: 9px 16px;
+    padding: 9px 20px;
     color: white;
     font-weight: 600;
     border-radius: 20px;
@@ -10,7 +10,7 @@
     transition: all 0.2s ease;
     border: none;
     user-select: none;
-    background-color: #f05123;
+    background: linear-gradient(to right bottom, #ff8f26, #ff5117);
     &:hover {
       opacity: 0.9;
     }

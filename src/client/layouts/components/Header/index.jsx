@@ -148,14 +148,14 @@ const Header = () => {
             </div>
           </div>
           <div className="header-right">
-            <div className="btn btn-login" onClick={() => setIsShowModal(true)}>
-              Đăng nhập
-            </div>
-            <div
-              className="btn btn-register"
+          <div
+              className="--btn-default btn-register"
               onClick={() => setIsShowModal(true)}
             >
               Đăng ký
+            </div>
+            <div className="--btn-default btn-login" onClick={() => setIsShowModal(true)}>
+              Đăng nhập
             </div>
           </div>
         </div>

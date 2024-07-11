@@ -17,7 +17,7 @@ const Footer = () => {
               góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản
               phẩm tốt hơn nữa.
             </p>
-            <div className="feedback-btn" style={{ marginTop: 32 }}>
+            <div className="--btn-default feedback-btn" style={{ marginTop: 32 }}>
               <span>Đóng góp ý kiến</span>
             </div>
           </div>

@@ -66,12 +66,16 @@ export const Container = styled.div`
         padding: 16px 0px 20px 0px;
         &__left {
           img {
-            width: 280px;
-            height: 160px;
+            width: 180px;
+            height: 180px;
             object-fit: cover;
             border-radius: 16px;
             overflow: hidden;
             cursor: pointer;
+            &:hover {
+              transform: scale(1.05);
+              transition: 0.6s ease;
+            }
           }
         }
         &__right {

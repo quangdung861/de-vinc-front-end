@@ -98,7 +98,6 @@ const Login = ({ setIsShow }) => {
                         </div>
                     </>
                 )}
-
                 <div className="login-footer">
                     <p style={{ color: "#4f5a64", fontSize: "12px" }}>
                         Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý

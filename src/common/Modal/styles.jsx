@@ -11,7 +11,6 @@ export const Container = styled.div`
     inset: 0 0 0 0;
     animation-name: fadeIn;
     animation-duration: 0.2s;
-    user-select: none;
     .modal-container {
       padding: 0px 12px;
       .modal-content {

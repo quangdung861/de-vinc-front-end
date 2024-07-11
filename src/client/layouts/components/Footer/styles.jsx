@@ -94,25 +94,7 @@ export const Wrapper = styled.div`
         color: #fff;
       }
       .feedback-btn {
-        padding: 0px 16px;
-        background-color: #f05123;
-        color: white;
-        font-weight: 600;
-        border-radius: 20px;
-        cursor: pointer;
-        flex-shrink: 0;
-        text-align: center;
-        display: inline-block;
-        transition: all 0.2s ease;
-        border: none;
-        user-select: none;
-        &:hover {
-          opacity: 0.9;
-        }
-        span {
-        display: inline-block;
-        line-height: 60px;
-        }
+        padding: 15px 25px;
       }
     
       .foo-item-phone, .foo-item-email {
