@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react'
 const Dropdown = ({ isShow, setIsShow, render, affect}) => {
 
     const dropdownContainer = useRef();
-
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (

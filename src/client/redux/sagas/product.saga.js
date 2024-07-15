@@ -1,7 +1,8 @@
 import { debounce, put, takeEvery } from "redux-saga/effects";
 
 import { REQUEST, SUCCESS, FAIL, PRODUCT_CLIENT_ACTION } from "../constants";
-import requestApi from "client/helpers/api";
+import requestApi, { buildQuery } from "client/helpers/api";
+import { ITEM_PER_PAGE, PAGE } from "client/constants/api";
 
 function* getSearchListSaga(action) {
     try {
@@ -33,18 +34,25 @@ function* getSearchListSaga(action) {
     }
 }
 
+
+
 function* getProductListSaga(action) {
+
     try {
         $$.loading(true);
-        const { params: {
-            itemsPerPage = 10,
-            currentPage = 1,
-            searchKeyword = '',
-            categoryId = '',
-            order = '',
-            sortValue = '' 
-        } } = action.payload;
-        let query = `?items_per_page=${itemsPerPage}&page=${currentPage}&search=${searchKeyword}&categoryId=${categoryId}&order=${order}&sortValue=${sortValue}`
+        const { params } = action.payload;
+        const queryParams = {
+            items_per_page: params.items_per_page || ITEM_PER_PAGE,
+            page: params.page || PAGE,
+            q: params.q,
+            categoryId: params.categoryId,
+            order: params.order,
+            sortValue: params.sortValue,
+            bestSelling: params.bestSelling,
+        };
+
+        let query = buildQuery(queryParams);
+
         const result = yield requestApi(`/products/${query}`, 'GET', [])
         const { data, ...meta } = result.data;
         yield put({

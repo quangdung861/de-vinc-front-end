@@ -11,6 +11,7 @@ import { Dropdown } from "@common";
 import { NFilterProducts, NFilterProductsSTring } from "./constant";
 import Button from "client/components/Button";
 import SkeletonProduct from "./Skeleton/SkeletonProduct";
+import { getImage } from "client/utils";
 
 const filterItems = [
   {
@@ -37,8 +38,8 @@ const ProductListPage = () => {
   const [isShowFilterList, setIsShowFilterList] = useState(false);
   const [filterData, setFilterData] = useState({
     sort: filterItems[0],
-    currentPage: 1,
-    itemsPerPage: 10,
+    page: 1,
+    items_per_page: 10,
   });
 
   useEffect(() => {
@@ -49,8 +50,8 @@ const ProductListPage = () => {
     dispatch(
       getProductListAction({
         params: {
-          currentPage: filterData.currentPage,
-          itemsPerPage: filterData.itemsPerPage,
+          page: filterData.page,
+          items_per_page: filterData.items_per_page,
           order: filterData.sort.order,
           sortValue: filterData.sort.sortValue,
         },
@@ -70,9 +71,7 @@ const ProductListPage = () => {
             <img
               className="product-image"
               src={
-                process.env.REACT_APP_API_URL +
-                "/" +
-                item?.images?.split("<&space>")[0]
+                getImage(item?.images)
               }
               alt=""
               onClick={() => handleRedirectDetail(item.id)}
@@ -92,8 +91,8 @@ const ProductListPage = () => {
   const handleFilterProduct = (item) => {
     dispatch(clearProductListAction());
     setFilterData({
-      currentPage: 1,
-      itemsPerPage: 10,
+      page: 1,
+      items_per_page: 10,
       sort: item,
     });
     setIsShowFilterList(false);
@@ -116,7 +115,7 @@ const ProductListPage = () => {
   const handleSeeMore = () => {
     setFilterData({
       ...filterData,
-      currentPage: filterData.currentPage + 1,
+      page: filterData.page + 1,
     });
   };
 

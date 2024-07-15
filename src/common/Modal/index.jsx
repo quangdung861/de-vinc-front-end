@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import * as S from "./styles";
 import clsx from "clsx";
 
-const Modal = ({ isShow, setIsShow, modalName, children, className = '' }) => {
+const Modal = ({ isShow, setIsShow, modalName, children, className = '', id = '' }) => {
   const modalContainer = useRef();
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const Modal = ({ isShow, setIsShow, modalName, children, className = '' }) => {
     isShow && (
       <S.Wrapper>
         <S.Container>
-          <div className={clsx("modal-overlay", className && className)}>
+          <div className={clsx("modal-overlay", className)} id={id}>
             <div className="modal-container" ref={modalContainer}>
               <div className="modal-content">
                 <div className="header">

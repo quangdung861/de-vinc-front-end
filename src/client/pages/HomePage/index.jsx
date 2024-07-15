@@ -37,7 +37,7 @@ const HomePage = () => {
   useEffect(() => {
     dispatch(getProductListAction({
       params: {
-        itemsPerPage: 4
+        items_per_page: 4
       },
     }))
     return () => dispatch(clearProductListAction())
@@ -47,19 +47,19 @@ const HomePage = () => {
     <Wrapper>
       <Carousel />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList} />
+        <TypicalProduct data={productList.data} />
       </div>
       <BannerBlock {...data[0]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList} />
+        <TypicalProduct data={productList.data} />
       </div>
       <BannerBlock {...data[1]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList} />
+        <TypicalProduct data={productList.data} />
       </div>
       <BannerBlock {...data[2]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList} />
+        <TypicalProduct data={productList.data} />
       </div>
     </Wrapper>
   )

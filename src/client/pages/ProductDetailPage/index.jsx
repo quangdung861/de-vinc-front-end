@@ -3,11 +3,12 @@ import { Rating } from 'react-simple-star-rating'
 import "./styles.scss"
 import { getImage, getImages } from 'client/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductDetailAction } from 'client/redux/actions';
+import { clearProductListAction, getProductDetailAction, getProductListAction } from 'client/redux/actions';
 import { useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { formatCurrency } from 'client/utils/currency';
 import { Dropdown, Modal } from '@common';
+import TypicalProduct from 'client/layouts/components/TypicalProduct';
 
 const fillColorArray = [
   "#f17a45",
@@ -28,8 +29,8 @@ const fillColor = "#f17a45";
 const ProductDetail = () => {
   const dispatch = useDispatch();
   let { id } = useParams();
-  const { productDetail } = useSelector(state => state.client.productReducer)
-  const [imageSelected, setImageSelected] = useState(null)
+  const { productDetail, productList } = useSelector(state => state.client.productReducer)
+  const [imageSelected, setImageSelected] = useState(require('client/assets/images/anh-mau.webp'))
   const [filterRatingData, setFilterRatingData] = useState({
     rate: null,
     image: null,
@@ -38,17 +39,41 @@ const ProductDetail = () => {
   const [showFilterRating, setShowFilterRating] = useState(false);
   const [showFilterImage, setShowFilterImage] = useState(false);
   const [showFilterResponse, setShowFilterResponse] = useState(false);
-  const [isShowModalGuideSize, setIsShowModalGuideSize] = useState(false)
+  const [isShowModalGuideSize, setIsShowModalGuideSize] = useState(false);
+  const [isShowOverlayModalDetailImage, setIsShowOverlayModalDetailImage] =
+    useState(false);
+  const [imageFormat, setImageFormat] = useState({
+    rotate: 0,
+    scale: 1,
+  });
+  const [isShowContainerImageList, setIsShowContainerImageList] =
+    useState(true);
 
   const filterRatingRef = useRef(null)
   const filterImageRef = useRef(null)
   const filterResponeRef = useRef(null)
+  const imagesRef = useRef();
 
   useEffect(() => {
     dispatch(getProductDetailAction({
       data: { id }
     }))
+    dispatch(getProductListAction({
+      params: {
+        bestSelling: 1,
+      }
+    }))
+    return () => dispatch(clearProductListAction())
   }, [])
+
+  useEffect(() => {
+    setImageSelected(getImage(productDetail.data.images))
+  }, [productDetail.data])
+
+  // const editor = CKEDITOR.instances.myEditor;
+  // const content = editor.getData();
+  // console.log(content); // Hiển thị nội dung HTML trong trình chỉnh sửa
+
 
   const renderImageProductList = () => {
     let images = getImages(productDetail?.data?.images)
@@ -64,7 +89,7 @@ const ProductDetail = () => {
   const renderFeedbackList = () => {
     return Array.from({ length: 4 }).map((item, index) => {
       return (
-        <div className="product-feedback-item">
+        <div className="product-feedback-item" key={index}>
           <Rating
             allowFraction
             size={24}
@@ -93,13 +118,41 @@ const ProductDetail = () => {
       )
     })
   }
+
+  const renderContainerImages = () => {
+    return getImages(productDetail.data?.images).map((image, index) => {
+      return (
+        <img
+          className="image-item"
+          key={index}
+          src={image}
+          alt=""
+          onClick={() =>
+            setImageSelected(image)
+          }
+          style={
+            image === imageSelected
+              ? {
+                minWidth: "100px",
+                minHeight: "100px",
+                filter: "none",
+                border: "2px solid #fff",
+                transition: "all .3s ease",
+              }
+              : {}
+          }
+        />
+      );
+    });
+  };
+
   return (
     <div className='product-detail-page'>
       <div className="product-main">
         <div className="product-left">
           <div className="product-images-container">
-            <div className="product-image-current">
-              <img src={imageSelected || require('client/assets/images/anh-mau.webp')} alt="" />
+            <div className="product-image-current" onClick={() => setIsShowOverlayModalDetailImage(true)}>
+              <img src={imageSelected} alt="" />
             </div>
             <div className="product-image-list">
               {renderImageProductList()}
@@ -123,10 +176,10 @@ const ProductDetail = () => {
             /> (4.8)
           </div>
           <div className="product-price-infomation">
-            <div className="price-original-product">{formatCurrency(productDetail.data?.price, 'vn')}</div>
+            <div className={clsx("price-original-product", productDetail.data?.reducedPrice && "throught")}>{formatCurrency(productDetail.data?.price, 'vn')}</div>
             <div className="price-discount-product">
-              <div className="price-discount-product__price">{formatCurrency(productDetail.data?.price, 'vn')}</div>
-              <div className="price-discount-product__percent">-23%</div>
+              {!!productDetail.data?.reducedPrice && <div className="price-discount-product__price">{formatCurrency(productDetail.data.reducedPrice, 'vn')}</div>}
+              {!!productDetail.data?.reducedPercent && <div className="price-discount-product__percent tag-percent-lg">-{productDetail.data.reducedPercent}%</div>}
             </div>
           </div>
           <div className="product-promotion-infomation">
@@ -231,7 +284,7 @@ const ProductDetail = () => {
           </div>
         </div>
         <div className="product-description-content">
-          Áo thun nam cotton Compact Premium sử dụng chất liệu cotton mềm mại, mang đến cảm giác dễ chịu cho cả ngày dài hoạt động. Nếu bạn là người yêu sự đơn giản và ưu tiên sự tiện lợi, linh hoạt thì đây chính là sản phẩm dành cho bạn.
+          <div className='ck5-html' dangerouslySetInnerHTML={{ __html: productDetail.data.description }} />
         </div>
         <div className="product-description-footer">
           <p>Mua sắm online đa kênh tiện lợi: website <span className='link-text'>devinc.vn, Shopee Mall, Lazada Mall, Tik Tok Shop.</span></p>
@@ -265,7 +318,7 @@ const ProductDetail = () => {
               <div className="product-review-right-filter-item">
                 <div className="product-review-filter-btn" ref={filterRatingRef} onClick={() => setShowFilterRating(!showFilterRating)}>
                   <div className="filter-review-name">Đánh giá</div>
-                  <i class="fa-solid fa-chevron-down"></i>
+                  <i className="fa-solid fa-chevron-down"></i>
                 </div>
                 <Dropdown
                   isShow={showFilterRating}
@@ -287,7 +340,7 @@ const ProductDetail = () => {
               <div className="product-review-right-filter-item">
                 <div className="product-review-filter-btn" ref={filterImageRef} onClick={() => setShowFilterImage(!showFilterImage)}>
                   <div className="filter-review-name">Ảnh</div>
-                  <i class="fa-solid fa-chevron-down"></i>
+                  <i className="fa-solid fa-chevron-down"></i>
                 </div>
                 <Dropdown
                   isShow={showFilterImage}
@@ -306,7 +359,7 @@ const ProductDetail = () => {
               <div className="product-review-right-filter-item">
                 <div className="product-review-filter-btn" ref={filterResponeRef} onClick={() => setShowFilterResponse(!showFilterResponse)}>
                   <div className="filter-review-name">Phản hồi</div>
-                  <i class="fa-solid fa-chevron-down"></i>
+                  <i className="fa-solid fa-chevron-down"></i>
                 </div>
                 <Dropdown
                   isShow={showFilterResponse}
@@ -331,10 +384,15 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+
+      <div className="product-releated">
+        <div className="product-releated-header">SẢN PHẨM BẠN ĐÃ XEM</div>
+        <TypicalProduct data={productList?.data} show={5} />
+      </div>
       <Modal
         isShow={isShowModalGuideSize}
         setIsShow={setIsShowModalGuideSize}
-        className='modal-guide-size'
+        id={'modal-guide-size'}
         modalName='Bảng size'
       >
         <div className="guide-size-container">
@@ -362,6 +420,107 @@ const ProductDetail = () => {
           </div>
         </div>
       </Modal>
+
+      {isShowOverlayModalDetailImage && (
+        <div className="images-container">
+          <div className="image-show__title">
+            <div>Chi tiết sản phẩm</div>
+            <i
+              className="fa-solid fa-xmark"
+              onClick={() => setIsShowOverlayModalDetailImage(false)}
+            ></i>
+          </div>
+          <div className="image-show__center">
+            <div className="main-image">
+              <img
+                src={imageSelected}
+                alt=""
+                style={{
+                  zIndex: 2,
+                  position: "relative",
+                  scale: `${imageFormat.scale}`,
+                  rotate: `${imageFormat.rotate}deg`,
+                }}
+              />
+              <div
+                className="background-overlay"
+                style={{ position: "absolute", inset: "0 0 0 0", zIndex: 1 }}
+                onClick={() => {
+                  setIsShowOverlayModalDetailImage(false);
+                  setIsShowContainerImageList(true);
+                }}
+              ></div>
+            </div>
+
+            {isShowContainerImageList && (
+              <div className="container-image-list">
+                <div className="dividing">
+                  <div className="dividing-line"></div>
+                </div>
+
+                <div className="images" ref={imagesRef}>
+                  <div className="image-list__title"> </div>
+                  {renderContainerImages()}
+                </div>
+                
+              </div>
+            )}
+          </div>
+          <div className="image-show__bottom">
+              <div className="image-show__bottom__sender">
+              </div>
+              <div className="image-show__bottom__ctrl">
+                <i
+                  className="fa-solid fa-rotate-right fa-flip-horizontal"
+                  onClick={() => {
+                    imageFormat.scale <= 7 &&
+                      setImageFormat((current) => ({
+                        ...current,
+                        rotate: current.rotate - 90,
+                      }));
+                  }}
+                ></i>
+                <i
+                  className="fa-solid fa-rotate-right"
+                  onClick={() => {
+                    imageFormat.scale <= 7 &&
+                      setImageFormat((current) => ({
+                        ...current,
+                        rotate: current.rotate + 90,
+                      }));
+                  }}
+                ></i>
+                <i
+                  className="fa-solid fa-magnifying-glass-plus"
+                  onClick={() => {
+                    imageFormat.scale <= 7 &&
+                      setImageFormat((current) => ({
+                        ...current,
+                        scale: current.scale + 0.25,
+                      }));
+                  }}
+                ></i>
+                <i
+                  className="fa-solid fa-magnifying-glass-minus"
+                  onClick={() => {
+                    setImageFormat((current) => ({
+                      ...current,
+                      scale: 1,
+                    }));
+                  }}
+                ></i>
+              </div>
+              <div className="image-show__bottom__slider-wrapper">
+                <i
+                  className="fa-solid fa-expand"
+                  onClick={() =>
+                    setIsShowContainerImageList(!isShowContainerImageList)
+                  }
+                ></i>
+              </div>
+            </div>
+        </div>
+      )}
     </div >
   )
 }

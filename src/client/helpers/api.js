@@ -16,3 +16,10 @@ export default function requestApi(endpoint, method, body = [], responseType = '
         responseType: responseType
     })
 }
+
+export function buildQuery(params) {
+    return '?' + Object.keys(params)
+        .filter(key => params[key] !== undefined && params[key] !== null && params[key] !== '')
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+}

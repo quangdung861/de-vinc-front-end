@@ -18,8 +18,8 @@ export const Container = styled.div`
         animation-duration: 0.5s;
         position: absolute;
         height: fit-content;
-        width: 520px;
-        max-width: 100%;
+        width: 100%;
+        max-width: 520px;
         top: 0;
         bottom: 0;
         left: 0;

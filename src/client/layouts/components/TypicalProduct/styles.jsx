@@ -1,3 +1,7 @@
+import styled from "styled-components"
+
+export const Wrapper = styled.div`
+
 .typical-products-container {
     .typical-products-centent {
         .typical-products-name {
@@ -14,9 +18,9 @@
 
             .typical-product-item {
                 flex-shrink: 0;
-                width: 25%;
+                width: ${({ $show }) => ($show ? `${(100 / $show)}%` : '25%')};
                 padding: 12px;
-
+                user-select: none;
                 .typical-product-box-image {
                     position: relative;
                     overflow: hidden;
@@ -46,16 +50,38 @@
 
                 .typical-product-describe {
                     padding-top: 16px;
-
-                    .product-price {
+                    .product-price-box {
+                        display: flex;
+                        align-items: center;
                         padding-top: 4px;
-                        font-weight: 500;
+                        .product-reduced-price {
+                            font-weight: 500;
+                        }
+                        .product-price {
+                            font-weight: 500;
+                            color: #000;
+                        }
+                        .product-price.throught {
+                            text-decoration: line-through;
+                            font-weight: 400;
+                            margin-left: 8px;
+                            color: var(--gray-color-4);
+                        }
+                        .product-price-percent {
+                            margin-left: 8px;
+                        }
                     }
                 }
 
             }
 
-            @media only screen and (max-width: 768px) {
+            @media only screen and (max-width: 1280px) {
+                .typical-product-item {
+                    width: 25%;
+                }
+            }
+
+            @media only screen and (max-width: 992px) {
                 .typical-product-item {
                     width: 33.33%;
                 }
@@ -69,3 +95,4 @@
         }
     }
 }
+`

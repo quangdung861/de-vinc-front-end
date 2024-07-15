@@ -36,6 +36,7 @@ const UpdateProductPage = () => {
     const [categoryKeywords, setCategoryKeywords] = useState("");
     const [categorySelected, setCategorySelected] = useState({})
 
+    const categoryDropdownRef = useRef(null);
     const {
         register,
         handleSubmit,
@@ -437,11 +438,12 @@ const UpdateProductPage = () => {
                                     /> */}
 
                                     <div className="category-block">
-                                        <div className={clsx("category-box", isShowCategoryDropdown && "active")} onClick={() => setIsShowCategoryDropdown(!isShowCategoryDropdown)}>
+                                        <div className={clsx("category-box", isShowCategoryDropdown && "active")} ref={categoryDropdownRef} onClick={() => setIsShowCategoryDropdown(!isShowCategoryDropdown)}>
                                             <div> {categorySelected?.name || 'Chọn loại sản phẩm'}</div>
                                             <i className={clsx("fa-solid", !isShowCategoryDropdown ? "fa-caret-down" : "fa-caret-up")}></i>
                                         </div>
                                         <Dropdown
+                                            affect={categoryDropdownRef}
                                             isShow={isShowCategoryDropdown}
                                             setIsShow={setIsShowCategoryDropdown}
                                             render={() => {

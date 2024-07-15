@@ -35,9 +35,9 @@ const ProductListPage = () => {
   const lastPage = productList.meta?.lastPage;
   const totalOfPage = productList.meta?.total;
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(20);
-  const [searchKeyword, setSearchKeyword] = useState("");
+  const [page, setCurrentPage] = useState(1);
+  const [items_per_page, setItemsPerPage] = useState(20);
+  const [q, setSearchKeyword] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
 
   const columns = [
@@ -120,13 +120,13 @@ const ProductListPage = () => {
     dispatch(
       getProductListAction({
         params: {
-          currentPage,
-          itemsPerPage,
-          searchKeyword,
+          page,
+          items_per_page,
+          q,
         },
       })
     );
-  }, [itemsPerPage, currentPage, searchKeyword]);
+  }, [items_per_page, page, q]);
 
   return (
     <Wraper>
@@ -147,9 +147,9 @@ const ProductListPage = () => {
           columns={columns}
           lastPage={lastPage}
           totalOfPage={totalOfPage}
-          currentPage={currentPage}
+          page={page}
           setCurrentPage={setCurrentPage}
-          itemsPerPage={itemsPerPage}
+          items_per_page={items_per_page}
           setItemsPerPage={setItemsPerPage}
           setSearchKeyword={setSearchKeyword}
           setSelectedRows={setSelectedRows}

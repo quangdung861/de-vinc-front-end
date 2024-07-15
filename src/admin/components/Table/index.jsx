@@ -12,14 +12,14 @@ const Table = (props) => {
 
         lastPage,
 
-        currentPage,
+        page,
         setCurrentPage,
 
         totalOfPage,
 
         setSearchKeyword,
 
-        itemsPerPage,
+        items_per_page,
         setItemsPerPage,
 
         selectedRows,
@@ -90,8 +90,8 @@ const Table = (props) => {
 
     const renderPagination = () => {
         const pagination = [];
-        const nextPage = currentPage + 1 > lastPage ? null : currentPage + 1;
-        const prevPage = currentPage - 1 < 1 ? null : currentPage - 1;
+        const nextPage = page + 1 > lastPage ? null : page + 1;
+        const prevPage = page - 1 < 1 ? null : page - 1;
 
         pagination.push(
             <li key="prev" className={prevPage ? "page-item" : "page-item disabled"} onClick={() => handlesetCurrentPage(prevPage)}>
@@ -101,7 +101,7 @@ const Table = (props) => {
 
         for (let i = 1; i <= lastPage; i++) {
             pagination.push(
-                <li key={i} className={currentPage === i ? "page-item active" : "page-item"} onClick={() => handlesetCurrentPage(i)}>
+                <li key={i} className={page === i ? "page-item active" : "page-item"} onClick={() => handlesetCurrentPage(i)}>
                     <div className='page-link' >{i}</div>
                 </li>
             )
@@ -124,7 +124,7 @@ const Table = (props) => {
     const itemPerPageOptions =
         [5, 20, 50, 100].map((option, index) => (
             <div
-                className={clsx("per-page-item", itemsPerPage === option && "active")}
+                className={clsx("per-page-item", items_per_page === option && "active")}
                 key={index}
                 onClick={() => onChangeOption(option)}
             >
@@ -216,7 +216,7 @@ const Table = (props) => {
                             </div>
                             <div className={clsx('per-page-block', isShowItemPerPageDropdown && "active")}>
                                 <div className='per-page-current' onClick={() => setIsShowItemPerPageDropdown(!isShowItemPerPageDropdown)}>
-                                    {itemsPerPage} <i className={clsx("fa-solid", isShowItemPerPageDropdown ? "fa-sort-up" : "fa-sort-down")}></i>
+                                    {items_per_page} <i className={clsx("fa-solid", isShowItemPerPageDropdown ? "fa-sort-up" : "fa-sort-down")}></i>
                                 </div>
                                 <div className="per-page-list">
                                     {itemPerPageOptions}
@@ -228,7 +228,7 @@ const Table = (props) => {
                         </div>
                         {lastPage > 1 &&
                             <div className='pagination-block'>
-                                Từ {((currentPage - 1) * itemsPerPage) + 1} đến {((currentPage - 1) * itemsPerPage) + data?.length} trên tổng {totalOfPage}
+                                Từ {((page - 1) * items_per_page) + 1} đến {((page - 1) * items_per_page) + data?.length} trên tổng {totalOfPage}
                                 <ul className="pagination-list">
                                     {renderPagination()}
                                 </ul>
