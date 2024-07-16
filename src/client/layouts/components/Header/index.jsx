@@ -56,7 +56,8 @@ const Header = () => {
       dispatch(
         getSearchListAction({
           params: {
-            search: keyword,
+            q: keyword,
+            items_per_page: 6,
           },
         })
       );
@@ -64,7 +65,7 @@ const Header = () => {
       dispatch(
         getSearchListAction({
           params: {
-            search: "",
+            q: "",
           },
         })
       );

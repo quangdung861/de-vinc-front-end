@@ -7,12 +7,15 @@ import { ITEM_PER_PAGE, PAGE } from "client/constants/api";
 function* getSearchListSaga(action) {
     try {
         $$.loading(true);
-        const { params: {
-            search = '',
-            items_per_page = 6,
-            page = 1,
-        } } = action.payload;
-        let query = `?search=${search}&page=${page}&items_per_page=${items_per_page}`
+        const { params } = action.payload;
+        const queryParams = {
+            items_per_page: params.items_per_page || ITEM_PER_PAGE,
+            page: params.page || PAGE,
+            q: params.q,
+        };
+
+        let query = buildQuery(queryParams);
+
         const result = yield requestApi(`/products/search/${query}`, 'GET', [])
         const { data, ...meta } = result.data;
         yield put({
