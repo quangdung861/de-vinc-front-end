@@ -419,6 +419,77 @@ const UpdateProductPage = () => {
                                 {errors.description && <span className="error-message">{errors.description.message}</span>}
                             </div>
                         </div>
+
+
+                        <div className="content-block">
+                            <div className="content-block-header">
+                                <div className="block-name">
+                                    Thông tin bán hàng 
+                                </div>
+                            </div>
+                            <div className="content-block-main option">
+                                <div className="content-section">
+                                    <label htmlFor="product-name">
+                                        Phần loại hàng <i className="fa-solid fa-circle-info"></i>
+                                    </label>
+                                    <div className="block-option box-color">
+                                        <div className="block-option-header">
+                                            Màu sắc
+                                        </div>
+                                        <div className="block-option-content">
+                                            <div className="block-option-content-item">
+                                                <div className="upload-btn">
+                                                    <i class="fa-regular fa-image"></i>
+                                                </div>
+                                                <input
+                                                    {...register("name", {
+                                                        required: "Tên sản phẩm không được để trống"
+                                                    })}
+                                                    type="text"
+                                                    placeholder="Nhập tên sản phẩm"
+                                                    autoComplete="off"
+                                                />
+                                                <i class="fa-regular fa-trash-can"></i>
+                                                {errors.name && <span className="error-message">{errors.name.message}</span>}
+                                            </div>
+                                            <div className="block-option-content-item">
+                                                <div className="upload-btn">
+                                                    <i class="fa-regular fa-image"></i>
+                                                </div>
+                                                <input
+                                                    {...register("name", {
+                                                        required: "Tên sản phẩm không được để trống"
+                                                    })}
+                                                    type="text"
+                                                    placeholder="Nhập tên sản phẩm"
+                                                    autoComplete="off"
+                                                />
+                                                <i class="fa-regular fa-trash-can"></i>
+                                                {errors.name && <span className="error-message">{errors.name.message}</span>}
+                                            </div>
+                                            <div className="block-option-content-item">
+                                                <div className="upload-btn">
+                                                    <i class="fa-regular fa-image"></i>
+                                                </div>
+                                                <input
+                                                    {...register("name", {
+                                                        required: "Tên sản phẩm không được để trống"
+                                                    })}
+                                                    type="text"
+                                                    placeholder="Nhập tên sản phẩm"
+                                                    autoComplete="off"
+                                                />
+                                                <i class="fa-regular fa-trash-can"></i>
+                                                {errors.name && <span className="error-message">{errors.name.message}</span>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="block-option box-size">
+                                        <div className="block-option-header">Size</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className="create-product-right">
                         <div className="content-block">
