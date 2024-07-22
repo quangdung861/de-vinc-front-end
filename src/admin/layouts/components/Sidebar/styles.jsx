@@ -5,7 +5,7 @@ export const Wraper = styled.div`
   min-height: 100vh;
   width: ${({ $isshowsidebar }) => ($isshowsidebar ? "230px" : "52px")};
   flex-shrink: 0;
-  transition: width 0.3s ease;
+  transition: all 0.3s ease;
   color: #fff;
   z-index: 1000;
   user-select: none;

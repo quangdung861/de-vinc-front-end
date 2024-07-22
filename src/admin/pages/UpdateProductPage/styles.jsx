@@ -126,12 +126,12 @@ export const Wraper = styled.div`
               display: flex;
               align-items: center;
               flex-wrap: wrap;
-              gap: 10px;
+              gap: 10px 30px;
               padding: 10px;
               .block-option-content-item {
                 display: flex;
                 align-items: center;
-                width: calc(50% - 5px);
+                width: calc(50% - 15px);
                 .upload-btn {
                   display: flex;
                   justify-content: center;

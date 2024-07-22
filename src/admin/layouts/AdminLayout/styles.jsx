@@ -12,10 +12,11 @@ export const Wraper = styled.div`
     transition: width 0.3s ease;
   }
   .main {
+    position: relative;
     width: calc(100% - 230px);
     margin-left: 230px;
-    position: relative;
     z-index: 1;
+    transition: all 0.3s ease ;
   }
   .main.disabled {
     width: calc(100% - 52px);
