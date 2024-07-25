@@ -1,4 +1,7 @@
 button {
   border: none;
   outline: none;
+  > i {
+    margin-right: 8px;
+  }
 }

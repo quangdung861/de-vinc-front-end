@@ -52,10 +52,10 @@ const productReducer = createReducer(initialState, (builder) => {
         })
         // CREATE 
         .addCase(REQUEST(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), (state) => {
-           
+
         })
         .addCase(SUCCESS(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), (state, action) => {
-           
+
         })
         .addCase(FAIL(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), (state, action) => {
         })
@@ -71,11 +71,15 @@ const productReducer = createReducer(initialState, (builder) => {
         })
         .addCase(SUCCESS(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL), (state, action) => {
             const { data, meta } = action.payload;
+            const newData = {
+                ...data,
+                options: JSON.parse(data.options),
+            }
             return {
                 ...state,
                 productDetail: {
                     ...state.productDetail,
-                    data,
+                    data: newData,
                     meta,
                     loading: false,
                 },

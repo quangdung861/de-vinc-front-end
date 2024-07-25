@@ -57,17 +57,7 @@ function* createProductSaga(action) {
     try {
         $$.loading(true);
         const { data, callback } = action.payload;
-        let formData = new FormData();
-        for (let key in data) {
-            if (key == 'images') {
-                data.images.forEach((file) => {
-                    formData.append('images', file);
-                });
-            } else {
-                formData.append(key, data[key])
-            }
-        }
-        yield requestApi(`/products`, 'POST', formData, 'json', 'multipart/form-data')
+        yield requestApi(`/products`, 'POST', data, 'json', 'multipart/form-data')
         yield put({
             type: SUCCESS(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),
         });

@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import clsx from "clsx";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
 import CustomUploadAdapter from "common/Editor/CustomUploadAdapter";
@@ -40,8 +40,15 @@ const UpdateProductPage = () => {
   const [isSubmitedCategory, setIsSubmitedCategory] = useState(false);
   const { categoryList } = useSelector((state) => state.admin.categoryReducer);
   const { productDetail } = useSelector((state) => state.admin.productReducer);
+  console.log("🚀 ~ UpdateProductPage ~ productDetail:", productDetail);
   const [categoryKeywords, setCategoryKeywords] = useState("");
   const [categorySelected, setCategorySelected] = useState({});
+  const [infomationForm, setInfomationForm] = useState();
+  console.log("🚀 ~ UpdateProductPage ~ infomationForm:", infomationForm);
+  const [errorsColor, setErrorsColor] = useState([]);
+  console.log("🚀 ~ UpdateProductPage ~ errorsColor:", errorsColor)
+  const [errorsSize, setErrorsSize] = useState([]);
+  console.log("🚀 ~ UpdateProductPage ~ errorsSize:", errorsSize)
 
   const categoryDropdownRef = useRef(null);
   const {
@@ -70,6 +77,7 @@ const UpdateProductPage = () => {
     const fields = ["name", "cost", "description", "price", "status"];
     fields.forEach((field) => setValue(field, productDetail.data[field]));
     setCategorySelected(productDetail.data.category);
+    setInfomationForm(productDetail.data);
 
     if (productDetail.data.images) {
       const imageUrls = productDetail.data.images?.split("<&space>");
@@ -133,6 +141,8 @@ const UpdateProductPage = () => {
   }
 
   const handleUpdateProduct = (data) => {
+    console.log("🚀 ~ handleUpdateProduct ~ data:", data)
+    if (errorsColor[0] || errorsSize[0]) return;
     const formatData = {
       ...data,
       status: active,
@@ -254,6 +264,275 @@ const UpdateProductPage = () => {
       );
     });
   }, [categoryList.data, categoryKeywords]);
+
+  const handleChangeForm = (value, optionIndex, name) => {
+    let newInfomationForm = { ...infomationForm };
+    if (name === "color") {
+      if (value === '') {
+        if (errorsColor.indexOf(optionIndex) === -1) {
+          setErrorsColor([...errorsColor, optionIndex]);
+        }
+      } else {
+        setErrorsColor(errorsColor.filter((error) => error !== optionIndex));
+      }
+      newInfomationForm.options = newInfomationForm.options.map(
+        (option, index) => {
+          if (index === optionIndex) {
+            return {
+              ...option,
+              color: value,
+            };
+          }
+          return option;
+        }
+      );
+    }
+
+    if (name === "sizes") {
+      if (value === '') {
+        if (errorsSize.indexOf(optionIndex) === -1) {
+          setErrorsSize([...errorsSize, optionIndex]);
+        }
+      } else {
+        setErrorsSize(errorsSize.filter((error) => error !== optionIndex));
+      }
+      newInfomationForm.options = newInfomationForm.options.map(
+        (option, index) => {
+          return {
+            ...option,
+            sizes: option.sizes.map((size, sizeIndex) => {
+              if (sizeIndex === optionIndex) {
+                return {
+                  ...size,
+                  name: value,
+                };
+              }
+              return size;
+            }),
+          };
+          return option;
+        }
+      );
+    }
+    setInfomationForm(newInfomationForm);
+  };
+
+  const handleDeleteForm = (optionIndex, name) => {
+    let newInfomationForm = { ...infomationForm };
+    if (name === "color") {
+      if (errorsColor.includes(optionIndex)) {
+        setErrorsColor(errorsColor.filter((error) => error !== optionIndex));
+      }
+      newInfomationForm.options = newInfomationForm.options.filter(
+        (option, index) => {
+          return index !== optionIndex;
+        }
+      );
+    }
+
+    if (name === "sizes") {
+      if (errorsSize.includes(optionIndex)) {
+        setErrorsSize(errorsSize.filter((error) => error !== optionIndex));
+      }
+      newInfomationForm.options = newInfomationForm.options.map(
+        (option, index) => {
+          return {
+            ...option,
+            sizes: option.sizes.filter((size, sizeIndex) => {
+              return sizeIndex !== optionIndex;
+            }),
+          };
+        }
+      );
+    }
+
+    console.log(newInfomationForm);
+    setInfomationForm(newInfomationForm);
+  };
+
+
+  const renderColorList = () => {
+    let list = infomationForm?.options?.map((option, index) => {
+      return (
+        <div className="block-option-content-item" key={index}>
+          <div className="upload-btn">
+            <i className="fa-regular fa-image"></i>
+          </div>
+          <div className="input-box">
+            <input
+              //  {...(index !== infomationForm?.options?.length - 1 ? register(`color-${index}`, {
+              //   required: "Không được để trống ô",
+              // }) : {})}
+              value={option.color}
+              type="text"
+              placeholder="Nhập"
+              autoComplete="off"
+              onChange={(e) => handleChangeForm(e.target.value, index, "color")}
+            />
+            {
+              index !== infomationForm?.options?.length - 1 && option.color === '' && (
+                <span className="error-message colors">Không được để trống ô</span>
+              )
+            }
+          </div>
+
+          <i
+            className="fa-regular fa-trash-can"
+            onClick={() =>
+              infomationForm?.options.length - 1 !== index &&
+              handleDeleteForm(index, "color")
+            }
+          ></i>
+
+        </div>
+
+      );
+    });
+
+    if (
+      infomationForm?.options &&
+      infomationForm?.options[infomationForm?.options.length - 1].color !== ""
+    ) {
+      setInfomationForm({
+        ...infomationForm,
+        options: [
+          ...infomationForm.options,
+          {
+            color: "",
+            sizes: infomationForm?.options[0]?.sizes?.map((size) => ({
+              ...size,
+              quantity: 0,
+            })),
+          },
+        ],
+      });
+    }
+
+    // if (
+    //   infomationForm?.options &&
+    //   infomationForm?.options[infomationForm?.options.length - 2]?.color === ""
+    // ) {
+    //   setInfomationForm({
+    //     ...infomationForm,
+    //     options: [
+    //       ...infomationForm.options.filter(
+    //         (option, index) => index !== infomationForm.options.length - 1
+    //       ),
+    //     ],
+    //   });
+    // }
+
+    return list;
+  };
+
+  const renderSizeList = () => {
+    if (!infomationForm?.options) return;
+    let list = infomationForm?.options[0]?.sizes?.map((size, index) => {
+      return (
+        <div className="block-option-content-item" key={index}>
+          <div className="upload-btn">
+            <i className="fa-regular fa-image"></i>
+          </div>
+          <div className="input-box">
+            <input
+              value={size.name}
+              type="text"
+              placeholder="Nhập"
+              autoComplete="off"
+              onChange={(e) => handleChangeForm(e.target.value, index, "sizes")}
+            />
+            {
+              index !== infomationForm?.options[0]?.sizes.length - 1 && size.name === '' && (
+                <span className="error-message colors">Không được để trống ô</span>
+              )
+            }
+          </div>
+          <i
+            className="fa-regular fa-trash-can"
+            onClick={() => handleDeleteForm(index, "sizes")}
+          ></i>
+          {errors.name && (
+            <span className="error-message">{errors.name.message}</span>
+          )}
+
+        </div>
+      );
+    });
+
+    if (
+      infomationForm?.options && infomationForm?.options[0]?.sizes && infomationForm?.options[0]?.sizes[infomationForm?.options[0]?.sizes.length - 1]?.name !== ""
+    ) {
+      setInfomationForm({
+        ...infomationForm,
+        options: [
+          ...infomationForm.options.map((option) => ({
+            ...option,
+            sizes: [
+              ...option.sizes,
+              {
+                name: "",
+                quantity: 0,
+              },
+            ],
+          })),
+        ],
+      });
+    }
+
+    // if (
+    //   infomationForm?.options && infomationForm?.options[0]?.sizes && infomationForm?.options[0]?.sizes[infomationForm?.options[0]?.sizes.length - 2]?.name === ""
+    // ) {
+    //   setInfomationForm({
+    //     ...infomationForm,
+    //     options: [
+    //       ...infomationForm.options.map((option) => ({
+    //         ...option,
+    //         sizes: [
+    //           ...option.sizes.filter(
+    //             (size, index) => index !== option.sizes.length - 1
+    //           ),
+    //         ],
+    //       }),)
+    //     ],
+    //   });
+    // }
+
+    return list;
+  };
+
+  const renderProductClassificationTable = () => {
+    if (!infomationForm?.options) return;
+    return infomationForm?.options.map((option, optionIndex) => {
+      if (optionIndex === infomationForm?.options.length - 1) return;
+      return option.sizes.map((size, sizeIndex) => {
+        if (sizeIndex === option.sizes.length - 1) return;
+        return (
+          <div className="product-classification-table-content-list" key={sizeIndex}>
+            <div className="product-classification-table-content-item color">
+              {option.color}
+            </div>
+            <div className="product-classification-table-content-item size">
+              {size.name}
+            </div>
+            <div className="product-classification-table-content-item price">
+              <input
+                type="text"
+                placeholder="Nhập vào"
+                autoComplete="off"
+              />
+            </div>
+            <div className="product-classification-table-content-item quantity">
+              <input
+                type="text"
+                placeholder="Nhập vào"
+                autoComplete="off"
+              />
+            </div>
+          </div>
+        );
+      });
+    });
+  };
 
   return (
     <Wraper>
@@ -442,7 +721,7 @@ const UpdateProductPage = () => {
                     <CKEditor
                       editor={ClassicEditor}
                       data={field.value}
-                      onReady={(editor) => {}}
+                      onReady={(editor) => { }}
                       config={{
                         extraPlugins: [uploadPlugin],
                         toolbar: {
@@ -484,171 +763,62 @@ const UpdateProductPage = () => {
               <div className="content-block-header">
                 <div className="block-name">Thông tin bán hàng</div>
               </div>
-              <div className="content-block-main option">
+              <div className="content-block-main option classification-1">
                 <div className="content-section">
                   <label htmlFor="product-name">
-                    Phần loại hàng <i className="fa-solid fa-circle-info"></i>
+                    <span className="gif-icon"></span>
+                    Phân loại hàng <i className="fa-solid fa-circle-info"></i>
                   </label>
                   <div className="block-option box-color">
                     <div className="block-option-header">Màu sắc</div>
                     <div className="block-option-content">
-                      <div className="block-option-content-item">
-                        <div className="upload-btn">
-                          <i class="fa-regular fa-image"></i>
-                        </div>
-                        <input
-                          {...register("name", {
-                            required: "Tên sản phẩm không được để trống",
-                          })}
-                          type="text"
-                          placeholder="Nhập tên sản phẩm"
-                          autoComplete="off"
-                        />
-                        <i class="fa-regular fa-trash-can"></i>
-                        {errors.name && (
-                          <span className="error-message">
-                            {errors.name.message}
-                          </span>
-                        )}
-                      </div>
-                      <div className="block-option-content-item">
-                        <div className="upload-btn">
-                          <i class="fa-regular fa-image"></i>
-                        </div>
-                        <input
-                          {...register("name", {
-                            required: "Tên sản phẩm không được để trống",
-                          })}
-                          type="text"
-                          placeholder="Nhập tên sản phẩm"
-                          autoComplete="off"
-                        />
-                        <i class="fa-regular fa-trash-can"></i>
-                        {errors.name && (
-                          <span className="error-message">
-                            {errors.name.message}
-                          </span>
-                        )}
-                      </div>
-                      <div className="block-option-content-item">
-                        <div className="upload-btn">
-                          <i class="fa-regular fa-image"></i>
-                        </div>
-                        <input
-                          {...register("name", {
-                            required: "Tên sản phẩm không được để trống",
-                          })}
-                          type="text"
-                          placeholder="Nhập tên sản phẩm"
-                          autoComplete="off"
-                        />
-                        <i class="fa-regular fa-trash-can"></i>
-                        {errors.name && (
-                          <span className="error-message">
-                            {errors.name.message}
-                          </span>
-                        )}
-                      </div>
-                      <div className="block-option-content-item">
-                        <div className="upload-btn">
-                          <i class="fa-regular fa-image"></i>
-                        </div>
-                        <input
-                          {...register("name", {
-                            required: "Tên sản phẩm không được để trống",
-                          })}
-                          type="text"
-                          placeholder="Nhập tên sản phẩm"
-                          autoComplete="off"
-                        />
-                        <i class="fa-regular fa-trash-can"></i>
-                        {errors.name && (
-                          <span className="error-message">
-                            {errors.name.message}
-                          </span>
-                        )}
-                      </div>
+                      {renderColorList()}
                     </div>
                   </div>
                   <div className="block-option box-size">
                     <div className="block-option-header">Size</div>
                     <div className="block-option-content">
-                      <div className="block-option-content-item">
-                        <div className="upload-btn">
-                          <i class="fa-regular fa-image"></i>
-                        </div>
-                        <input
-                          {...register("name", {
-                            required: "Tên sản phẩm không được để trống",
-                          })}
-                          type="text"
-                          placeholder="Nhập tên sản phẩm"
-                          autoComplete="off"
-                        />
-                        <i class="fa-regular fa-trash-can"></i>
-                        {errors.name && (
-                          <span className="error-message">
-                            {errors.name.message}
-                          </span>
-                        )}
+                      {renderSizeList()}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="content-block-main option classification-2">
+                <div className="content-section">
+                  <label htmlFor="product-name">
+                    <span className="gif-icon"></span>
+                    Danh sách phân loại hàng
+                  </label>
+                  <div className="batch-edit-row">
+                    <div className="block-input">
+                      <input
+                        type="text"
+                        placeholder="Giá"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Kho hàng"
+                      />
+                    </div>
+                    <Button className="btn-primary btn-apply-edit" text={"Áp dụng cho tất cả phân loại"} onClick={() => console.log('ahihi')}></Button>
+                  </div>
+                  <div className="product-classification-table">
+                    <div className="product-classification-table-header">
+                      <div className="product-classification-table-header-item">
+                        Màu sắc
                       </div>
-                      <div className="block-option-content-item">
-                        <div className="upload-btn">
-                          <i class="fa-regular fa-image"></i>
-                        </div>
-                        <input
-                          {...register("name", {
-                            required: "Tên sản phẩm không được để trống",
-                          })}
-                          type="text"
-                          placeholder="Nhập tên sản phẩm"
-                          autoComplete="off"
-                        />
-                        <i class="fa-regular fa-trash-can"></i>
-                        {errors.name && (
-                          <span className="error-message">
-                            {errors.name.message}
-                          </span>
-                        )}
+                      <div className="product-classification-table-header-item">
+                        Size
                       </div>
-                      <div className="block-option-content-item">
-                        <div className="upload-btn">
-                          <i class="fa-regular fa-image"></i>
-                        </div>
-                        <input
-                          {...register("name", {
-                            required: "Tên sản phẩm không được để trống",
-                          })}
-                          type="text"
-                          placeholder="Nhập tên sản phẩm"
-                          autoComplete="off"
-                        />
-                        <i class="fa-regular fa-trash-can"></i>
-                        {errors.name && (
-                          <span className="error-message">
-                            {errors.name.message}
-                          </span>
-                        )}
+                      <div className="product-classification-table-header-item">
+                        Giá
                       </div>
-                      <div className="block-option-content-item">
-                        <div className="upload-btn">
-                          <i class="fa-regular fa-image"></i>
-                        </div>
-                        <input
-                          {...register("name", {
-                            required: "Tên sản phẩm không được để trống",
-                          })}
-                          type="text"
-                          placeholder="Nhập tên sản phẩm"
-                          autoComplete="off"
-                        />
-                        <i class="fa-regular fa-trash-can"></i>
-                        {errors.name && (
-                          <span className="error-message">
-                            {errors.name.message}
-                          </span>
-                        )}
+                      <div className="product-classification-table-header-item">
+                        Kho hàng
                       </div>
+                    </div>
+                    <div className="product-classification-table-content">
+                      {renderProductClassificationTable()}
                     </div>
                   </div>
                 </div>
@@ -656,98 +826,119 @@ const UpdateProductPage = () => {
             </div>
           </div>
           <div className="create-product-right">
-            <div className="content-block">
-              <div className="content-block-header">
-                <div className="block-name">Thông tin bổ sung</div>
-              </div>
-              <div className="content-block-main">
-                <div className="content-section">
-                  <label htmlFor="product-name" style={{ fontWeight: 500 }}>
-                    Loại sản phẩm
-                  </label>
-                  {/* <input
+            <div className="create-product-right-container">
+              <div className="content-block">
+                <div className="content-block-header">
+                  <div className="block-name">Thông tin bổ sung</div>
+                </div>
+                <div className="content-block-main">
+                  <div className="content-section">
+                    <label htmlFor="product-name" style={{ fontWeight: 500 }}>
+                      Loại sản phẩm
+                    </label>
+                    {/* <input
                                         type="text"
                                         id="product-name"
                                         placeholder="Nhập loại sản phẩm"
                                         autoComplete="off"
                                     /> */}
 
-                  <div className="category-block">
-                    <div
-                      className={clsx(
-                        "category-box",
-                        isShowCategoryDropdown && "active"
-                      )}
-                      ref={categoryDropdownRef}
-                      onClick={() =>
-                        setIsShowCategoryDropdown(!isShowCategoryDropdown)
-                      }
-                    >
-                      <div>
-                        {" "}
-                        {categorySelected?.name || "Chọn loại sản phẩm"}
-                      </div>
-                      <i
+                    <div className="category-block">
+                      <div
                         className={clsx(
-                          "fa-solid",
-                          !isShowCategoryDropdown
-                            ? "fa-caret-down"
-                            : "fa-caret-up"
+                          "category-box",
+                          isShowCategoryDropdown && "active"
                         )}
-                      ></i>
+                        ref={categoryDropdownRef}
+                        onClick={() =>
+                          setIsShowCategoryDropdown(!isShowCategoryDropdown)
+                        }
+                      >
+                        <div>
+                          {" "}
+                          {categorySelected?.name || "Chọn loại sản phẩm"}
+                        </div>
+                        <i
+                          className={clsx(
+                            "fa-solid",
+                            !isShowCategoryDropdown
+                              ? "fa-caret-down"
+                              : "fa-caret-up"
+                          )}
+                        ></i>
+                      </div>
+                      <Dropdown
+                        affect={categoryDropdownRef}
+                        isShow={isShowCategoryDropdown}
+                        setIsShow={setIsShowCategoryDropdown}
+                        render={() => {
+                          return (
+                            <div className="category-dropdown">
+                              <div className="catergory-search-keyword">
+                                <i className="fa-solid fa-magnifying-glass"></i>
+                                <input
+                                  type="text"
+                                  className="input-category-keyword"
+                                  placeholder="Tìm kiếm hoặc nhập mới"
+                                  onChange={(e) =>
+                                    setCategoryKeywords(e.target.value)
+                                  }
+                                />
+                              </div>
+                              <div
+                                className="btn-add-category"
+                                onClick={() => setIsShowCreateCategoryModal(true)}
+                              >
+                                <i className="fa-solid fa-circle-plus"></i>
+                                <div>Thêm mới loại sản phẩm</div>
+                              </div>
+                              <div className="category-list">
+                                {renderCategoryList}
+                              </div>
+                            </div>
+                          );
+                        }}
+                      />
                     </div>
-                    <Dropdown
-                      affect={categoryDropdownRef}
-                      isShow={isShowCategoryDropdown}
-                      setIsShow={setIsShowCategoryDropdown}
-                      render={() => {
-                        return (
-                          <div className="category-dropdown">
-                            <div className="catergory-search-keyword">
-                              <i className="fa-solid fa-magnifying-glass"></i>
-                              <input
-                                type="text"
-                                className="input-category-keyword"
-                                placeholder="Tìm kiếm hoặc nhập mới"
-                                onChange={(e) =>
-                                  setCategoryKeywords(e.target.value)
-                                }
-                              />
-                            </div>
-                            <div
-                              className="btn-add-category"
-                              onClick={() => setIsShowCreateCategoryModal(true)}
-                            >
-                              <i className="fa-solid fa-circle-plus"></i>
-                              <div>Thêm mới loại sản phẩm</div>
-                            </div>
-                            <div className="category-list">
-                              {renderCategoryList}
-                            </div>
-                          </div>
-                        );
-                      }}
-                    />
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="content-block status">
-              <div className="content-block-main">
-                <div className="block-name">
-                  Trạng thái <i className="fa-solid fa-circle-info"></i>
+              <div className="content-block status">
+                <div className="content-block-main">
+                  <div className="block-name">
+                    Trạng thái <i className="fa-solid fa-circle-info"></i>
+                  </div>
+                  <div className="status-option">
+                    <div>Cho phép bán</div>
+                    <i
+                      className={clsx(
+                        "fa-solid",
+                        active ? "fa-toggle-on" : "fa-toggle-off disabled"
+                      )}
+                      onClick={() => {
+                        setActive(active ? 0 : 1);
+                      }}
+                    ></i>
+                  </div>
                 </div>
-                <div className="status-option">
-                  <div>Cho phép bán</div>
-                  <i
-                    className={clsx(
-                      "fa-solid",
-                      active ? "fa-toggle-on" : "fa-toggle-off disabled"
-                    )}
-                    onClick={() => {
-                      setActive(active ? 0 : 1);
-                    }}
-                  ></i>
+              </div>
+              <div className="content-block education-container">
+                <div className="education-header">
+                  <div className="tip-title">
+                    Gợi ý
+                  </div>
+                  <i className="fa-regular fa-lightbulb"></i>
+                </div>
+                <div className="education-content">
+                  <div className="education-title">Phân loại</div>
+                  <div className="education-description">
+                    <p>
+                      Điền phân loại hàng nếu sản phẩm có màu sắc kích thước khác nhau để khách hàng dễ lựa chọn.
+                    </p>
+                    <p>
+                      Xem hướng dẫn cách phân loại hàng trên De Vinc <span>tại đây</span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

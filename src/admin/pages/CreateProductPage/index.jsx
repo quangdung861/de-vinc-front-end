@@ -97,16 +97,72 @@ const CreateProductPage = () => {
         };
     }
 
-    const handleCreateProduct = (data) => {
+    const handleCreateProduct = ({ images, ...newData }) => {
         const formatData = {
-            ...data,
+            ...newData,
             status: active,
-            price: Number(data.price.replace(/,/g, '')),
-            cost: Number(data.cost.replace(/,/g, '')),
+            price: Number(newData.price.replace(/,/g, '')),
+            cost: Number(newData.cost.replace(/,/g, '')),
             categoryId: categorySelected.id || null
         }
+
+        const options =
+            [{
+                color: "trắng",
+                sizes: [{
+                    name: "L",
+                    quantity: 10
+                },
+                {
+                    name: "M",
+                    quantity: 20
+                },
+                {
+                    name: "S",
+                    quantity: 30
+                }]
+            },
+            {
+                color: "đen",
+                sizes: [{
+                    name: "L",
+                    quantity: 10
+                },
+                {
+                    name: "M",
+                    quantity: 20
+                },
+                {
+                    name: "S",
+                    quantity: 30
+                }]
+            },
+            {
+                color: "đỏ",
+                sizes: [{
+                    name: "L",
+                    quantity: 10
+                },
+                {
+                    name: "M",
+                    quantity: 20
+                },
+                {
+                    name: "S",
+                    quantity: 30
+                }]
+            }
+            ]
+            ;
+
+        let formData = new FormData();
+        images.forEach((file) => {
+            formData.append('images', file);
+        });
+        formData.append('body', JSON.stringify({ ...formatData, options }));
+
         dispatch(createProductAction({
-            data: formatData,
+            data: formData,
             callback: {
                 redirect: () => navigate(ROUTER_ADMIN.PRODUCT_LIST)
             }
@@ -115,7 +171,7 @@ const CreateProductPage = () => {
 
     const renderProductImage = () => {
         return images.map((image, index) => {
-          return  (
+            return (
                 <div
                     className={clsx("box")}
                     key={index}
