@@ -196,16 +196,17 @@ export const Wraper = styled.div`
             justify-content: space-between;
             align-items: center;
             flex-wrap: nowrap;
-            padding-bottom: 16px;  
+            padding-bottom: 14px;
             .block-input {
               display: flex;
               align-items: center;
-                input {
+              input {
                 margin-right: 16px;
               }
             }
             .btn-apply-edit {
-              margin-left: 24px;
+              font-size: 14px;
+              font-weight: 400;
             }
           }
           .product-classification-table {
@@ -237,16 +238,20 @@ export const Wraper = styled.div`
                 background-color: var(--gray-color-5);
               }
               .product-classification-table-header-item:nth-child(1) {
+                width: 20%;
                 min-width: 150px;
               }
               .product-classification-table-header-item:nth-child(2) {
+                width: 20%;
                 min-width: 100px;
               }
               .product-classification-table-header-item:nth-child(3) {
-                min-width: 320px;
+                width: 30%;
+                min-width: 220px;
               }
               .product-classification-table-header-item:nth-child(4) {
-                min-width: 280px;
+                width: 20%;
+                min-width: 220px;
                 flex: 1;
               }
               .product-classification-table-header-item:not(:last-child) {
@@ -268,17 +273,21 @@ export const Wraper = styled.div`
                 }
 
                 .product-classification-table-content-item:nth-child(1) {
+                  width: 20%;
                   min-width: 150px;
                 }
                 .product-classification-table-content-item:nth-child(2) {
+                  width: 20%;
                   min-width: 100px;
                 }
                 .product-classification-table-content-item:nth-child(3) {
-                  min-width: 320px;
+                  width: 30%;
+                  min-width: 220px;
                 }
                 .product-classification-table-content-item:nth-child(4) {
+                  width: 20%;
                   flex: 1;
-                  min-width: 280px;
+                  min-width: 220px;
                 }
 
                 .product-classification-table-content-item:not(:last-child) {

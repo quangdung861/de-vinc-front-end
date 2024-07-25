@@ -800,7 +800,7 @@ const UpdateProductPage = () => {
                         placeholder="Kho hàng"
                       />
                     </div>
-                    <Button className="btn-primary btn-apply-edit" text={"Áp dụng cho tất cả phân loại"} onClick={() => console.log('ahihi')}></Button>
+                    <div className="btn-primary btn-apply-edit" onClick={() => console.log('ahihi')}>Áp dụng cho tất cả phân loại</div>
                   </div>
                   <div className="product-classification-table">
                     <div className="product-classification-table-header">

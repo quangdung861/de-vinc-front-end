@@ -178,13 +178,14 @@
                     align-items: center;
                     flex-wrap: wrap;
                     margin-left: -6px;
-
                     .size-item {
+                        flex-shrink: 0;
                         display: flex;
                         justify-content: center;
                         width: fit-content;
                         height: 40px;
                         align-items: center;
+                        width: 80px;
                         min-width: 10%;
                         margin: 6px;
                         border-radius: 20px;
@@ -198,8 +199,8 @@
                 display: flex;
                 align-items: center;
                 margin-bottom: 16px;
-
                 .product-quantity {
+                    flex-shrink: 0;
                     display: flex;
                     align-items: center;
                     justify-content: space-evenly;
