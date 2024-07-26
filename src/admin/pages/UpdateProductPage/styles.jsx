@@ -228,34 +228,31 @@ export const Wraper = styled.div`
             .product-classification-table-header {
               display: flex;
               align-items: center;
-              border-bottom: var(--boder-dividing);
               .product-classification-table-header-item {
                 display: flex;
-                justify-content: space-evenly;
+                justify-content: center;
                 text-align: center;
                 font-weight: 500;
                 padding: 12px 0;
                 background-color: var(--gray-color-5);
+                border-bottom: var(--boder-dividing);
+                flex-shrink: 0;
               }
-              .product-classification-table-header-item:nth-child(1) {
-                width: 20%;
-                min-width: 150px;
+              .product-classification-table-header-item.color {
+                width: 150px;
               }
-              .product-classification-table-header-item:nth-child(2) {
-                width: 20%;
-                min-width: 100px;
+              .product-classification-table-header-item.size {
+                width: 100px;
               }
-              .product-classification-table-header-item:nth-child(3) {
-                width: 30%;
-                min-width: 220px;
+              .product-classification-table-header-item.price {
+                width: 220px;
               }
-              .product-classification-table-header-item:nth-child(4) {
-                width: 20%;
+              .product-classification-table-header-item.quantity {
                 min-width: 220px;
                 flex: 1;
               }
-              .product-classification-table-header-item:not(:last-child) {
-                border-right: var(--boder-dividing);
+              .product-classification-table-header-item:not(:first-child) {
+                border-left: var(--boder-dividing);
               }
             }
 
@@ -265,51 +262,56 @@ export const Wraper = styled.div`
                 align-items: center;
                 .product-classification-table-content-item {
                   min-height: 72px;
+                  justify-content: center;
                   text-align: center;
                   display: flex;
-                  justify-content: space-evenly;
                   text-align: center;
-                  border-bottom: var(--boder-dividing);
-                }
-
-                .product-classification-table-content-item:nth-child(1) {
-                  width: 20%;
-                  min-width: 150px;
-                }
-                .product-classification-table-content-item:nth-child(2) {
-                  width: 20%;
-                  min-width: 100px;
-                }
-                .product-classification-table-content-item:nth-child(3) {
-                  width: 30%;
-                  min-width: 220px;
-                }
-                .product-classification-table-content-item:nth-child(4) {
-                  width: 20%;
-                  flex: 1;
-                  min-width: 220px;
-                }
-
-                .product-classification-table-content-item:not(:last-child) {
-                  border-right: var(--boder-dividing);
+                  flex-shrink: 0;
                 }
 
                 .product-classification-table-content-item.color {
                   padding: 24px 16px;
+                  width: 150px;
+                  /* border: none !important; */
+                  border-bottom: var(--boder-dividing);
+                  align-self: stretch;
+                  align-items: center;
                 }
-
                 .product-classification-table-content-item.size {
                   padding: 24px 16px;
+                  width: 100px;
+                  border-left: var(--boder-dividing);
                 }
-
                 .product-classification-table-content-item.price {
                   padding: 16px;
+                  width: 220px;
+                  border-left: var(--boder-dividing);
                 }
-
                 .product-classification-table-content-item.quantity {
                   padding: 16px;
+                  min-width: 220px;
+                  flex: 1;
+                  border-left: var(--boder-dividing);
+                }
+
+                /* .product-classification-table-content-item:not(:first-child) {
+                  border-left: var(--boder-dividing);
+                } */
+
+                .size-row {
+                  flex: 1;
+                  .size-row-block {
+                    display: flex;
+                    flex: 1;
+                  }
+                  .size-row-block {
+                    border-bottom: var(--boder-dividing);
+                  }
                 }
               }
+              /* .product-classification-table-content-list:not(:last-child) {
+                border-bottom: var(--boder-dividing-2);
+              } */
             }
           }
         }

@@ -109,46 +109,61 @@ const CreateProductPage = () => {
         const options =
             [{
                 color: "trắng",
+                price: 100000,
+                quantity: 10,
                 sizes: [{
                     name: "L",
-                    quantity: 10
+                    price: 100000,
+                    quantity: 10,
                 },
                 {
                     name: "M",
+                    price: 100000,
                     quantity: 20
                 },
                 {
                     name: "S",
+                    price: 100000,
                     quantity: 30
                 }]
             },
             {
                 color: "đen",
+                price: 100000,
+                quantity: 10,
                 sizes: [{
                     name: "L",
+                    price: 100000,
                     quantity: 10
                 },
                 {
                     name: "M",
+                    price: 100000,
                     quantity: 20
                 },
                 {
                     name: "S",
+                    price: 100000,
                     quantity: 30
                 }]
             },
             {
                 color: "đỏ",
+                price: 100000,
+                quantity: 10,
                 sizes: [{
                     name: "L",
+                    price: 100000,
                     quantity: 10
                 },
                 {
                     name: "M",
+                    price: 100000,
                     quantity: 20
                 },
                 {
                     name: "S",
+                    price: 100000,
                     quantity: 30
                 }]
             }

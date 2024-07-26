@@ -46,9 +46,9 @@ const UpdateProductPage = () => {
   const [infomationForm, setInfomationForm] = useState();
   console.log("🚀 ~ UpdateProductPage ~ infomationForm:", infomationForm);
   const [errorsColor, setErrorsColor] = useState([]);
-  console.log("🚀 ~ UpdateProductPage ~ errorsColor:", errorsColor)
+  console.log("🚀 ~ UpdateProductPage ~ errorsColor:", errorsColor);
   const [errorsSize, setErrorsSize] = useState([]);
-  console.log("🚀 ~ UpdateProductPage ~ errorsSize:", errorsSize)
+  console.log("🚀 ~ UpdateProductPage ~ errorsSize:", errorsSize);
 
   const categoryDropdownRef = useRef(null);
   const {
@@ -141,8 +141,8 @@ const UpdateProductPage = () => {
   }
 
   const handleUpdateProduct = (data) => {
-    console.log("🚀 ~ handleUpdateProduct ~ data:", data)
-    if (errorsColor[0] || errorsSize[0]) return;
+    console.log("🚀 ~ handleUpdateProduct ~ data:", data);
+    if (errorsColor.length > 0 || errorsSize.length > 0) return;
     const formatData = {
       ...data,
       status: active,
@@ -268,7 +268,7 @@ const UpdateProductPage = () => {
   const handleChangeForm = (value, optionIndex, name) => {
     let newInfomationForm = { ...infomationForm };
     if (name === "color") {
-      if (value === '') {
+      if (value === "") {
         if (errorsColor.indexOf(optionIndex) === -1) {
           setErrorsColor([...errorsColor, optionIndex]);
         }
@@ -289,7 +289,7 @@ const UpdateProductPage = () => {
     }
 
     if (name === "sizes") {
-      if (value === '') {
+      if (value === "") {
         if (errorsSize.indexOf(optionIndex) === -1) {
           setErrorsSize([...errorsSize, optionIndex]);
         }
@@ -350,7 +350,6 @@ const UpdateProductPage = () => {
     setInfomationForm(newInfomationForm);
   };
 
-
   const renderColorList = () => {
     let list = infomationForm?.options?.map((option, index) => {
       return (
@@ -369,11 +368,12 @@ const UpdateProductPage = () => {
               autoComplete="off"
               onChange={(e) => handleChangeForm(e.target.value, index, "color")}
             />
-            {
-              index !== infomationForm?.options?.length - 1 && option.color === '' && (
-                <span className="error-message colors">Không được để trống ô</span>
-              )
-            }
+            {index !== infomationForm?.options?.length - 1 &&
+              option.color === "" && (
+                <span className="error-message colors">
+                  Không được để trống ô
+                </span>
+              )}
           </div>
 
           <i
@@ -383,9 +383,7 @@ const UpdateProductPage = () => {
               handleDeleteForm(index, "color")
             }
           ></i>
-
         </div>
-
       );
     });
 
@@ -441,11 +439,12 @@ const UpdateProductPage = () => {
               autoComplete="off"
               onChange={(e) => handleChangeForm(e.target.value, index, "sizes")}
             />
-            {
-              index !== infomationForm?.options[0]?.sizes.length - 1 && size.name === '' && (
-                <span className="error-message colors">Không được để trống ô</span>
-              )
-            }
+            {index !== infomationForm?.options[0]?.sizes.length - 1 &&
+              size.name === "" && (
+                <span className="error-message colors">
+                  Không được để trống ô
+                </span>
+              )}
           </div>
           <i
             className="fa-regular fa-trash-can"
@@ -454,13 +453,16 @@ const UpdateProductPage = () => {
           {errors.name && (
             <span className="error-message">{errors.name.message}</span>
           )}
-
         </div>
       );
     });
 
     if (
-      infomationForm?.options && infomationForm?.options[0]?.sizes && infomationForm?.options[0]?.sizes[infomationForm?.options[0]?.sizes.length - 1]?.name !== ""
+      infomationForm?.options &&
+      infomationForm?.options[0]?.sizes &&
+      infomationForm?.options[0]?.sizes[
+        infomationForm?.options[0]?.sizes.length - 1
+      ]?.name !== ""
     ) {
       setInfomationForm({
         ...infomationForm,
@@ -501,36 +503,58 @@ const UpdateProductPage = () => {
   };
 
   const renderProductClassificationTable = () => {
-    if (!infomationForm?.options) return;
-    return infomationForm?.options.map((option, optionIndex) => {
-      if (optionIndex === infomationForm?.options.length - 1) return;
-      return option.sizes.map((size, sizeIndex) => {
+    // if (infomationForm?.options?.length <= 1) return; //colors
+    return infomationForm?.options?.map((option, optionIndex) => {
+      if (optionIndex === infomationForm?.options.length - 1 && optionIndex > 0) return;
+      const renderSizeRow = option.sizes.map((size, sizeIndex) => {
         if (sizeIndex === option.sizes.length - 1) return;
+        let price = size.price ?? 0;
+        let quantity = size.quantity ?? 0;
         return (
-          <div className="product-classification-table-content-list" key={sizeIndex}>
-            <div className="product-classification-table-content-item color">
-              {option.color}
-            </div>
-            <div className="product-classification-table-content-item size">
+          <div className="size-row-block" key={sizeIndex}>
+            {option.sizes?.length > 1 && <div className="product-classification-table-content-item size">
               {size.name}
-            </div>
+            </div>}
             <div className="product-classification-table-content-item price">
-              <input
-                type="text"
-                placeholder="Nhập vào"
-                autoComplete="off"
-              />
+              <input name="size-price" type="text" placeholder="Nhập vào" autoComplete="off" value={price} onChange={() => console.log("ahihi")} />
             </div>
             <div className="product-classification-table-content-item quantity">
-              <input
-                type="text"
-                placeholder="Nhập vào"
-                autoComplete="off"
-              />
+              <input name='size-quantity' type="text" placeholder="Nhập vào" autoComplete="off" value={quantity} onChange={() => console.log("ahihi")} />
             </div>
           </div>
         );
       });
+
+      let price = option.price ?? 0;
+      let quantity = option.quantity ?? 0;
+
+      const renderColorRow = (
+        <div className="size-row-block" >
+          <div className="product-classification-table-content-item price">
+            <input name="size-price" type="text" placeholder="Nhập vào" autoComplete="off" value={price} onChange={() => console.log("ahihi")} />
+          </div>
+          <div className="product-classification-table-content-item quantity">
+            <input name='size-quantity' type="text" placeholder="Nhập vào" autoComplete="off" value={quantity} onChange={() => console.log("ahihi")} />
+          </div>
+        </div>
+      );
+
+      console.log(renderSizeRow.length);
+
+      return (
+        <div
+          className="product-classification-table-content-list"
+          key={optionIndex}
+        >
+          {infomationForm?.options.length > 1 && <div className="product-classification-table-content-item color">
+            {option.color}
+          </div>}
+
+          <div className="size-row">
+            {renderSizeRow.length > 1 ? renderSizeRow : renderColorRow}
+          </div>
+        </div>
+      );
     });
   };
 
@@ -791,29 +815,28 @@ const UpdateProductPage = () => {
                   </label>
                   <div className="batch-edit-row">
                     <div className="block-input">
-                      <input
-                        type="text"
-                        placeholder="Giá"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Kho hàng"
-                      />
+                      <input type="text" placeholder="Giá" />
+                      <input type="text" placeholder="Kho hàng" />
                     </div>
-                    <div className="btn-primary btn-apply-edit" onClick={() => console.log('ahihi')}>Áp dụng cho tất cả phân loại</div>
+                    <div
+                      className="btn-primary btn-apply-edit"
+                      onClick={() => console.log("ahihi")}
+                    >
+                      Áp dụng cho tất cả phân loại
+                    </div>
                   </div>
                   <div className="product-classification-table">
                     <div className="product-classification-table-header">
-                      <div className="product-classification-table-header-item">
+                      {infomationForm?.options?.length > 1 && <div className="product-classification-table-header-item color">
                         Màu sắc
-                      </div>
-                      <div className="product-classification-table-header-item">
+                      </div>}
+                      {infomationForm?.options && infomationForm?.options[0]?.sizes?.length > 1 && <div className="product-classification-table-header-item size">
                         Size
-                      </div>
-                      <div className="product-classification-table-header-item">
+                      </div>}
+                      <div className="product-classification-table-header-item price">
                         Giá
                       </div>
-                      <div className="product-classification-table-header-item">
+                      <div className="product-classification-table-header-item quantity">
                         Kho hàng
                       </div>
                     </div>
@@ -887,7 +910,9 @@ const UpdateProductPage = () => {
                               </div>
                               <div
                                 className="btn-add-category"
-                                onClick={() => setIsShowCreateCategoryModal(true)}
+                                onClick={() =>
+                                  setIsShowCreateCategoryModal(true)
+                                }
                               >
                                 <i className="fa-solid fa-circle-plus"></i>
                                 <div>Thêm mới loại sản phẩm</div>
@@ -924,19 +949,19 @@ const UpdateProductPage = () => {
               </div>
               <div className="content-block education-container">
                 <div className="education-header">
-                  <div className="tip-title">
-                    Gợi ý
-                  </div>
+                  <div className="tip-title">Gợi ý</div>
                   <i className="fa-regular fa-lightbulb"></i>
                 </div>
                 <div className="education-content">
                   <div className="education-title">Phân loại</div>
                   <div className="education-description">
                     <p>
-                      Điền phân loại hàng nếu sản phẩm có màu sắc kích thước khác nhau để khách hàng dễ lựa chọn.
+                      Điền phân loại hàng nếu sản phẩm có màu sắc kích thước
+                      khác nhau để khách hàng dễ lựa chọn.
                     </p>
                     <p>
-                      Xem hướng dẫn cách phân loại hàng trên De Vinc <span>tại đây</span>
+                      Xem hướng dẫn cách phân loại hàng trên De Vinc{" "}
+                      <span>tại đây</span>
                     </p>
                   </div>
                 </div>
