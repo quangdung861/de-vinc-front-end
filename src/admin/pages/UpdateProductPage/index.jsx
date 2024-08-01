@@ -19,6 +19,7 @@ import {
   updateProductDetailAction,
 } from "admin/redux/actions";
 import requestApi from "admin/helpers/api";
+import { produce } from "immer";
 
 const UpdateProductPage = () => {
   let { id } = useParams();
@@ -310,7 +311,6 @@ const UpdateProductPage = () => {
               return size;
             }),
           };
-          return option;
         }
       );
     }
@@ -359,9 +359,6 @@ const UpdateProductPage = () => {
           </div>
           <div className="input-box">
             <input
-              //  {...(index !== infomationForm?.options?.length - 1 ? register(`color-${index}`, {
-              //   required: "Không được để trống ô",
-              // }) : {})}
               value={option.color}
               type="text"
               placeholder="Nhập"
@@ -502,24 +499,95 @@ const UpdateProductPage = () => {
     return list;
   };
 
+  const onChangeInTable = (
+    value,
+    optionIndex = null,
+    sizeIndex = null,
+    name
+  ) => {
+    if (optionIndex !== null && sizeIndex !== null) {
+      if (name === "price") {
+        setInfomationForm(
+          produce((draft) => {
+            draft.options[optionIndex].sizes[sizeIndex].price = value;
+          })
+        );
+      }
+      if (name === "quantity") {
+        setInfomationForm(
+          produce((draft) => {
+            draft.options[optionIndex].sizes[sizeIndex].quantity = value;
+          })
+        );
+      }
+    }
+
+    if (optionIndex !== null && sizeIndex === null) {
+      if (name === "price") {
+        setInfomationForm(
+          produce((draft) => {
+            draft.options[optionIndex].price = value;
+          })
+        );
+      }
+      if (name === "quantity") {
+        setInfomationForm(
+          produce((draft) => {
+            draft.options[optionIndex].quantity = value;
+          })
+        );
+      }
+    }
+  };
+
   const renderProductClassificationTable = () => {
-    // if (infomationForm?.options?.length <= 1) return; //colors
     return infomationForm?.options?.map((option, optionIndex) => {
-      if (optionIndex === infomationForm?.options.length - 1 && optionIndex > 0) return;
+      if (optionIndex === infomationForm?.options.length - 1 && optionIndex > 0)
+        return [];
       const renderSizeRow = option.sizes.map((size, sizeIndex) => {
-        if (sizeIndex === option.sizes.length - 1) return;
+        if (sizeIndex === option.sizes.length - 1) return [];
         let price = size.price ?? 0;
         let quantity = size.quantity ?? 0;
         return (
           <div className="size-row-block" key={sizeIndex}>
-            {option.sizes?.length > 1 && <div className="product-classification-table-content-item size">
-              {size.name}
-            </div>}
+            {option.sizes?.length > 1 && (
+              <div className="product-classification-table-content-item size">
+                {size.name}
+              </div>
+            )}
             <div className="product-classification-table-content-item price">
-              <input name="size-price" type="text" placeholder="Nhập vào" autoComplete="off" value={price} onChange={() => console.log("ahihi")} />
+              <input
+                name="size-price"
+                type="number"
+                placeholder="Nhập vào"
+                autoComplete="off"
+                value={price}
+                onChange={(e) =>
+                  onChangeInTable(
+                    e.target.value,
+                    optionIndex,
+                    sizeIndex,
+                    "price"
+                  )
+                }
+              />
             </div>
             <div className="product-classification-table-content-item quantity">
-              <input name='size-quantity' type="text" placeholder="Nhập vào" autoComplete="off" value={quantity} onChange={() => console.log("ahihi")} />
+              <input
+                name="size-quantity"
+                type="number"
+                placeholder="Nhập vào"
+                autoComplete="off"
+                value={quantity}
+                onChange={(e) =>
+                  onChangeInTable(
+                    e.target.value,
+                    optionIndex,
+                    sizeIndex,
+                    "quantity"
+                  )
+                }
+              />
             </div>
           </div>
         );
@@ -529,12 +597,30 @@ const UpdateProductPage = () => {
       let quantity = option.quantity ?? 0;
 
       const renderColorRow = (
-        <div className="size-row-block" >
+        <div className="size-row-block">
           <div className="product-classification-table-content-item price">
-            <input name="size-price" type="text" placeholder="Nhập vào" autoComplete="off" value={price} onChange={() => console.log("ahihi")} />
+            <input
+              name="size-price"
+              type="number"
+              placeholder="Nhập vào"
+              autoComplete="off"
+              value={price}
+              onChange={(e) =>
+                onChangeInTable(e.target.value, optionIndex, null, "price")
+              }
+            />
           </div>
           <div className="product-classification-table-content-item quantity">
-            <input name='size-quantity' type="text" placeholder="Nhập vào" autoComplete="off" value={quantity} onChange={() => console.log("ahihi")} />
+            <input
+              name="size-quantity"
+              type="number"
+              placeholder="Nhập vào"
+              autoComplete="off"
+              value={quantity}
+              onChange={(e) =>
+                onChangeInTable(e.target.value, optionIndex, null, "quantity")
+              }
+            />
           </div>
         </div>
       );
@@ -546,9 +632,11 @@ const UpdateProductPage = () => {
           className="product-classification-table-content-list"
           key={optionIndex}
         >
-          {infomationForm?.options.length > 1 && <div className="product-classification-table-content-item color">
-            {option.color}
-          </div>}
+          {infomationForm?.options.length > 1 && (
+            <div className="product-classification-table-content-item color">
+              {option.color}
+            </div>
+          )}
 
           <div className="size-row">
             {renderSizeRow.length > 1 ? renderSizeRow : renderColorRow}
@@ -603,85 +691,6 @@ const UpdateProductPage = () => {
                   {errors.name && (
                     <span className="error-message">{errors.name.message}</span>
                   )}
-                </div>
-              </div>
-            </div>
-            <div className="content-block">
-              <div className="content-block-header">
-                <div className="block-name">Giá sản phẩm</div>
-              </div>
-              <div className="content-block-main two">
-                <div className="content-section">
-                  <label htmlFor="price">
-                    Giá bán lẻ <i className="fa-solid fa-circle-info"></i>
-                  </label>
-                  <Controller
-                    name="price"
-                    control={control}
-                    rules={{ required: "Giá bán lẻ không được để trống" }}
-                    render={({ field, fieldState: { error } }) => (
-                      <>
-                        <input
-                          type="text"
-                          placeholder="Nhập giá bán lẻ"
-                          autoComplete="off"
-                          value={
-                            field.value
-                              ? formatNumberWithCommas(field.value)
-                              : ""
-                          }
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/,/g, "");
-                            if (/^\d*$/.test(value)) {
-                              const formattedValue =
-                                formatNumberWithCommas(value);
-                              setValue("price", formattedValue);
-                              field.onChange(value);
-                            }
-                          }}
-                        />
-                        {error && (
-                          <span className="error-message">{error.message}</span>
-                        )}
-                      </>
-                    )}
-                  />
-                </div>
-                <div className="content-section">
-                  <label htmlFor="cost">
-                    Giá nhập <i className="fa-solid fa-circle-info"></i>
-                  </label>
-                  <Controller
-                    name="cost"
-                    control={control}
-                    rules={{ required: "Giá nhập không được để trống" }}
-                    render={({ field, fieldState: { error } }) => (
-                      <>
-                        <input
-                          type="text"
-                          placeholder="Nhập giá bán nhập"
-                          autoComplete="off"
-                          value={
-                            field.value
-                              ? formatNumberWithCommas(field.value)
-                              : ""
-                          }
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/,/g, "");
-                            if (/^\d*$/.test(value)) {
-                              const formattedValue =
-                                formatNumberWithCommas(value);
-                              setValue("cost", formattedValue);
-                              field.onChange(value);
-                            }
-                          }}
-                        />
-                        {error && (
-                          <span className="error-message">{error.message}</span>
-                        )}
-                      </>
-                    )}
-                  />
                 </div>
               </div>
             </div>
@@ -745,7 +754,7 @@ const UpdateProductPage = () => {
                     <CKEditor
                       editor={ClassicEditor}
                       data={field.value}
-                      onReady={(editor) => { }}
+                      onReady={(editor) => {}}
                       config={{
                         extraPlugins: [uploadPlugin],
                         toolbar: {
@@ -808,45 +817,144 @@ const UpdateProductPage = () => {
                 </div>
               </div>
               <div className="content-block-main option classification-2">
-                <div className="content-section">
-                  <label htmlFor="product-name">
-                    <span className="gif-icon"></span>
-                    Danh sách phân loại hàng
-                  </label>
-                  <div className="batch-edit-row">
-                    <div className="block-input">
-                      <input type="text" placeholder="Giá" />
-                      <input type="text" placeholder="Kho hàng" />
+                {!(
+                  infomationForm?.options?.length === 1 &&
+                  infomationForm?.options[0]?.sizes?.length === 1
+                ) && (
+                  <div className="content-section">
+                    <label htmlFor="product-name">
+                      <span className="gif-icon"></span>
+                      Danh sách phân loại hàng
+                    </label>
+                    <div className="batch-edit-row">
+                      <div className="block-input">
+                        <input type="number" placeholder="Giá" />
+                        <input type="number" placeholder="Kho hàng" />
+                      </div>
+                      <div
+                        className="btn-primary btn-apply-edit"
+                        onClick={() => console.log("ahihi")}
+                      >
+                        Áp dụng cho tất cả phân loại
+                      </div>
                     </div>
-                    <div
-                      className="btn-primary btn-apply-edit"
-                      onClick={() => console.log("ahihi")}
-                    >
-                      Áp dụng cho tất cả phân loại
+                    <div className="product-classification-table">
+                      <div className="product-classification-table-header">
+                        {infomationForm?.options?.length > 1 && (
+                          <div className="product-classification-table-header-item color">
+                            Màu sắc
+                          </div>
+                        )}
+                        {infomationForm?.options &&
+                          infomationForm?.options[0]?.sizes?.length > 1 && (
+                            <div className="product-classification-table-header-item size">
+                              Size
+                            </div>
+                          )}
+                        <div className="product-classification-table-header-item price">
+                          Giá
+                        </div>
+                        <div className="product-classification-table-header-item quantity">
+                          Kho hàng
+                        </div>
+                      </div>
+                      <div className="product-classification-table-content">
+                        {renderProductClassificationTable()}
+                      </div>
                     </div>
                   </div>
-                  <div className="product-classification-table">
-                    <div className="product-classification-table-header">
-                      {infomationForm?.options?.length > 1 && <div className="product-classification-table-header-item color">
-                        Màu sắc
-                      </div>}
-                      {infomationForm?.options && infomationForm?.options[0]?.sizes?.length > 1 && <div className="product-classification-table-header-item size">
-                        Size
-                      </div>}
-                      <div className="product-classification-table-header-item price">
-                        Giá
-                      </div>
-                      <div className="product-classification-table-header-item quantity">
-                        Kho hàng
-                      </div>
-                    </div>
-                    <div className="product-classification-table-content">
-                      {renderProductClassificationTable()}
-                    </div>
+                )}
+              </div>
+            </div>
+
+            {(
+              infomationForm?.options?.length === 1 &&
+              infomationForm?.options[0]?.sizes?.length === 1
+            ) && (
+              <div className="content-block">
+                <div className="content-block-header">
+                  <div className="block-name">Giá sản phẩm</div>
+                </div>
+                <div className="content-block-main two">
+                  <div className="content-section">
+                    <label htmlFor="price">
+                      Giá bán lẻ <i className="fa-solid fa-circle-info"></i>
+                    </label>
+                    <Controller
+                      name="price"
+                      control={control}
+                      rules={{ required: "Giá bán lẻ không được để trống" }}
+                      render={({ field, fieldState: { error } }) => (
+                        <>
+                          <input
+                            type="text"
+                            placeholder="Nhập giá bán lẻ"
+                            autoComplete="off"
+                            value={
+                              field.value
+                                ? formatNumberWithCommas(field.value)
+                                : ""
+                            }
+                            onChange={(e) => {
+                              const value = e.target.value.replace(/,/g, "");
+                              if (/^\d*$/.test(value)) {
+                                const formattedValue =
+                                  formatNumberWithCommas(value);
+                                setValue("price", formattedValue);
+                                field.onChange(value);
+                              }
+                            }}
+                          />
+                          {error && (
+                            <span className="error-message">
+                              {error.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
+                  </div>
+                  <div className="content-section">
+                    <label htmlFor="cost">
+                      Giá nhập <i className="fa-solid fa-circle-info"></i>
+                    </label>
+                    <Controller
+                      name="cost"
+                      control={control}
+                      rules={{ required: "Giá nhập không được để trống" }}
+                      render={({ field, fieldState: { error } }) => (
+                        <>
+                          <input
+                            type="text"
+                            placeholder="Nhập giá bán nhập"
+                            autoComplete="off"
+                            value={
+                              field.value
+                                ? formatNumberWithCommas(field.value)
+                                : ""
+                            }
+                            onChange={(e) => {
+                              const value = e.target.value.replace(/,/g, "");
+                              if (/^\d*$/.test(value)) {
+                                const formattedValue =
+                                  formatNumberWithCommas(value);
+                                setValue("cost", formattedValue);
+                                field.onChange(value);
+                              }
+                            }}
+                          />
+                          {error && (
+                            <span className="error-message">
+                              {error.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="create-product-right">
             <div className="create-product-right-container">
@@ -859,13 +967,6 @@ const UpdateProductPage = () => {
                     <label htmlFor="product-name" style={{ fontWeight: 500 }}>
                       Loại sản phẩm
                     </label>
-                    {/* <input
-                                        type="text"
-                                        id="product-name"
-                                        placeholder="Nhập loại sản phẩm"
-                                        autoComplete="off"
-                                    /> */}
-
                     <div className="category-block">
                       <div
                         className={clsx(

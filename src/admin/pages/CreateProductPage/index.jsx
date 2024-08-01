@@ -109,8 +109,8 @@ const CreateProductPage = () => {
         const options =
             [{
                 color: "trắng",
-                price: 100000,
-                quantity: 10,
+                price: 0,
+                quantity: 0,
                 sizes: [{
                     name: "L",
                     price: 100000,
@@ -129,8 +129,8 @@ const CreateProductPage = () => {
             },
             {
                 color: "đen",
-                price: 100000,
-                quantity: 10,
+                price: 0,
+                quantity: 0,
                 sizes: [{
                     name: "L",
                     price: 100000,
@@ -149,8 +149,8 @@ const CreateProductPage = () => {
             },
             {
                 color: "đỏ",
-                price: 100000,
-                quantity: 10,
+                price: 0,
+                quantity: 0,
                 sizes: [{
                     name: "L",
                     price: 100000,
