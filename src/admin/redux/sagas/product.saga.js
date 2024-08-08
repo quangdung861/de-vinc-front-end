@@ -57,7 +57,8 @@ function* createProductSaga(action) {
     try {
         $$.loading(true);
         const { data, callback } = action.payload;
-        yield requestApi(`/products`, 'POST', data, 'json', 'multipart/form-data')
+        console.log("🚀 ~ function*createProductSaga ~ data:", data)
+        yield requestApi(`/products`, 'POST', data)
         yield put({
             type: SUCCESS(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),
         });
@@ -79,7 +80,6 @@ function* updateProductDetailSaga(action) {
     try {
         $$.loading(true);
         const { id, data, callback } = action.payload;
-        console.log("🚀 ~ function*updateProductDetailSaga ~ data:", data)
         yield requestApi(`/products/${id}`, 'PUT', data)
         $$.loading(false);
         $$.toast('Cập nhập sản phẩm thành công', 'success');

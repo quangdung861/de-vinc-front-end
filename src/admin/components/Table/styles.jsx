@@ -186,7 +186,7 @@ export const Wraper = styled.div`
         height: 13px;
       }
       &::-webkit-scrollbar-thumb {
-        background-image: linear-gradient(to right, #ffa400, #00aefd);
+        background-color: #ccc;
         border-radius: 8px;
       }
     }
