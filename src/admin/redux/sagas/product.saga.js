@@ -57,7 +57,6 @@ function* createProductSaga(action) {
     try {
         $$.loading(true);
         const { data, callback } = action.payload;
-        console.log("🚀 ~ function*createProductSaga ~ data:", data)
         yield requestApi(`/products`, 'POST', data)
         yield put({
             type: SUCCESS(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),

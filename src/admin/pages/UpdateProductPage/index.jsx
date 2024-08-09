@@ -41,18 +41,15 @@ const UpdateProductPage = () => {
   const [isSubmitedCategory, setIsSubmitedCategory] = useState(false);
   const { categoryList } = useSelector((state) => state.admin.categoryReducer);
   const { productDetail } = useSelector((state) => state.admin.productReducer);
-  console.log("🚀 ~ UpdateProductPage ~ productDetail:", productDetail);
   const [categoryKeywords, setCategoryKeywords] = useState("");
   const [categorySelected, setCategorySelected] = useState({});
   const [infomationForm, setInfomationForm] = useState();
-  console.log("🚀 ~ UpdateProductPage ~ infomationForm:", infomationForm);
   const [errorsColor, setErrorsColor] = useState([]);
   const [errorsSize, setErrorsSize] = useState([]);
   const [applyAllValue, setApplyAllValue] = useState({
     price: "",
     quantity: "",
   });
-  console.log("🚀 ~ UpdateProductPage ~ applyAllValue:", applyAllValue);
 
   const categoryDropdownRef = useRef(null);
   const {
@@ -90,7 +87,23 @@ const UpdateProductPage = () => {
     ];
     fields.forEach((field) => setValue(field, productDetail.data[field]));
     setCategorySelected(productDetail.data.category);
-    setInfomationForm(productDetail.data);
+    setInfomationForm({
+      ...productDetail.data,
+      options: productDetail.data?.options?.length > 0 ? productDetail.data.options : [
+        {
+          color: "",
+          price: "",
+          quantity: "",
+          sizes: [
+            {
+              name: "",
+              price: "",
+              quantity: "",
+            },
+          ],
+        },
+      ],
+    });
 
     if (productDetail.data.images) {
       const imageUrls = productDetail.data.images?.split("<&space>");
@@ -154,23 +167,31 @@ const UpdateProductPage = () => {
   }
 
   const handleUpdateProduct = (data) => {
-    console.log("🚀 ~ handleUpdateProduct ~ data:", data);
     if (errorsColor.length > 0 || errorsSize.length > 0) return;
-    const isOptions = infomationForm.options.length > 1 || infomationForm.options[0]?.sizes?.length > 1;
+    const isOptions =
+      infomationForm.options.length > 1 ||
+      infomationForm.options[0]?.sizes?.length > 1;
+    const arrayWithoutLastColor = infomationForm.options.length > 1 ? infomationForm.options.slice(0, -1) : infomationForm.options;
+    const arrayWithoutLastSize = arrayWithoutLastColor.map((option) => {
+      return {
+        ...option,
+        sizes: option.sizes.length > 1 ? option.sizes.slice(0, -1) : [],
+      };
+    });
     const formatData = {
       ...data,
       status: active,
-      price: !isOptions && Number(
-        isNaN(data.price) ? data.price.replace(/,/g, "") : data.price
-      ) || 0,
+      price:
+        Number(isNaN(data.price) ? data.price.replace(/,/g, "") : data.price) ||
+        0,
       cost: Number(isNaN(data.cost) ? data.cost.replace(/,/g, "") : data.cost),
       reducedPrice: Number(
         isNaN(data.reducedPrice)
           ? data.reducedPrice.replace(/,/g, "")
           : data.reducedPrice
       ),
-      quantity: !isOptions && Number(data.quantity) || 0,
-      options: infomationForm.options,
+      quantity: Number(data.quantity) || 0,
+      options: isOptions ? arrayWithoutLastSize : [],
       isOptions,
       images,
       categoryId: categorySelected?.id || null,
@@ -406,7 +427,7 @@ const UpdateProductPage = () => {
     });
 
     if (
-      infomationForm?.options &&
+      infomationForm?.options?.length > 0 &&
       infomationForm?.options[infomationForm?.options.length - 1].color !== ""
     ) {
       setInfomationForm({
@@ -874,48 +895,42 @@ const UpdateProductPage = () => {
               </div>
 
               <div className="content-block-main two">
-                {infomationForm?.options?.length <= 1 &&
-                  (infomationForm?.options.length === 0 ||
-                    infomationForm?.options[0]?.sizes?.length <= 1) && (
-                    <div className="content-section">
-                      <label htmlFor="price">
-                        Giá bán lẻ <i className="fa-solid fa-circle-info"></i>
-                      </label>
-                      <Controller
-                        name="price"
-                        control={control}
-                        rules={{ required: "Giá bán lẻ không được để trống" }}
-                        render={({ field, fieldState: { error } }) => (
-                          <>
-                            <input
-                              type="text"
-                              placeholder="Nhập giá bán lẻ"
-                              autoComplete="off"
-                              value={
-                                field.value
-                                  ? formatNumberWithCommas(field.value)
-                                  : ""
-                              }
-                              onChange={(e) => {
-                                const value = e.target.value.replace(/,/g, "");
-                                if (/^\d*$/.test(value)) {
-                                  const formattedValue =
-                                    formatNumberWithCommas(value);
-                                  setValue("price", formattedValue);
-                                  field.onChange(value);
-                                }
-                              }}
-                            />
-                            {error && (
-                              <span className="error-message">
-                                {error.message}
-                              </span>
-                            )}
-                          </>
+                <div className="content-section">
+                  <label htmlFor="price">
+                    Giá bán lẻ <i className="fa-solid fa-circle-info"></i>
+                  </label>
+                  <Controller
+                    name="price"
+                    control={control}
+                    rules={{ required: "Giá bán lẻ không được để trống" }}
+                    render={({ field, fieldState: { error } }) => (
+                      <>
+                        <input
+                          type="text"
+                          placeholder="Nhập giá bán lẻ"
+                          autoComplete="off"
+                          value={
+                            field.value
+                              ? formatNumberWithCommas(field.value)
+                              : ""
+                          }
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/,/g, "");
+                            if (/^\d*$/.test(value)) {
+                              const formattedValue =
+                                formatNumberWithCommas(value);
+                              setValue("price", formattedValue);
+                              field.onChange(value);
+                            }
+                          }}
+                        />
+                        {error && (
+                          <span className="error-message">{error.message}</span>
                         )}
-                      />
-                    </div>
-                  )}
+                      </>
+                    )}
+                  />
+                </div>
                 <div className="content-section">
                   <label htmlFor="reducedPrice">
                     Giá giảm <i className="fa-solid fa-circle-info"></i>
@@ -923,11 +938,12 @@ const UpdateProductPage = () => {
                   <Controller
                     name="reducedPrice"
                     control={control}
+                    rules={{ required: "Giá giảm không được để trống" }}
                     render={({ field, fieldState: { error } }) => (
                       <>
                         <input
                           type="text"
-                          placeholder="Nhập giá bán nhập"
+                          placeholder="Nhập giá giảm"
                           autoComplete="off"
                           value={
                             field.value
@@ -962,7 +978,7 @@ const UpdateProductPage = () => {
                       <>
                         <input
                           type="text"
-                          placeholder="Nhập giá bán nhập"
+                          placeholder="Nhập giá nhập"
                           autoComplete="off"
                           value={
                             field.value
@@ -986,40 +1002,35 @@ const UpdateProductPage = () => {
                     )}
                   />
                 </div>
-                {infomationForm?.options?.length <= 1 &&
-                  (infomationForm?.options.length === 0 ||
-                    infomationForm?.options[0]?.sizes?.length <= 1) && (
-                    <div className="content-section">
-                      <label htmlFor="quantity">
-                        Số lượng <i className="fa-solid fa-circle-info"></i>
-                      </label>
-                      <Controller
-                        name="quantity"
-                        control={control}
-                        rules={{ required: "Giá nhập không được để trống" }}
-                        render={({ field, fieldState: { error } }) => (
-                          <>
-                            <input
-                              type="text"
-                              placeholder="Nhập giá bán nhập"
-                              autoComplete="off"
-                              value={field.value || ""}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                setValue("quantity", value);
-                                field.onChange(value);
-                              }}
-                            />
-                            {error && (
-                              <span className="error-message">
-                                {error.message}
-                              </span>
-                            )}
-                          </>
+
+                <div className="content-section">
+                  <label htmlFor="quantity">
+                    Số lượng <i className="fa-solid fa-circle-info"></i>
+                  </label>
+                  <Controller
+                    name="quantity"
+                    control={control}
+                    rules={{ required: "Số lượng không được để trống" }}
+                    render={({ field, fieldState: { error } }) => (
+                      <>
+                        <input
+                          type="text"
+                          placeholder="Nhập số lượng"
+                          autoComplete="off"
+                          value={field.value || ""}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setValue("quantity", value);
+                            field.onChange(value);
+                          }}
+                        />
+                        {error && (
+                          <span className="error-message">{error.message}</span>
                         )}
-                      />
-                    </div>
-                  )}
+                      </>
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>

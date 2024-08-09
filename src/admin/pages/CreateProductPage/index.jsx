@@ -614,7 +614,6 @@ const CreateProductPage = () => {
     const navigate = useNavigate();
     const [active, setActive] = useState(1);
     const [images, setImages] = useState([]);
-    console.log("🚀 ~ CreateProductPage ~ images:", images)
     const [draggingIndex, setDraggingIndex] = useState(null);
     const [
         isShowModalConfirmRemoveImageAll,
@@ -648,7 +647,6 @@ const CreateProductPage = () => {
             ],
         }
     );
-    console.log("🚀 ~ CreateProductPage ~ infomationForm:", infomationForm)
     const [errorsColor, setErrorsColor] = useState([]);
     const [errorsSize, setErrorsSize] = useState([]);
     const [applyAllValue, setApplyAllValue] = useState({
@@ -733,10 +731,16 @@ const CreateProductPage = () => {
         };
     }
 
-    const handleUpdateProduct = (data) => {
-        console.log("🚀 ~ handleUpdateProduct ~ data:", data)
+    const handleCreateProduct = (data) => {
         if (errorsColor.length > 0 || errorsSize.length > 0) return;
         const isOptions = infomationForm.options.length > 1 || infomationForm.options[0]?.sizes?.length > 1;
+        const arrayWithoutLastColor = infomationForm.options.length > 1 ? infomationForm.options.slice(0, -1) : infomationForm.options;
+        const arrayWithoutLastSize = arrayWithoutLastColor.map((option) => {
+          return {
+            ...option,
+            sizes: option.sizes.length > 1 ? option.sizes.slice(0, -1) : [],
+          };
+        });
         const formatData = {
             ...data,
             status: active,
@@ -750,7 +754,7 @@ const CreateProductPage = () => {
                     : data.reducedPrice
             ),
             quantity: !isOptions && Number(data.quantity) || 0,
-            options: infomationForm.options,
+            options: isOptions ? arrayWithoutLastSize : [],
             isOptions,
             images,
             categoryId: categorySelected?.id || null,
@@ -1209,7 +1213,7 @@ const CreateProductPage = () => {
         <Wraper>
             <form
                 id="create-form"
-                onSubmit={handleSubmit((data) => handleUpdateProduct(data))}
+                onSubmit={handleSubmit((data) => handleCreateProduct(data))}
             >
                 <div className="create-product-header">
                     <Link to={ROUTER_ADMIN.PRODUCT_LIST}>

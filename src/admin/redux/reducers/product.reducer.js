@@ -71,15 +71,11 @@ const productReducer = createReducer(initialState, (builder) => {
         })
         .addCase(SUCCESS(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL), (state, action) => {
             const { data, meta } = action.payload;
-            const newData = {
-                ...data,
-                options: JSON.parse(data.options),
-            }
             return {
                 ...state,
                 productDetail: {
                     ...state.productDetail,
-                    data: newData,
+                    data,
                     meta,
                     loading: false,
                 },
