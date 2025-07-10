@@ -13,6 +13,12 @@ width: 100%;
     padding: 0 32px 32px;
 } 
 }
+
+@media only screen and (max-width: 562px) {
+    .wraper-typical-products {
+        padding: 0 16px 16px; 
+    }
+}
 `;
 
 export const MainContainer = styled.div`

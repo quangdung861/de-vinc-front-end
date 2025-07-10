@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, redirect, useNavigate, useParams } from "react-router-dom";
 import clsx from "clsx";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -14,6 +14,7 @@ import { Wraper } from "./styles";
 import {
   createCategoryAction,
   createProductAction,
+  deleteProductAction,
   getCategoryListAction,
   getProductDetailAction,
   updateProductDetailAction,
@@ -89,20 +90,23 @@ const UpdateProductPage = () => {
     setCategorySelected(productDetail.data.category);
     setInfomationForm({
       ...productDetail.data,
-      options: productDetail.data?.options?.length > 0 ? productDetail.data.options : [
-        {
-          color: "",
-          price: "",
-          quantity: "",
-          sizes: [
-            {
-              name: "",
-              price: "",
-              quantity: "",
-            },
-          ],
-        },
-      ],
+      options:
+        productDetail.data?.options?.length > 0
+          ? productDetail.data.options
+          : [
+              {
+                color: "",
+                price: 0,
+                quantity: 0,
+                sizes: [
+                  {
+                    name: 0,
+                    price: 0,
+                    quantity: 0,
+                  },
+                ],
+              },
+            ],
     });
 
     if (productDetail.data.images) {
@@ -171,7 +175,10 @@ const UpdateProductPage = () => {
     const isOptions =
       infomationForm.options.length > 1 ||
       infomationForm.options[0]?.sizes?.length > 1;
-    const arrayWithoutLastColor = infomationForm.options.length > 1 ? infomationForm.options.slice(0, -1) : infomationForm.options;
+    const arrayWithoutLastColor =
+      infomationForm.options.length > 1
+        ? infomationForm.options.slice(0, -1)
+        : infomationForm.options;
     const arrayWithoutLastSize = arrayWithoutLastColor.map((option) => {
       return {
         ...option,
@@ -647,6 +654,17 @@ const UpdateProductPage = () => {
     });
   };
 
+  const handleDeleteProduct = () => {
+    return dispatch(
+      deleteProductAction({
+        id,
+        callback: {
+          redirect: () => navigate(ROUTER_ADMIN.PRODUCT_LIST),
+        },
+      })
+    );
+  };
+
   return (
     <Wraper>
       <form
@@ -654,17 +672,23 @@ const UpdateProductPage = () => {
         onSubmit={handleSubmit((data) => handleUpdateProduct(data))}
       >
         <div className="create-product-header">
-          <Link to={ROUTER_ADMIN.PRODUCT_LIST}>
-            <div className="header-content-left">
+          <div className="header-content-left">
+            <Link to={ROUTER_ADMIN.PRODUCT_LIST}>
               <i className="fa-solid fa-chevron-left"></i>
               Quay lại danh sách sản phẩm
-            </div>
-          </Link>
+            </Link>
+          </div>
+
           <div className="header-content-right">
             <Button
               className="btn-dash"
               text={"Thoát"}
               onClick={() => navigate(ROUTER_ADMIN.PRODUCT_LIST)}
+            />
+            <Button
+              className="btn-dash danger"
+              text={"Xoá"}
+              onClick={() => handleDeleteProduct()}
             />
             <Button text={"Lưu"} type="submit" />
           </div>
@@ -755,7 +779,7 @@ const UpdateProductPage = () => {
                     <CKEditor
                       editor={ClassicEditor}
                       data={field.value}
-                      onReady={(editor) => { }}
+                      onReady={(editor) => {}}
                       config={{
                         extraPlugins: [uploadPlugin],
                         toolbar: {
@@ -820,73 +844,73 @@ const UpdateProductPage = () => {
               {(infomationForm?.options?.length > 1 ||
                 (infomationForm?.options?.length > 0 &&
                   infomationForm?.options[0]?.sizes?.length > 1)) && (
-                  <div className="content-block-main option classification-2">
-                    <div className="content-section">
-                      <label htmlFor="product-name">
-                        <span className="gif-icon"></span>
-                        Danh sách phân loại hàng
-                      </label>
-                      <div className="batch-edit-row">
-                        <div className="block-input">
-                          <input
-                            type="text"
-                            placeholder="Giá"
-                            value={applyAllValue.price}
-                            onChange={(e) =>
-                              !isNaN(e.target.value) &&
-                              setApplyAllValue({
-                                ...applyAllValue,
-                                price: Number(e.target.value),
-                              })
-                            }
-                          />
-                          <input
-                            type="text"
-                            placeholder="Kho hàng"
-                            value={applyAllValue.quantity}
-                            onChange={(e) =>
-                              !isNaN(e.target.value) &&
-                              setApplyAllValue({
-                                ...applyAllValue,
-                                quantity: Number(e.target.value),
-                              })
-                            }
-                          />
-                        </div>
-                        <div
-                          className="btn-primary btn-apply-edit"
-                          onClick={() => applyPriceToAllSizesAndOptions()}
-                        >
-                          Áp dụng cho tất cả phân loại
-                        </div>
+                <div className="content-block-main option classification-2">
+                  <div className="content-section">
+                    <label htmlFor="product-name">
+                      <span className="gif-icon"></span>
+                      Danh sách phân loại hàng
+                    </label>
+                    <div className="batch-edit-row">
+                      <div className="block-input">
+                        <input
+                          type="text"
+                          placeholder="Giá"
+                          value={applyAllValue.price}
+                          onChange={(e) =>
+                            !isNaN(e.target.value) &&
+                            setApplyAllValue({
+                              ...applyAllValue,
+                              price: Number(e.target.value),
+                            })
+                          }
+                        />
+                        <input
+                          type="text"
+                          placeholder="Kho hàng"
+                          value={applyAllValue.quantity}
+                          onChange={(e) =>
+                            !isNaN(e.target.value) &&
+                            setApplyAllValue({
+                              ...applyAllValue,
+                              quantity: Number(e.target.value),
+                            })
+                          }
+                        />
                       </div>
-                      <div className="product-classification-table">
-                        <div className="product-classification-table-header">
-                          {infomationForm?.options?.length > 1 && (
-                            <div className="product-classification-table-header-item color">
-                              Màu sắc
+                      <div
+                        className="btn-primary btn-apply-edit"
+                        onClick={() => applyPriceToAllSizesAndOptions()}
+                      >
+                        Áp dụng cho tất cả phân loại
+                      </div>
+                    </div>
+                    <div className="product-classification-table">
+                      <div className="product-classification-table-header">
+                        {infomationForm?.options?.length > 1 && (
+                          <div className="product-classification-table-header-item color">
+                            Màu sắc
+                          </div>
+                        )}
+                        {infomationForm?.options &&
+                          infomationForm?.options[0]?.sizes?.length > 1 && (
+                            <div className="product-classification-table-header-item size">
+                              Size
                             </div>
                           )}
-                          {infomationForm?.options &&
-                            infomationForm?.options[0]?.sizes?.length > 1 && (
-                              <div className="product-classification-table-header-item size">
-                                Size
-                              </div>
-                            )}
-                          <div className="product-classification-table-header-item price">
-                            Giá
-                          </div>
-                          <div className="product-classification-table-header-item quantity">
-                            Kho hàng
-                          </div>
+                        <div className="product-classification-table-header-item price">
+                          Giá
                         </div>
-                        <div className="product-classification-table-content">
-                          {renderProductClassificationTable()}
+                        <div className="product-classification-table-header-item quantity">
+                          Kho hàng
                         </div>
+                      </div>
+                      <div className="product-classification-table-content">
+                        {renderProductClassificationTable()}
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
+              )}
             </div>
 
             <div className="content-block">

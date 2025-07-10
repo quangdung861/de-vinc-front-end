@@ -2,7 +2,7 @@ import React, { forwardRef, useEffect, useRef } from 'react';
 import "./styles.scss"
 import clsx from 'clsx';
 
-const Button = forwardRef(({ text, icon, onClick, className }, ref) => {
+const Button = forwardRef(({ text, icon, onClick, className, type }, ref) => {
   const internalRef = useRef(null);
   const buttonRef = ref || internalRef;
 
@@ -20,7 +20,7 @@ const Button = forwardRef(({ text, icon, onClick, className }, ref) => {
   }, [onClick]);
 
   return (
-    <button ref={buttonRef} className={clsx(className || "btn-primary")}>
+    <button ref={buttonRef} className={clsx(className || "btn-primary")} type={type || 'button'} >
       {icon}
       {text}
     </button>

@@ -96,8 +96,9 @@ export const Wrapper = styled.div`
       .feedback-btn {
         padding: 15px 25px;
       }
-    
-      .foo-item-phone, .foo-item-email {
+
+      .foo-item-phone,
+      .foo-item-email {
         display: flex;
         align-items: center;
         gap: 16px;
@@ -114,7 +115,6 @@ export const Wrapper = styled.div`
           font-size: 18px;
           font-weight: 500;
           word-wrap: break-word;
-
         }
       }
       .social {
@@ -162,7 +162,6 @@ export const Wrapper = styled.div`
           width: 100%;
         }
         .contact {
-          
         }
         .social {
           margin-left: 40px;
@@ -182,6 +181,7 @@ export const Wrapper = styled.div`
   }
 
   @media only screen and (max-width: 768px) {
+    padding: 34px 32px 20px;
     .footer-container {
       .footer-top {
         justify-content: flex-start;
@@ -203,7 +203,7 @@ export const Wrapper = styled.div`
         width: 100%;
       }
     }
-    
+
     .footer-bottom {
       .foo-bottom-left {
         width: 100%;
@@ -214,4 +214,7 @@ export const Wrapper = styled.div`
     }
   }
 
+  @media only screen and (max-width: 562px) {
+    padding: 17px 4px 10px;
+  }
 `;

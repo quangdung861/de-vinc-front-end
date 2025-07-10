@@ -9,18 +9,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSearchListAction } from "client/redux/actions";
 import { getImage } from "client/utils";
 import { ClientContext } from "client/contexts/ClientProvider";
+import Register from "../Register";
+import SidebarMobile from "../SidebarMobile";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isBoxSearch } = useContext(ClientContext);
-  const [isShowModal, setIsShowModal] = useState(false);
+  const [isShowLoginModal, setIsShowLoginModal] = useState(false);
+  const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [lastLoggedPosition, setLastLoggedPosition] = useState(0);
   const [isShow, setIsShow] = useState(true);
   const [isOverlayModal, setIsOverlayModal] = useState(false);
   const [keyword, setKeyword] = useState("");
   const { searchList } = useSelector((state) => state.client.productReducer);
+  const [isShowSidebarMobile, setIsShowSidebarMobile] = useState(false);
+  console.log("🚀 ~ Header ~ isShowSidebarMobile:", isShowSidebarMobile);
 
   const inputRef = useRef(null);
 
@@ -145,17 +150,20 @@ const Header = () => {
           <div className="header-left"></div>
           <div className="header-center">
             <div className="promotion-description">
-              Miễn phí giao hàng với đơn hàng từ 499K
+              Miễn phí giao hàng với đơn hàng từ 399k
             </div>
           </div>
           <div className="header-right">
-          <div
+            <div
               className="--btn-default btn-register"
-              onClick={() => setIsShowModal(true)}
+              onClick={() => setIsShowRegisterModal(true)}
             >
               Đăng ký
             </div>
-            <div className="--btn-default btn-login" onClick={() => setIsShowModal(true)}>
+            <div
+              className="--btn-default btn-login"
+              onClick={() => setIsShowLoginModal(true)}
+            >
               Đăng nhập
             </div>
           </div>
@@ -188,9 +196,16 @@ const Header = () => {
                 </div>
               </div>
             </div>
-            <div className="btn-menu-mobile">
+            <div
+              className="btn-menu-mobile"
+              onClick={() => setIsShowSidebarMobile(true)}
+            >
               <i className="fa-solid fa-bars"></i>
             </div>
+            <SidebarMobile
+              isShowSidebarMobile={isShowSidebarMobile}
+              setIsShowSidebarMobile={setIsShowSidebarMobile}
+            />
           </div>
           <div className="header-right">
             {isBoxSearch && (
@@ -264,11 +279,24 @@ const Header = () => {
         </div>
       </div>
       <Modal
-        isShow={isShowModal}
-        setIsShow={setIsShowModal}
-        className='modal-login'
+        isShow={isShowLoginModal}
+        setIsShow={setIsShowLoginModal}
+        className="modal-login"
       >
-        <Login setIsShow={setIsShowModal} />
+        <Login
+          setIsShow={setIsShowLoginModal}
+          setIsShowRegister={setIsShowRegisterModal}
+        />
+      </Modal>
+      <Modal
+        isShow={isShowRegisterModal}
+        setIsShow={setIsShowRegisterModal}
+        className="modal-login"
+      >
+        <Register
+          setIsShow={setIsShowRegisterModal}
+          setIsShowLogin={setIsShowLoginModal}
+        />
       </Modal>
     </>
   );

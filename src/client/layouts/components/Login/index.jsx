@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './styles.scss';
 import EmailFormLogin from './EmailFormLogin';
 
-const Login = ({ setIsShow }) => {
+const Login = ({ setIsShow, setIsShowRegister }) => {
     const [loginWay, setLoginWay] = useState("");
 
     const renderLoginWay = () => {
@@ -47,7 +47,7 @@ const Login = ({ setIsShow }) => {
                                 </li>
                                 <li className="item">
                                     <button
-                                        className="--btn-default btn-custome "
+                                        className="--btn-default btn-custome disable"
                                     // onClick={() => handleGoogleSignIn()}
                                     >
                                         <img
@@ -59,7 +59,7 @@ const Login = ({ setIsShow }) => {
                                 </li>
                                 <li className="item">
                                     <button
-                                        className="--btn-default btn-custome "
+                                        className="--btn-default btn-custome disable"
                                     // onClick={() => handleGoogleSignIn()}
                                     >
                                         <img
@@ -71,7 +71,7 @@ const Login = ({ setIsShow }) => {
                                 </li>
                                 <li className="item">
                                     <button
-                                        className="--btn-default btn-custome "
+                                        className="--btn-default btn-custome disable"
                                     // onClick={() => handleGithubSignIn()}
                                     >
                                         <img
@@ -85,14 +85,14 @@ const Login = ({ setIsShow }) => {
                             </ul>
                             <div style={{ color: "#35414c" }}>
                                 Bạn chưa có tài khoản?{" "}
-                                <Link
-                                    style={{ color: "#f05123", fontWeight: 500 }}
-                                // to={ROUTES.REGISTER}
+                                <span
+                                    style={{ color: "#f05123", fontWeight: 500, cursor: "pointer" }}
+                                    onClick={() => {setIsShow(false); setIsShowRegister(true)}}
                                 >
                                     Đăng ký
-                                </Link>
+                                </span>
                             </div>
-                            <div style={{ color: "#f05123", fontWeight: 500, marginTop: 12 }}>
+                            <div style={{ color: "#f05123", fontWeight: 500, marginTop: 12, cursor: "pointer" }}>
                                 Quên mật khẩu
                             </div>
                         </div>

@@ -40,6 +40,7 @@ export const Container = styled.div`
           font-weight: 500;
           font-size: 16px;
           border-bottom: 1px solid var(--boder-dividing-color);
+          user-select: none;
           > i {
             width: 32px;
             height: 32px;

@@ -86,7 +86,24 @@ function* updateProductDetailSaga(action) {
     } catch (error) {
         $$.loading(false);
         $$.toast('Cập nhập sản phẩm không thành công', 'danger');
-        throw new error;
+        throw error;
+    }
+}
+
+function* deleteProductSaga(action) {
+    try {
+        $$.loading(true);
+        const { id, callback } = action.payload;
+        console.log(id);
+        
+        yield requestApi(`/products/${id}`, 'DELETE')
+        $$.loading(false);
+        $$.toast('Xoá sản phẩm thành công', 'success');
+        callback.redirect();
+    } catch (error) {
+        $$.loading(false);
+        $$.toast('Xoá sản phẩm không thành công', 'danger');
+        throw error;
     }
 }
 
@@ -95,4 +112,5 @@ export default function* productSaga() {
     yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT), createProductSaga);
     yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL), getProductDetailSaga);
     yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.UPDATE_PRODUCT_DETAIL), updateProductDetailSaga);
+    yield takeEvery(REQUEST(PRODUCT_ADMIN_ACTION.DELETE_PRODUCT_DETAIL), deleteProductSaga);
 }

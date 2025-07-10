@@ -15,4 +15,9 @@
       opacity: 0.9;
     }
   }
+
+  .--btn-default.disable {
+    pointer-events: none;
+    opacity: .5;
+  }
   

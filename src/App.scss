@@ -12,6 +12,7 @@ body {
   font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
     "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
+  overflow: auto;
 
   ul,
   li {
@@ -316,8 +317,6 @@ label {
   --box-shadow-default: 0 0 10px 0 rgba(190, 63, 63, 0.2);
   --background-linear: linear-gradient(to right bottom, #ff8f26, #ff5117);
 
-
-  overflow-y: auto;
 
   &::-webkit-scrollbar {
     -webkit-appearance: none;

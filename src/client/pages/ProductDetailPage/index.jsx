@@ -211,7 +211,7 @@ const ProductDetail = () => {
       <div
         className={clsx(
           "size-item",
-          item.quantity === 0 && "disable",
+          !item.quantity && "disable",
           cartInfo.size === item.name && "active"
         )}
         key={index}
@@ -220,7 +220,7 @@ const ProductDetail = () => {
         {item.name}
       </div>
     ));
-  }, [cartInfo.size, cartInfo.color, productDetail]);
+  }, [cartInfo, productDetail]);
 
   const handleAddToCart = () => {
     setIsFirstSubmit(true);
@@ -345,7 +345,7 @@ const ProductDetail = () => {
             </div>
             <div className="product-policy-item">
               <img src={require("client/assets/images/return-60.png")} alt="" />
-              <div>60 ngày đổi trả vì bất kỳ lý do gì</div>
+              <div>15 ngày đổi trả vì bất kỳ lý do gì</div>
             </div>
             <div className="product-policy-item">
               <img src={require("client/assets/images/phone.png")} alt="" />
@@ -425,7 +425,7 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      <div className="product-review">
+      {/* <div className="product-review">
         <div className="product-review-left">
           <div className="product-review-current">
             <div className="product-review-current-title">
@@ -538,7 +538,8 @@ const ProductDetail = () => {
       <div className="product-releated">
         <div className="product-releated-header">SẢN PHẨM BẠN ĐÃ XEM</div>
         <TypicalProduct data={productList?.data} show={5} />
-      </div>
+      </div> */}
+
       <Modal
         isShow={isShowModalGuideSize}
         setIsShow={setIsShowModalGuideSize}

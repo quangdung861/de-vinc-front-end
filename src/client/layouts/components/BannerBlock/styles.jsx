@@ -50,11 +50,12 @@ padding-top: 30%;
     .banner-container {
     .banner-content {
         .banner-content-left {
-            padding: 0 0 40px 32px;
+            padding: 40px;
             .title-banner {
-                font-size: 40px;
+                font-size: 32px;
             }
             .describe-banner {
+                display: none;
             }
             .btn-custom {
                 padding: 8px 32px;
@@ -68,8 +69,27 @@ padding-top: 30%;
     .banner-container {
     .banner-content {
         .banner-content-left {
+            padding: 80px 32px 32px 32px;
             .title-banner {
-                font-size: 30px;
+                font-size: 24px;
+            }
+            .describe-banner {
+            }
+            .btn-custom {
+            }
+        }
+        .banner-content-right {}
+    }
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .banner-container {
+    .banner-content {
+        .banner-content-left {
+            padding: 100px 20px 20px 20px;
+            .title-banner {
+                font-size: 20px;
             }
             .describe-banner {
             }
