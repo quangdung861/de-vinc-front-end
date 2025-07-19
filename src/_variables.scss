@@ -6,9 +6,10 @@
     font-weight: 600;
     border-radius: 20px;
     cursor: pointer;
-    flex-shrink: 0;
+    white-space: nowrap;
     transition: all 0.2s ease;
     border: none;
+    text-align: center;
     user-select: none;
     background: linear-gradient(to right bottom, #ff8f26, #ff5117);
     &:hover {

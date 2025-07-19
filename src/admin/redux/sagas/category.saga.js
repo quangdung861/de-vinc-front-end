@@ -35,6 +35,9 @@ function* createCategorySaga(action) {
         yield put({
             type: SUCCESS(CATEGORY_ADMIN_ACTION.CREATE_CATEGORY),
         });
+        yield put({
+        type: REQUEST(CATEGORY_ADMIN_ACTION.GET_CATEGORY_LIST), 
+        });
         $$.loading(false);
         $$.toast("Thêm loại sản phẩm thành công", "success")
         callback?.closeModal();

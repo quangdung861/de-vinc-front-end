@@ -47,19 +47,19 @@ const HomePage = () => {
     <Wrapper>
       <Carousel />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList.data} />
+        <TypicalProduct data={productList?.data} />
       </div>
       <BannerBlock {...data[0]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList.data} />
+        <TypicalProduct data={productList?.data} />
       </div>
       <BannerBlock {...data[1]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList.data} />
+        <TypicalProduct data={productList?.data} />
       </div>
       <BannerBlock {...data[2]} />
       <div className="wraper-typical-products">
-        <TypicalProduct data={productList.data} />
+        <TypicalProduct data={productList?.data} />
       </div>
     </Wrapper>
   )

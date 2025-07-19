@@ -35,7 +35,7 @@ const TypicalProduct = ({ data, show }) => {
         <S.Wrapper $show={show}>
             <div className="typical-products-container">
                 <div className="typical-products-centent">
-                    <div className="typical-products-name">{data?.name}</div>
+                    {/* <div className="typical-products-name">{data?.name}</div> */}
                     <div className="typical-products-list">
                         {!data?.loading ? rendeTypicalList : <SkeletonTypicalProduct />}
                     </div>

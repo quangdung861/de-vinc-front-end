@@ -18,6 +18,7 @@ import {
 } from "admin/redux/actions";
 import requestApi from "admin/helpers/api";
 import { produce } from "immer";
+import getApiUrl from "admin/utils/getApiUrl";
 
 const CreateProductPage = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const CreateProductPage = () => {
   const [categoryKeywords, setCategoryKeywords] = useState("");
   const [categorySelected, setCategorySelected] = useState({});
   const [infomationForm, setInfomationForm] = useState({
+    highlights: [""],
     options: [
       {
         color: "",
@@ -149,13 +151,13 @@ const CreateProductPage = () => {
         ? infomationForm.options.slice(0, -1)
         : infomationForm.options;
     const arrayWithoutLastSize = arrayWithoutLastColor.map((option) => {
-      return {
+      return {    
         ...option,
         sizes: option.sizes.length > 1 ? option.sizes.slice(0, -1) : [],
       };
     });
     const formatData = {
-      ...data,
+      ...data,  
       status: active,
       price:
         (!isOptions &&
@@ -172,6 +174,7 @@ const CreateProductPage = () => {
       quantity: (!isOptions && Number(data.quantity)) || 0,
       options: isOptions ? arrayWithoutLastSize : [],
       isOptions,
+      highlights: infomationForm.highlights.slice(0, -1),
       images,
       categoryId: categorySelected?.id || null,
     };
@@ -201,7 +204,7 @@ const CreateProductPage = () => {
             <i className={clsx("fa-solid fa-circle-xmark")}></i>
           </span>
           <img
-            src={process.env.REACT_APP_API_URL + "/" + image}
+            src={image}
             alt=""
             className="image"
           />
@@ -335,6 +338,17 @@ const CreateProductPage = () => {
         }
       );
     }
+
+    if (name === "highlights") {
+      newInfomationForm.highlights = newInfomationForm.highlights.map((highlight, index) => {
+        if (index === optionIndex) {
+          return value
+        }
+        return highlight;
+      }
+      )
+    }
+
     setInfomationForm(newInfomationForm);
   };
 
@@ -367,9 +381,64 @@ const CreateProductPage = () => {
       );
     }
 
-    console.log(newInfomationForm);
+      if (name === "highlights") {
+      newInfomationForm.highlights = newInfomationForm.highlights.filter(
+        (_, index) => {
+          return index !== optionIndex;
+        }
+      );
+    }
+
     setInfomationForm(newInfomationForm);
   };
+
+  const renderHighlights = () => {
+    let list = infomationForm?.highlights?.map((highligh, index) => {
+      return (
+        <div className="block-option-content-item" key={index}>
+          <div className="input-box">
+            <input
+              name="highlights"
+              value={highligh}
+              type="text"
+              placeholder="Nhập"
+              autoComplete="off"
+              onChange={(e) => handleChangeForm(e.target.value, index, "highlights")}
+            />
+            {index !== infomationForm?.highlights?.length - 1 &&
+              highligh === "" && (
+                <span className="error-message colors">
+                  Không được để trống ô
+                </span>
+              )}
+          </div>
+
+          <i
+            className="fa-regular fa-trash-can"
+            onClick={() =>
+              infomationForm?.highlights.length - 1 !== index &&
+              handleDeleteForm(index, "highlights")
+            }
+          ></i>
+        </div>
+      );
+    });
+
+    if (
+      infomationForm?.highlights &&
+      infomationForm?.highlights[infomationForm?.highlights.length - 1] !== ""
+    ) {
+      setInfomationForm({
+        ...infomationForm,
+        highlights: [
+          ...infomationForm.highlights,
+          ''
+        ]
+      });
+    }
+
+    return list;
+  }
 
   const renderColorList = () => {
     let list = infomationForm?.options?.map((option, index) => {
@@ -734,7 +803,7 @@ const CreateProductPage = () => {
                     <CKEditor
                       editor={ClassicEditor}
                       data={field.value}
-                      onReady={(editor) => {}}
+                      onReady={(editor) => { }}
                       config={{
                         extraPlugins: [uploadPlugin],
                         toolbar: {
@@ -770,6 +839,21 @@ const CreateProductPage = () => {
                   </span>
                 )}
               </div>
+
+              <div className="content-block-main option classification-1">
+                <div className="content-section">
+                  <label htmlFor="product-name">
+                    <span className="gif-icon"></span>
+                    Đặc điểm nổi bật <i className="fa-solid fa-circle-info"></i>
+                  </label>
+                  <div className="block-option box-color">
+                    <div className="block-option-header">Chi tiết</div>
+                    <div className="block-option-content">
+                      {renderHighlights()}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="content-block">
@@ -799,73 +883,73 @@ const CreateProductPage = () => {
               {(infomationForm?.options?.length > 1 ||
                 (infomationForm?.options?.length > 0 &&
                   infomationForm?.options[0]?.sizes?.length > 1)) && (
-                <div className="content-block-main option classification-2">
-                  <div className="content-section">
-                    <label htmlFor="product-name">
-                      <span className="gif-icon"></span>
-                      Danh sách phân loại hàng
-                    </label>
-                    <div className="batch-edit-row">
-                      <div className="block-input">
-                        <input
-                          type="text"
-                          placeholder="Giá"
-                          value={applyAllValue.price}
-                          onChange={(e) =>
-                            !isNaN(e.target.value) &&
-                            setApplyAllValue({
-                              ...applyAllValue,
-                              price: Number(e.target.value),
-                            })
-                          }
-                        />
-                        <input
-                          type="text"
-                          placeholder="Kho hàng"
-                          value={applyAllValue.quantity}
-                          onChange={(e) =>
-                            !isNaN(e.target.value) &&
-                            setApplyAllValue({
-                              ...applyAllValue,
-                              quantity: Number(e.target.value),
-                            })
-                          }
-                        />
+                  <div className="content-block-main option classification-2">
+                    <div className="content-section">
+                      <label htmlFor="product-name">
+                        <span className="gif-icon"></span>
+                        Danh sách phân loại hàng
+                      </label>
+                      <div className="batch-edit-row">
+                        <div className="block-input">
+                          <input
+                            type="text"
+                            placeholder="Giá"
+                            value={applyAllValue.price}
+                            onChange={(e) =>
+                              !isNaN(e.target.value) &&
+                              setApplyAllValue({
+                                ...applyAllValue,
+                                price: Number(e.target.value),
+                              })
+                            }
+                          />
+                          <input
+                            type="text"
+                            placeholder="Kho hàng"
+                            value={applyAllValue.quantity}
+                            onChange={(e) =>
+                              !isNaN(e.target.value) &&
+                              setApplyAllValue({
+                                ...applyAllValue,
+                                quantity: Number(e.target.value),
+                              })
+                            }
+                          />
+                        </div>
+                        <div
+                          className="btn-primary btn-apply-edit"
+                          onClick={() => applyPriceToAllSizesAndOptions()}
+                        >
+                          Áp dụng cho tất cả phân loại
+                        </div>
                       </div>
-                      <div
-                        className="btn-primary btn-apply-edit"
-                        onClick={() => applyPriceToAllSizesAndOptions()}
-                      >
-                        Áp dụng cho tất cả phân loại
-                      </div>
-                    </div>
-                    <div className="product-classification-table">
-                      <div className="product-classification-table-header">
-                        {infomationForm?.options?.length > 1 && (
-                          <div className="product-classification-table-header-item color">
-                            Màu sắc
-                          </div>
-                        )}
-                        {infomationForm?.options &&
-                          infomationForm?.options[0]?.sizes?.length > 1 && (
-                            <div className="product-classification-table-header-item size">
-                              Size
+                      <div className="product-classification-table">
+                        <div className="product-classification-table-header">
+                          {infomationForm?.options?.length > 1 && (
+                            <div className="product-classification-table-header-item color">
+                              Màu sắc
                             </div>
                           )}
-                        <div className="product-classification-table-header-item price">
-                          Giá
+                          {infomationForm?.options &&
+                            infomationForm?.options[0]?.sizes?.length > 1 && (
+                              <div className="product-classification-table-header-item size">
+                                Size
+                              </div>
+                            )}
+                          <div className="product-classification-table-header-item price">
+                            Giá
+                          </div>
+                          <div className="product-classification-table-header-item quantity">
+                            Kho hàng
+                          </div>
                         </div>
-                        <div className="product-classification-table-header-item quantity">
-                          Kho hàng
+                        <div className="product-classification-table-content">
+                          {renderProductClassificationTable()}
                         </div>
-                      </div>
-                      <div className="product-classification-table-content">
-                        {renderProductClassificationTable()}
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
 
             <div className="content-block">

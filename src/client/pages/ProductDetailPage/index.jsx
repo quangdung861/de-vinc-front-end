@@ -36,7 +36,6 @@ const ProductDetail = () => {
   const { productDetail, productList } = useSelector(
     (state) => state.client.productReducer
   );
-  console.log("🚀 ~ ProductDetail ~ productDetail:", productDetail)
   const [imageSelected, setImageSelected] = useState(
     require("client/assets/images/anh-mau.webp")
   );
@@ -63,7 +62,10 @@ const ProductDetail = () => {
     size: "",
     quantity: 1,
   });
-  console.log("🚀 ~ ProductDetail ~ cartInfo:", cartInfo)
+  const [uiState, setUiState] = useState({
+    isShowFullName: false,
+  })
+
 
   const filterRatingRef = useRef(null);
   const filterImageRef = useRef(null);
@@ -227,6 +229,13 @@ const ProductDetail = () => {
     if (isOptionSize && !cartInfo.size) $$.toast("Bạn chưa chọn loại sản phẩm");
   }
 
+  const highlightsData = ["Chất liệu: 95% Cotton Compact - 5% Spandex", "Phù hợp với: mặc ở nhà, đi làm, đi chơi", "Kiểu dáng: Regular Fit dáng suông", "Tự hào sản xuất tại Việt Nam", "Người mẫu: 184 cm, 73 kg, mặc size 2XL"]
+
+  const renderHighlights = () => productDetail.data.highlights?.map((item, index) => <div key={index} className="product-features-item">
+    ─ &nbsp;{item}
+  </div>
+  )
+
   return (
     <div className="product-detail-page">
       <div className="product-main">
@@ -243,7 +252,14 @@ const ProductDetail = () => {
         </div>
         <div className="product-right">
           <div className="product-title">
-            <div className="product-name">{productDetail.data?.name}</div>
+            <div className="product-name-box">
+              <div className={clsx("product-name", uiState.isShowFullName && "open")} onClick={() => setUiState({ ...uiState, isShowFullName: !uiState.isShowFullName })}>
+                {productDetail.data?.name}
+              </div>
+              {
+                !uiState.isShowFullName && <span className="icon-open-name">▼</span>
+              }
+            </div>
             <div className="product-describe">Premium</div>
           </div>
           <div className="product-rating">
@@ -282,26 +298,26 @@ const ProductDetail = () => {
           </div>
           <div className="product-promotion-infomation">
             <div className="product-promotion-infomation__item">
-              Mua 2 được giảm thêm 5%
+              Miễn phí vận chuyển với đơn hàng từ 399k
             </div>
             <div className="product-promotion-infomation__item">
-              Hoàn tiền x2 Coolcash đến ngày 31/07/2024
+              Hổ trợ đổi trả tận nơi trong 15 ngày
             </div>
           </div>
-          {isOptionColor && (
+          {/* {isOptionColor && (
             <div className="product-color">
               <div className="color-selected">
                 Màu sắc: <span>{cartInfo.color}</span>
               </div>
               <div className="color-list">
-                {/* <div className="color-item"><img src={getImage(null)} alt="" /></div>
+                <div className="color-item"><img src={getImage(null)} alt="" /></div>
               <div className="color-item"><img src={getImage(null)} alt="" /></div>
-              <div className="color-item"><img src={getImage(null)} alt="" /></div> */}
+              <div className="color-item"><img src={getImage(null)} alt="" /></div>
                 {renderColorList()}
               </div>
             </div>
-          )}
-          {isOptionSize && (
+          )} */}
+          {/* {isOptionSize && (
             <div className={clsx("size-product", !cartInfo.size && isFirstSubmit && 'required')}>
               <div className="size-selected">
                 <div className="size-selected-describe">
@@ -318,24 +334,37 @@ const ProductDetail = () => {
                 {renderSizeList}
               </div>
             </div>
-          )}
+          )} */}
 
           <div className="product-action">
-            <div className="product-quantity">
+            {/* <div className="product-quantity">
               <div className="decrease-quantity" onClick={() => cartInfo.quantity > 1 && setCartInfo({ ...cartInfo, quantity: cartInfo.quantity - 1 })}>-</div>
               <div className="quantity">{cartInfo.quantity}</div>
               <div className="increase-quantity" onClick={() => setCartInfo({ ...cartInfo, quantity: cartInfo.quantity + 1 })}>+</div>
-            </div>
-            <div className="--btn-default btn-add-to-cart" onClick={() => handleAddToCart()}>
-              Thêm vào giỏ hàng
-            </div>
+            </div> */}
+            <a
+              href="https://zalo.me/0935411853"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="--btn-default btn-add-to-cart"
+            >
+              Nhắn tin mua hàng
+            </a>
           </div>
           <div className="chat-with-devinc">
             <img
-              src={require("client/assets/images/Facebook_Logo_2023.png")}
+              src={require("client/assets/images/Icon_of_Zalo.svg.webp")}
               alt=""
             />
-            <div>Chat để được De Vinc tư vấn ngay (8:30 - 22:00)</div>
+            <div>
+              <a
+                href="https://zalo.me/0935411853"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Chat để được De Vinc tư vấn ngay (8:30 - 22:00)
+              </a>
+            </div>
             <i className="fa-solid fa-arrow-right"></i>
           </div>
           <div className="product-policy">
@@ -349,7 +378,7 @@ const ProductDetail = () => {
             </div>
             <div className="product-policy-item">
               <img src={require("client/assets/images/phone.png")} alt="" />
-              <div>Hotline 1900.27.27.37 hỗ trợ từ 8h30 - 22h mỗi ngày</div>
+              <div>Hotline 0935 411 853 hỗ trợ từ 8h30 - 22h mỗi ngày</div>
             </div>
             <div className="product-policy-item">
               <img src={require("client/assets/images/location.png")} alt="" />
@@ -362,26 +391,7 @@ const ProductDetail = () => {
               <i className="fa-solid fa-xmark btn-expand"></i>
             </div>
             <div className="product-features-content">
-              <div className="product-features-item">
-                <i className="fa-solid fa-minus"></i>
-                <div>Chất liệu: 95% Cotton Compact - 5% Spandex</div>
-              </div>
-              <div className="product-features-item">
-                <i className="fa-solid fa-minus"></i>
-                <div>Phù hợp với: mặc ở nhà, đi làm, đi chơi</div>
-              </div>
-              <div className="product-features-item">
-                <i className="fa-solid fa-minus"></i>
-                <div>Kiểu dáng: Regular Fit dáng suông</div>
-              </div>
-              <div className="product-features-item">
-                <i className="fa-solid fa-minus"></i>
-                <div>Tự hào sản xuất tại Việt Nam</div>
-              </div>
-              <div className="product-features-item">
-                <i className="fa-solid fa-minus"></i>
-                <div>Người mẫu: 184 cm, 73 kg, mặc size 2XL</div>
-              </div>
+              {renderHighlights()}
             </div>
           </div>
         </div>

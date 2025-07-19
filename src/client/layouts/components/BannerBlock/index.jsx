@@ -9,6 +9,7 @@ const BannerBlock = ({ title, describe, textBtn, image } ) => {
         <Wraper $image={bannerImage}>
             <div className="banner-container">
                 <div className="banner-content">
+                    
                     <div className="banner-content-left">
                         <div className="title-banner">{title}</div>
                         <div className="describe-banner">{describe}</div>
