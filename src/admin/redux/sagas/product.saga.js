@@ -94,7 +94,6 @@ function* deleteProductSaga(action) {
     try {
         $$.loading(true);
         const { id, callback } = action.payload;
-        console.log(id);
         
         yield requestApi(`/products/${id}`, 'DELETE')
         $$.loading(false);

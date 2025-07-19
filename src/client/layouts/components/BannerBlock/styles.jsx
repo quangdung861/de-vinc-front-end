@@ -100,4 +100,23 @@ padding-top: 30%;
     }
     }
 }
+
+@media only screen and (max-width: 500px) {
+    .banner-container {
+    .banner-content {
+        .banner-content-left {
+            padding: 100px 20px 20px 20px;
+            .title-banner {
+                font-size: 18px;
+            }
+            .describe-banner {
+            }
+            .btn-custom {
+            }
+        }
+        .banner-content-right {}
+    }
+    }
+}
+
 `

@@ -24,8 +24,7 @@ const Header = () => {
   const [isOverlayModal, setIsOverlayModal] = useState(false);
   const [keyword, setKeyword] = useState("");
   const { searchList } = useSelector((state) => state.client.productReducer);
-  const [isShowSidebarMobile, setIsShowSidebarMobile] = useState(false);
-  console.log("🚀 ~ Header ~ isShowSidebarMobile:", isShowSidebarMobile);
+  const [isShowSidebarMobile, setIsShowSidebarMobile] = useState(null);
 
   const inputRef = useRef(null);
 

@@ -18,7 +18,14 @@ const Footer = () => {
               phẩm tốt hơn nữa.
             </p>
             <div className="--btn-default feedback-btn" style={{ marginTop: 32 }}>
-              <span>Đóng góp ý kiến</span>
+              <a
+                href="https://zalo.me/0935411853"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-default btn-add-to-cart"
+              >
+                Đóng góp ý kiến
+              </a>
             </div>
           </div>
           <div className="foo-item contact">
@@ -144,7 +151,7 @@ const Footer = () => {
         </div>
         <div className="footer-bottom">
           <div className="foo-bottom-left">
-            © 2016 - 2024 DE VINC. Nền tảng mua sắm hàng đầu Việt Nam
+            © 2016 - 2025 DE VINC. Nền tảng mua sắm hàng đầu Việt Nam
           </div>
         </div>
       </div>

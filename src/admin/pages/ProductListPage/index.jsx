@@ -11,6 +11,7 @@ import styled from "styled-components";
 import { ROUTER_ADMIN } from "admin/routes";
 import { NstatusProducts, NstatusProductsSTring } from "./constant";
 import clsx from "clsx";
+import getApiUrl from "admin/utils/getApiUrl";
 
 const HoverableSpan = styled.span`
   color: #0088ff;
@@ -48,9 +49,8 @@ const ProductListPage = () => {
           style={thumbnail}
           src={
             row.images
-              ? process.env.REACT_APP_API_URL +
-                "/" +
-                row.images.split("<&space>")[0]
+              ?
+              row.images[0]
               : require("admin/assets/images/placeholder-1.png")
           }
           alt=""

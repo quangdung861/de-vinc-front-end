@@ -1,3 +1,4 @@
+import getApiUrl from "admin/utils/getApiUrl";
 import axios from "axios";
 
 export default function requestApi(endpoint, method, body = [], responseType = 'json', contentType = 'application/json') {
@@ -11,7 +12,7 @@ export default function requestApi(endpoint, method, body = [], responseType = '
 
     return instance.request({
         method: method,
-        url: `${process.env.REACT_APP_API_URL}${endpoint}`,
+        url: `${getApiUrl()}${endpoint}`,
         data: body,
         responseType: responseType
     })

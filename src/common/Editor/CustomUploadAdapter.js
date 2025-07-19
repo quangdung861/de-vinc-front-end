@@ -1,4 +1,5 @@
 import requestApi from "admin/helpers/api"
+import getApiUrl from "admin/utils/getApiUrl"
 
 export default class CustomUploadAdapter {
     constructor(loader) {
@@ -12,7 +13,7 @@ export default class CustomUploadAdapter {
             formData.append('upload', file)
             requestApi('/products/cke-upload', 'POST', formData, 'json', 'multipart/form-data').then(res => {
                 resolve({
-                    default: `${process.env.REACT_APP_API_URL}/${res.data.url}`
+                    default: `${getApiUrl()}/${res.data.url}`
                 })
             }).catch(err => {
                 reject(err)

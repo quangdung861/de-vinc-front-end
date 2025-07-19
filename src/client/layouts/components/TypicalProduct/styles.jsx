@@ -4,11 +4,11 @@ export const Wrapper = styled.div`
 
 .typical-products-container {
     .typical-products-centent {
-        .typical-products-name {
+        /* .typical-products-name {
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 16px;
-        }
+        } */
 
         .typical-products-list {
             display: flex;
@@ -50,6 +50,14 @@ export const Wrapper = styled.div`
 
                 .typical-product-describe {
                     padding-top: 16px;
+                    .product-name{
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical; 
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        margin-bottom: 10px;
+                    }
                     .product-price-box {
                         display: flex;
                         align-items: center;

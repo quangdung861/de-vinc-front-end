@@ -21,6 +21,7 @@ import {
 } from "admin/redux/actions";
 import requestApi from "admin/helpers/api";
 import { produce } from "immer";
+import getApiUrl from "admin/utils/getApiUrl";
 
 const UpdateProductPage = () => {
   let { id } = useParams();
@@ -99,18 +100,13 @@ const UpdateProductPage = () => {
                 price: 0,
                 quantity: 0,
                 sizes: [
-                  {
-                    name: 0,
-                    price: 0,
-                    quantity: 0,
-                  },
                 ],
               },
             ],
     });
 
     if (productDetail.data.images) {
-      const imageUrls = productDetail.data.images?.split("<&space>");
+      const imageUrls = productDetail.data.images;
       setImages([...imageUrls]);
       setValue("images", [...imageUrls]);
     }
@@ -229,7 +225,7 @@ const UpdateProductPage = () => {
             <i className={clsx("fa-solid fa-circle-xmark")}></i>
           </span>
           <img
-            src={process.env.REACT_APP_API_URL + "/" + image}
+            src={image}
             alt=""
             className="image"
           />
@@ -283,9 +279,11 @@ const UpdateProductPage = () => {
           },
           callback: {
             closeModal: () => setIsShowCreateCategoryModal(false),
+            getCategories: () => dispatch(getCategoryListAction())
           },
         })
       );
+      
     } else {
       $$.toast("Tên loại sản phẩm không được để trống");
     }
@@ -395,7 +393,6 @@ const UpdateProductPage = () => {
       );
     }
 
-    console.log(newInfomationForm);
     setInfomationForm(newInfomationForm);
   };
 
