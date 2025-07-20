@@ -632,7 +632,7 @@ const ProductDetail = () => {
 
                 <div className="images" ref={imagesRef}>
                   <div className="image-list__title"> </div>
-                  {renderContainerImages()}
+                    {renderContainerImages()}
                 </div>
               </div>
             )}

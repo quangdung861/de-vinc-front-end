@@ -785,6 +785,7 @@
 
         @media only screen and (max-width: 768px) {
             flex-direction: column;
+
             .container-image-list {
                 flex-direction: column;
 
@@ -796,6 +797,7 @@
                     flex-direction: row;
                     overflow: hidden;
                     overflow-x: scroll;
+                    height: 120px;
 
                     &::-webkit-scrollbar {
                         -webkit-appearance: none;
