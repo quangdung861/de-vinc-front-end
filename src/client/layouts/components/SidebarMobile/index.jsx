@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 // import { AppContext } from "Context/AppProvider";
 
 import * as S from "./styles";
 // import { ROUTES } from "constants/routes";
 import { useSelector } from "react-redux";
+import { ROUTER_CLIENT } from "client/routes";
 // import { auth, db } from "firebaseConfig";
 
 const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
@@ -37,6 +38,12 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
       document.body.style.overflow = "auto";
     };
   }, [isShowSidebarMobile]);
+
+  const SidebarLink = ({ to, children }) => (
+    <Link to={to} onClick={() => setIsShowSidebarMobile(false)}>
+      {children}
+    </Link>
+  );
 
   return (
     isShowSidebarMobile !== null && (
@@ -109,7 +116,11 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
               >
                 <div className="sidebar-mobile-item__content">
                   <i className="fa-solid fa-house content-icon"></i>
-                  <div className="content-text">Trang chủ</div>
+                  <div className="content-text">
+                    <SidebarLink to={ROUTER_CLIENT.HOME}>
+                      Trang chủ
+                    </SidebarLink>
+                  </div>
                 </div>
               </li>
               <li
@@ -123,7 +134,11 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
               >
                 <div className="sidebar-mobile-item__content">
                   <i className="fa-solid fa-road content-icon"></i>
-                  <div className="content-text">Sản phẩm</div>
+                  <div className="content-text" >
+                    <SidebarLink to={ROUTER_CLIENT.PRODUCT_LIST}>
+                      Sản phẩm
+                    </SidebarLink>
+                  </div>
                 </div>
               </li>
               <li
