@@ -129,7 +129,7 @@ export const Wrapper = styled.div`
     @media only screen and (max-width: 768px) { 
     .product-list-container {
     margin-top: 24px;
-    padding: 0 32px 32px;
+    padding: 0 16px 16px;
 } 
 }
 `;
