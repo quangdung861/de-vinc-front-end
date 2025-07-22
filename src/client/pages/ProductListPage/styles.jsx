@@ -41,7 +41,6 @@ export const Wrapper = styled.div`
                     background-color: #fff;
                     border-radius: 20px;
                     box-shadow: var(--box-shadow-default);
-                    overflow: hidden;
                     .filter-dropdown-list {
                         .filter-dropdown-item {
                             padding: 8px 16px;
@@ -69,6 +68,7 @@ export const Wrapper = styled.div`
                     width: 100%;
                     padding-top: 100%; // set padding để ảnh có thể được co giản theo tỉ lệ màn hình
                     background-size: cover; // cách 1 truyền trực tiếp URL vào box
+                    box-shadow: var(--box-shadow-default);
                     cursor: pointer;
                     .product-image {
                         border-radius: 16px;
@@ -79,7 +79,7 @@ export const Wrapper = styled.div`
                         top: 0;
                         right: 0;
                         bottom: 0;
-                        object-fit: cover;
+                        object-fit: contain;
                     }
                     &:hover {
                         transform: scale(1.05);
