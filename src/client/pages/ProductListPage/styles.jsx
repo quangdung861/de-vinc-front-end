@@ -87,11 +87,37 @@ export const Wrapper = styled.div`
                     }                   
                 }
                 .product-describe {
-                        padding-top: 16px;
-                        .product-price {
-                            padding-top: 4px;
+                    padding-top: 16px;
+                    .product-name{
+                        word-break: break-word;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical; 
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        margin-bottom: 10px;
+                    }
+                    .product-price-box {
+                        display: flex;
+                        align-items: center;
+                        padding-top: 4px;
+                        .product-reduced-price {
                             font-weight: 500;
-                        } 
+                        }
+                        .product-price {
+                            font-weight: 500;
+                            color: #000;
+                        }
+                        .product-price.throught {
+                            text-decoration: line-through;
+                            font-weight: 400;
+                            margin-left: 8px;
+                            color: var(--gray-color-4);
+                        }
+                        .product-price-percent {
+                            margin-left: 8px;
+                        }
+                }
                 }
                
             } 

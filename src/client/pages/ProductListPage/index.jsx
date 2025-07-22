@@ -12,6 +12,8 @@ import { NFilterProducts, NFilterProductsSTring } from "./constant";
 import Button from "client/components/Button";
 import SkeletonProduct from "./Skeleton/SkeletonProduct";
 import { getImage } from "client/utils";
+import { formatCurrency } from "client/utils/currency";
+import clsx from "clsx";
 
 const filterItems = [
   {
@@ -79,10 +81,13 @@ const ProductListPage = () => {
           </div>
           <div className="product-describe">
             <span className="product-name">{item.name}</span>
-            <div className="product-price">
-              {item?.price?.toLocaleString()}đ
+            <div className="product-price-box">
+              {!!item?.reducedPrice && <div className="product-reduced-price">{formatCurrency(item?.reducedPrice)}</div>}
+              <div className={clsx("product-price", item?.reducedPrice && "throught")}>{formatCurrency(item?.price)}</div>
+              {!!item?.reducedPercent && <div className="product-price-percent tag-percent-md">-{item?.reducedPercent}%</div>}
             </div>
           </div>
+
         </div>
       );
     });
