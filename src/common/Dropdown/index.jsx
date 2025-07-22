@@ -1,14 +1,13 @@
 import React, { useEffect, useRef } from 'react'
 
-const Dropdown = ({ isShow, setIsShow, render, affect}) => {
+const Dropdown = ({ isShow, setIsShow, render, affect }) => {
 
     const dropdownContainer = useRef();
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (
-                dropdownContainer.current &&
-                !dropdownContainer.current.contains(event.target) && affect?.current && !affect.current.contains(event.target)
-            ) {
+            const clickOutsideDropdown = dropdownContainer.current && !dropdownContainer.current.contains(event.target);
+            const clickOutsideAffect = !affect?.current || (affect.current && !affect.current.contains(event.target));
+            if (clickOutsideDropdown && clickOutsideAffect) {
                 setIsShow(false);
             }
         };
