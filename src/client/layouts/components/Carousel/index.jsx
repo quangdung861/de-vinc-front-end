@@ -20,10 +20,13 @@ const Carousel = () => {
       <div className="slider-container">
         <Slider {...settings}>
           <div className='carousel-item'>
-            <img src='https://theme.hstatic.net/1000333436/1000835503/14/slideshow_1_master.jpg?v=473' alt="" />
+            <img src={require('client/assets/images/carousel-2.jpg')} alt="" />
           </div>
           <div className='carousel-item'>
-            <img src='https://theme.hstatic.net/1000333436/1000835503/14/slideshow_2_master.jpg?v=473' alt="" />
+            <img src={require('client/assets/images/carousel-3.jpg')} alt="" />
+          </div>
+          <div className='carousel-item'>
+            <img src={require('client/assets/images/carousel-1.jpg')} alt="" />
           </div>
         </Slider>
       </div>
