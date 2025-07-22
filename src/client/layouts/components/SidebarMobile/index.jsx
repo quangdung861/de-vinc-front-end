@@ -114,14 +114,14 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
                 }
               // onClick={() => navigate(ROUTES.USER.HOME)}
               >
-                <div className="sidebar-mobile-item__content">
-                  <i className="fa-solid fa-house content-icon"></i>
-                  <div className="content-text">
-                    <SidebarLink to={ROUTER_CLIENT.HOME}>
+                <SidebarLink to={ROUTER_CLIENT.HOME}>
+                  <div className="sidebar-mobile-item__content">
+                    <i className="fa-solid fa-house content-icon"></i>
+                    <div className="content-text">
                       Trang chủ
-                    </SidebarLink>
+                    </div>
                   </div>
-                </div>
+                </SidebarLink>
               </li>
               <li
                 className={
@@ -132,14 +132,14 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
                 }
               // onClick={() => navigate(ROUTES.USER.LEARNING_PATHS)}
               >
-                <div className="sidebar-mobile-item__content">
-                  <i className="fa-solid fa-road content-icon"></i>
-                  <div className="content-text" >
-                    <SidebarLink to={ROUTER_CLIENT.PRODUCT_LIST}>
+                <SidebarLink to={ROUTER_CLIENT.PRODUCT_LIST}>
+                  <div className="sidebar-mobile-item__content">
+                    <i className="fa-solid fa-road content-icon"></i>
+                    <div className="content-text" >
                       Sản phẩm
-                    </SidebarLink>
+                    </div>
                   </div>
-                </div>
+                </SidebarLink>
               </li>
               <li
                 className={
