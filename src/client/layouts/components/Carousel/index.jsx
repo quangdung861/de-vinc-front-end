@@ -25,9 +25,6 @@ const Carousel = () => {
           <div className='carousel-item'>
             <img src={require('client/assets/images/carousel-3.jpg')} alt="" />
           </div>
-          <div className='carousel-item'>
-            <img src={require('client/assets/images/carousel-1.jpg')} alt="" />
-          </div>
         </Slider>
       </div>
     </Wrapper>
