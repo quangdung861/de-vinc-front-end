@@ -6,12 +6,18 @@ import BannerBlock from 'client/layouts/components/BannerBlock'
 import bgTemplate1 from "client/assets/images/mceclip2_67.webp"
 import bgTemplate2 from "client/assets/images/mceclip1_85.webp"
 import bgTemplate3 from "client/assets/images/mceclip0_71.webp"
+import bgTemplate4 from "client/assets/images/slide_4_img.jpg"
+import bgTemplate5 from "client/assets/images/slide_5_img.jpg"
+import bgTemplate6 from "client/assets/images/slide_6_img.jpg"
 import { getCategoryListAction } from 'admin/redux/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearProductListAction, getProductListAction } from 'client/redux/actions'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER_CLIENT } from 'client/routes'
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { productList } = useSelector(state => state.client.productReducer)
   const data = [
     {
@@ -47,19 +53,33 @@ const HomePage = () => {
     <Wrapper>
       <Carousel />
       <div className="wraper-typical-products">
+        <span className='products-name'>Sản phẩm bán chạy</span>
         <TypicalProduct data={productList?.data} />
+        <div className="wrapper-button">
+          <div className='btn-custom' onClick={() => {
+            navigate(ROUTER_CLIENT.PRODUCT_LIST)
+          }}>Xem thêm</div>
+        </div>
       </div>
-      <BannerBlock {...data[0]} />
+      <img src={bgTemplate4} alt="" className="banner-img" />
       <div className="wraper-typical-products">
+        <span className='products-name'>Quần áo</span>
         <TypicalProduct data={productList?.data} />
+        <div className="wrapper-button">
+          <div className='btn-custom' onClick={() => {
+            navigate(ROUTER_CLIENT.PRODUCT_LIST)
+          }}>Xem thêm</div>
+        </div>
       </div>
-      <BannerBlock {...data[1]} />
+      <img src={bgTemplate6} alt="" className="banner-img" />
       <div className="wraper-typical-products">
+        <span className='products-name'>Nước hoa</span>
         <TypicalProduct data={productList?.data} />
-      </div>
-      <BannerBlock {...data[2]} />
-      <div className="wraper-typical-products">
-        <TypicalProduct data={productList?.data} />
+        <div className="wrapper-button">
+          <div className='btn-custom' onClick={() => {
+            navigate(ROUTER_CLIENT.PRODUCT_LIST)
+          }}>Xem thêm</div>
+        </div>
       </div>
     </Wrapper>
   )
