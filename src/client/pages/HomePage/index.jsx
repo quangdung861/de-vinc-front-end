@@ -7,7 +7,6 @@ import bgTemplate1 from "client/assets/images/mceclip2_67.webp"
 import bgTemplate2 from "client/assets/images/mceclip1_85.webp"
 import bgTemplate3 from "client/assets/images/mceclip0_71.webp"
 import bgTemplate4 from "client/assets/images/slide_4_img.jpg"
-import bgTemplate5 from "client/assets/images/slide_5_img.jpg"
 import bgTemplate6 from "client/assets/images/slide_6_img.jpg"
 import { getCategoryListAction } from 'admin/redux/actions'
 import { useDispatch, useSelector } from 'react-redux'
