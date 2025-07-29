@@ -20,11 +20,8 @@ const initialState = {
         error: null,
     },
     productListByCategory: {
-        data: [],
-        meta: {},
-        loading: false,
-        errors: null,
-    }
+        // [categoryId]: { data: [], meta, loading, error }
+    },
 };
 
 const productReducer = createReducer(initialState, (builder) => {
@@ -65,40 +62,50 @@ const productReducer = createReducer(initialState, (builder) => {
             };
         })
         //BY_CATEGORY
-        .addCase(REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY), (state) => {
-            return {
-                ...state,
-                productListByCategory: {
-                    ...state.productListByCategory,
-                    loading: true,
-                },
-            };
+        .addCase(REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY), (state, action) => {
+        const categoryId = action.payload?.params?.categoryId;
+        return {
+            ...state,
+            productListByCategory: {
+            ...state.productListByCategory,
+            [categoryId]: {
+                ...(state.productListByCategory[categoryId] || {}),
+                loading: true,
+                error: null,
+            },
+            },
+        };
         })
         .addCase(SUCCESS(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY), (state, action) => {
-            const { data, meta } = action.payload;
-            return {
-                ...state,
-                productListByCategory: {
-                    ...state.productListByCategory,
-                    data: [
-                        ...state.productListByCategory.data,
-                        ...data
-                    ],
-                    meta,
-                    loading: false,
-                },
-            };
+        const { data, meta, categoryId } = action.payload;
+
+        return {
+            ...state,
+            productListByCategory: {
+            ...state.productListByCategory,
+            [categoryId]: {
+                data,
+                meta,
+                loading: false,
+                error: null,
+            },
+            },
+        };
         })
-        .addCase(FAIL(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY), (state, action) => {
-            const { error } = action.payload;
-            return {
-                ...state,
-                productListByCategory: {
-                    ...state.productListByCategory,
-                    error,
-                    loading: false,
-                },
-            };
+            .addCase(FAIL(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY), (state, action) => {
+        const { error, categoryId } = action.payload;
+
+        return {
+            ...state,
+            productListByCategory: {
+            ...state.productListByCategory,
+            [categoryId]: {
+                ...(state.productListByCategory[categoryId] || {}),
+                loading: false,
+                error,
+            },
+            },
+        };
         })
         //CLEAR
         .addCase(REQUEST(PRODUCT_CLIENT_ACTION.CLEAR_PRODUCT_LIST), (state) => {

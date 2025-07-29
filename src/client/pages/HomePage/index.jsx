@@ -13,23 +13,34 @@ import { useDispatch, useSelector } from 'react-redux'
 import { clearProductListAction, getProductListAction, getProductListByCategoryAction } from 'client/redux/actions'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER_CLIENT } from 'client/routes'
+import { CATEGORY_ID, CATEGORY_MAP, DEFAULT_ITEMS_PER_PAGE } from './constant'
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productList, productListByCategory } = useSelector(state => state.client.productReducer)
+  console.log("🚀 ~ HomePage ~ productListByCategory:", productListByCategory)
+
+
 
   useEffect(() => {
     dispatch(getProductListAction({
       params: {
-        items_per_page: 4
+        items_per_page: DEFAULT_ITEMS_PER_PAGE
       },
     }))
 
     dispatch(getProductListByCategoryAction({
       params: {
-        items_per_page: 4,
-        categoryId: 5
+        items_per_page: DEFAULT_ITEMS_PER_PAGE,
+        categoryId: CATEGORY_ID.PERFUME
+      },
+    }))
+
+     dispatch(getProductListByCategoryAction({
+      params: {
+        items_per_page: DEFAULT_ITEMS_PER_PAGE,
+        categoryId: CATEGORY_ID.CLOTHING
       },
     }))
 
@@ -50,8 +61,8 @@ const HomePage = () => {
       </div>
       <img src={bgTemplate4} alt="" className="banner-img" />
       <div className="wraper-typical-products">
-        <span className='products-name'>Quần áo</span>
-        <TypicalProduct data={productList?.data} />
+        <span className='products-name'>{CATEGORY_MAP[CATEGORY_ID.CLOTHING]}</span>
+        <TypicalProduct data={productListByCategory[CATEGORY_ID.CLOTHING]?.data} />
         <div className="wrapper-button">
           <div className='btn-custom' onClick={() => {
             navigate(ROUTER_CLIENT.PRODUCT_LIST)
@@ -60,8 +71,8 @@ const HomePage = () => {
       </div>
       <img src={bgTemplate6} alt="" className="banner-img" />
       <div className="wraper-typical-products">
-        <span className='products-name'>Nước hoa</span>
-        <TypicalProduct data={productListByCategory?.data} />
+        <span className='products-name'>{CATEGORY_MAP[CATEGORY_ID.PERFUME]}</span>
+        <TypicalProduct data={productListByCategory[CATEGORY_ID.PERFUME]?.data} />
         <div className="wrapper-button">
           <div className='btn-custom' onClick={() => {
             navigate(ROUTER_CLIENT.PRODUCT_LIST)
