@@ -10,34 +10,14 @@ import bgTemplate4 from "client/assets/images/slide_4_img.jpg"
 import bgTemplate6 from "client/assets/images/slide_6_img.jpg"
 import { getCategoryListAction } from 'admin/redux/actions'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearProductListAction, getProductListAction } from 'client/redux/actions'
+import { clearProductListAction, getProductListAction, getProductListByCategoryAction } from 'client/redux/actions'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER_CLIENT } from 'client/routes'
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { productList } = useSelector(state => state.client.productReducer)
-  const data = [
-    {
-      title: "ĐỒ CHẠY BỘ",
-      describe: "Trải nghiệm chưa từng có trong mỗi sải chân",
-      textBtn: "Khám phá ngay",
-      image: bgTemplate1,
-    },
-    {
-      title: "POLO THỂ THAO",
-      describe: "Công nghệ Ex-Dry thấm hút tối ưu & khô thoáng nhanh chóng",
-      textBtn: "Khám phá ngay",
-      image: bgTemplate2,
-    },
-    {
-      title: "QUẦN LÓT",
-      describe: "Mát lạnh cùng công nghệ Excool",
-      textBtn: "Khám phá ngay",
-      image: bgTemplate3,
-    }
-  ]
+  const { productList, productListByCategory } = useSelector(state => state.client.productReducer)
 
   useEffect(() => {
     dispatch(getProductListAction({
@@ -45,6 +25,14 @@ const HomePage = () => {
         items_per_page: 4
       },
     }))
+
+    dispatch(getProductListByCategoryAction({
+      params: {
+        items_per_page: 4,
+        categoryId: 5
+      },
+    }))
+
     return () => dispatch(clearProductListAction())
   }, [])
 
@@ -73,7 +61,7 @@ const HomePage = () => {
       <img src={bgTemplate6} alt="" className="banner-img" />
       <div className="wraper-typical-products">
         <span className='products-name'>Nước hoa</span>
-        <TypicalProduct data={productList?.data} />
+        <TypicalProduct data={productListByCategory?.data} />
         <div className="wrapper-button">
           <div className='btn-custom' onClick={() => {
             navigate(ROUTER_CLIENT.PRODUCT_LIST)
