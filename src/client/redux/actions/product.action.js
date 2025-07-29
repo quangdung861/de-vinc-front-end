@@ -9,6 +9,10 @@ export const createProductAction = createAction(
   REQUEST(PRODUCT_CLIENT_ACTION.CREATE_PRODUCT)
 )
 
+export const getProductListByCategoryAction = createAction(
+  REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY)
+)
+
 export const getProductDetailAction = createAction(
   REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_DETAIL)
 )

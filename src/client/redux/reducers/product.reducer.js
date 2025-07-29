@@ -19,6 +19,12 @@ const initialState = {
         loading: false,
         error: null,
     },
+    productListByCategory: {
+        data: [],
+        meta: {},
+        loading: false,
+        errors: null,
+    }
 };
 
 const productReducer = createReducer(initialState, (builder) => {
@@ -52,7 +58,43 @@ const productReducer = createReducer(initialState, (builder) => {
             return {
                 ...state,
                 productList: {
-                    ...state.postList,
+                    ...state.productList,
+                    error,
+                    loading: false,
+                },
+            };
+        })
+        //BY_CATEGORY
+        .addCase(REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY), (state) => {
+            return {
+                ...state,
+                productListByCategory: {
+                    ...state.productListByCategory,
+                    loading: true,
+                },
+            };
+        })
+        .addCase(SUCCESS(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY), (state, action) => {
+            const { data, meta } = action.payload;
+            return {
+                ...state,
+                productListByCategory: {
+                    ...state.productListByCategory,
+                    data: [
+                        ...state.productListByCategory.data,
+                        ...data
+                    ],
+                    meta,
+                    loading: false,
+                },
+            };
+        })
+        .addCase(FAIL(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY), (state, action) => {
+            const { error } = action.payload;
+            return {
+                ...state,
+                productListByCategory: {
+                    ...state.productListByCategory,
                     error,
                     loading: false,
                 },
