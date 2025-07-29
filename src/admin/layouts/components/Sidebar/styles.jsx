@@ -9,6 +9,9 @@ export const Wraper = styled.div`
   color: #fff;
   z-index: 1000;
   user-select: none;
+  .container {
+    width: inherit;
+  }
   .header {
     height: 61px;
     display: flex;
