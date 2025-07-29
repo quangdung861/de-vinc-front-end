@@ -151,13 +151,13 @@ const CreateProductPage = () => {
         ? infomationForm.options.slice(0, -1)
         : infomationForm.options;
     const arrayWithoutLastSize = arrayWithoutLastColor.map((option) => {
-      return {    
+      return {
         ...option,
         sizes: option.sizes.length > 1 ? option.sizes.slice(0, -1) : [],
       };
     });
     const formatData = {
-      ...data,  
+      ...data,
       status: active,
       price:
         (!isOptions &&
@@ -381,7 +381,7 @@ const CreateProductPage = () => {
       );
     }
 
-      if (name === "highlights") {
+    if (name === "highlights") {
       newInfomationForm.highlights = newInfomationForm.highlights.filter(
         (_, index) => {
           return index !== optionIndex;
