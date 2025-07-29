@@ -31,7 +31,6 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollTop = window.scrollY;
-
       if (Math.abs(currentScrollTop - lastLoggedPosition) >= 100) {
         if (currentScrollTop > lastScrollTop) {
           if (currentScrollTop >= 200) {
@@ -141,7 +140,6 @@ const Header = () => {
       );
     }
   };
-
   return (
     <>
       <div className={clsx("container", !isShow && "disabled")}>
