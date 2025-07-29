@@ -95,14 +95,14 @@ const UpdateProductPage = () => {
         productDetail.data?.options?.length > 0
           ? productDetail.data.options
           : [
-              {
-                color: "",
-                price: 0,
-                quantity: 0,
-                sizes: [
-                ],
-              },
-            ],
+            {
+              color: "",
+              price: 0,
+              quantity: 0,
+              sizes: [
+              ],
+            },
+          ],
     });
 
     if (productDetail.data.images) {
@@ -196,6 +196,7 @@ const UpdateProductPage = () => {
       quantity: Number(data.quantity) || 0,
       options: isOptions ? arrayWithoutLastSize : [],
       isOptions,
+      highlights: infomationForm.highlights.slice(0, -1),
       images,
       categoryId: categorySelected?.id || null,
     };
@@ -283,7 +284,7 @@ const UpdateProductPage = () => {
           },
         })
       );
-      
+
     } else {
       $$.toast("Tên loại sản phẩm không được để trống");
     }
@@ -361,6 +362,16 @@ const UpdateProductPage = () => {
         }
       );
     }
+
+    if (name === "highlights") {
+      newInfomationForm.highlights = newInfomationForm.highlights.map((highlight, index) => {
+        if (index === optionIndex) {
+          return value
+        }
+        return highlight;
+      }
+      )
+    }
     setInfomationForm(newInfomationForm);
   };
 
@@ -389,6 +400,14 @@ const UpdateProductPage = () => {
               return sizeIndex !== optionIndex;
             }),
           };
+        }
+      );
+    }
+
+    if (name === "highlights") {
+      newInfomationForm.highlights = newInfomationForm.highlights.filter(
+        (_, index) => {
+          return index !== optionIndex;
         }
       );
     }
@@ -662,6 +681,54 @@ const UpdateProductPage = () => {
     );
   };
 
+  const renderHighlights = () => {
+    let list = infomationForm?.highlights?.map((highligh, index) => {
+      return (
+        <div className="block-option-content-item" key={index}>
+          <div className="input-box">
+            <input
+              name="highlights"
+              value={highligh}
+              type="text"
+              placeholder="Nhập"
+              autoComplete="off"
+              onChange={(e) => handleChangeForm(e.target.value, index, "highlights")}
+            />
+            {index !== infomationForm?.highlights?.length - 1 &&
+              highligh === "" && (
+                <span className="error-message colors">
+                  Không được để trống ô
+                </span>
+              )}
+          </div>
+
+          <i
+            className="fa-regular fa-trash-can"
+            onClick={() =>
+              infomationForm?.highlights.length - 1 !== index &&
+              handleDeleteForm(index, "highlights")
+            }
+          ></i>
+        </div>
+      );
+    });
+
+    if (
+      infomationForm?.highlights &&
+      infomationForm?.highlights[infomationForm?.highlights.length - 1] !== ""
+    ) {
+      setInfomationForm({
+        ...infomationForm,
+        highlights: [
+          ...infomationForm.highlights,
+          ''
+        ]
+      });
+    }
+
+    return list;
+  }
+
   return (
     <Wraper>
       <form
@@ -776,7 +843,7 @@ const UpdateProductPage = () => {
                     <CKEditor
                       editor={ClassicEditor}
                       data={field.value}
-                      onReady={(editor) => {}}
+                      onReady={(editor) => { }}
                       config={{
                         extraPlugins: [uploadPlugin],
                         toolbar: {
@@ -812,6 +879,21 @@ const UpdateProductPage = () => {
                   </span>
                 )}
               </div>
+
+              <div className="content-block-main option classification-1">
+                <div className="content-section">
+                  <label htmlFor="product-name">
+                    <span className="gif-icon"></span>
+                    Đặc điểm nổi bật <i className="fa-solid fa-circle-info"></i>
+                  </label>
+                  <div className="block-option box-color">
+                    <div className="block-option-header">Chi tiết</div>
+                    <div className="block-option-content">
+                      {renderHighlights()}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="content-block">
@@ -841,73 +923,73 @@ const UpdateProductPage = () => {
               {(infomationForm?.options?.length > 1 ||
                 (infomationForm?.options?.length > 0 &&
                   infomationForm?.options[0]?.sizes?.length > 1)) && (
-                <div className="content-block-main option classification-2">
-                  <div className="content-section">
-                    <label htmlFor="product-name">
-                      <span className="gif-icon"></span>
-                      Danh sách phân loại hàng
-                    </label>
-                    <div className="batch-edit-row">
-                      <div className="block-input">
-                        <input
-                          type="text"
-                          placeholder="Giá"
-                          value={applyAllValue.price}
-                          onChange={(e) =>
-                            !isNaN(e.target.value) &&
-                            setApplyAllValue({
-                              ...applyAllValue,
-                              price: Number(e.target.value),
-                            })
-                          }
-                        />
-                        <input
-                          type="text"
-                          placeholder="Kho hàng"
-                          value={applyAllValue.quantity}
-                          onChange={(e) =>
-                            !isNaN(e.target.value) &&
-                            setApplyAllValue({
-                              ...applyAllValue,
-                              quantity: Number(e.target.value),
-                            })
-                          }
-                        />
+                  <div className="content-block-main option classification-2">
+                    <div className="content-section">
+                      <label htmlFor="product-name">
+                        <span className="gif-icon"></span>
+                        Danh sách phân loại hàng
+                      </label>
+                      <div className="batch-edit-row">
+                        <div className="block-input">
+                          <input
+                            type="text"
+                            placeholder="Giá"
+                            value={applyAllValue.price}
+                            onChange={(e) =>
+                              !isNaN(e.target.value) &&
+                              setApplyAllValue({
+                                ...applyAllValue,
+                                price: Number(e.target.value),
+                              })
+                            }
+                          />
+                          <input
+                            type="text"
+                            placeholder="Kho hàng"
+                            value={applyAllValue.quantity}
+                            onChange={(e) =>
+                              !isNaN(e.target.value) &&
+                              setApplyAllValue({
+                                ...applyAllValue,
+                                quantity: Number(e.target.value),
+                              })
+                            }
+                          />
+                        </div>
+                        <div
+                          className="btn-primary btn-apply-edit"
+                          onClick={() => applyPriceToAllSizesAndOptions()}
+                        >
+                          Áp dụng cho tất cả phân loại
+                        </div>
                       </div>
-                      <div
-                        className="btn-primary btn-apply-edit"
-                        onClick={() => applyPriceToAllSizesAndOptions()}
-                      >
-                        Áp dụng cho tất cả phân loại
-                      </div>
-                    </div>
-                    <div className="product-classification-table">
-                      <div className="product-classification-table-header">
-                        {infomationForm?.options?.length > 1 && (
-                          <div className="product-classification-table-header-item color">
-                            Màu sắc
-                          </div>
-                        )}
-                        {infomationForm?.options &&
-                          infomationForm?.options[0]?.sizes?.length > 1 && (
-                            <div className="product-classification-table-header-item size">
-                              Size
+                      <div className="product-classification-table">
+                        <div className="product-classification-table-header">
+                          {infomationForm?.options?.length > 1 && (
+                            <div className="product-classification-table-header-item color">
+                              Màu sắc
                             </div>
                           )}
-                        <div className="product-classification-table-header-item price">
-                          Giá
+                          {infomationForm?.options &&
+                            infomationForm?.options[0]?.sizes?.length > 1 && (
+                              <div className="product-classification-table-header-item size">
+                                Size
+                              </div>
+                            )}
+                          <div className="product-classification-table-header-item price">
+                            Giá
+                          </div>
+                          <div className="product-classification-table-header-item quantity">
+                            Kho hàng
+                          </div>
                         </div>
-                        <div className="product-classification-table-header-item quantity">
-                          Kho hàng
+                        <div className="product-classification-table-content">
+                          {renderProductClassificationTable()}
                         </div>
-                      </div>
-                      <div className="product-classification-table-content">
-                        {renderProductClassificationTable()}
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
 
             <div className="content-block">

@@ -81,7 +81,6 @@ export const Wraper = styled.div`
           display: flex;
           flex-direction: column;
           width: 100%;
-          padding: 10px;
           > label {
             margin-bottom: 8px;
             > span {
