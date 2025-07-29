@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
 `;
 
 export const MainContainer = styled.div`
+  margin-top: 144px;
   min-height: calc(100vh - 144px);
 `;
 

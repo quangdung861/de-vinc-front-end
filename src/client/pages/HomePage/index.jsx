@@ -19,9 +19,6 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productList, productListByCategory } = useSelector(state => state.client.productReducer)
-  console.log("🚀 ~ HomePage ~ productListByCategory:", productListByCategory)
-
-
 
   useEffect(() => {
     dispatch(getProductListAction({

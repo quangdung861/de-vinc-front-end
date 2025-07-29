@@ -55,7 +55,6 @@ function* getProductListByCategorySaga(action) {
         let query = buildQuery(queryParams);
 
         const result = yield requestApi(`/products/${query}`, 'GET', [])
-        console.log("🚀 ~ getProductListByCategorySaga ~ result:", result)
         const { data, ...meta } = result.data;
         yield put({
             type: SUCCESS(PRODUCT_CLIENT_ACTION.GET_PRODUCT_LIST_BY_CATEGORY),
