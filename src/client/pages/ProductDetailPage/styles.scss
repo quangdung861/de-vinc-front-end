@@ -662,10 +662,22 @@
 
     @media only screen and (max-width: 998px) {
         padding: 32px;
+        .product-main {
+            padding-bottom: 35px;
+        }
+        .product-description {
+            padding-top: 35px;
+        }
     }
 
     @media only screen and (max-width: 768px) {
         padding: 16px;
+         .product-main {
+            padding-bottom: 25px;
+        }
+        .product-description {
+            padding-top: 25px;
+        }
     }
 }
 
