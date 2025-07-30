@@ -1,0 +1,12 @@
+.policy-page {
+    padding: 64px;
+    .return-policy-img {
+        width: 100%;
+        margin-bottom: 16px;
+        border-radius: 20px;
+    }
+    @media only screen and (max-width: 768px) {
+        margin-top: 24px;
+        padding: 0 16px 16px;
+    }
+}

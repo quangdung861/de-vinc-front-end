@@ -36,7 +36,7 @@ export const Container = styled.div`
         transition: all 0.3s ease;
         cursor: pointer;
         &:hover {
-          background-color: #f0f0f0;
+          background-color: var(--gray-color-4);
         }
         .sidebar-mobile-item__content {
           font-size: 16px;
@@ -64,7 +64,7 @@ export const Container = styled.div`
       }
 
       .sidebar-mobile-item--active {
-        background-color: #f0f0f0;
+        background-color: var(--gray-color-4);
       }
 
       ul.sidebar-mobile-list-2 {
@@ -126,6 +126,17 @@ export const Container = styled.div`
       }
       ul.sidebar-mobile-list-2--active {
         display: block;
+      }
+    }
+    ul.sidebar-mobile-list.second {
+      .sidebar-mobile-item {
+        background-color: #f0f0f0;
+         &:hover {
+          background-color: var(--gray-color-4);
+        }
+      }
+      .sidebar-mobile-item--active {
+        background-color: var(--gray-color-4);
       }
     }
     .sidebar-mobile-list--header {

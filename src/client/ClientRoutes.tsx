@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import ProductListPage from "./pages/ProductListPage";
 import ProductDetail from "./pages/ProductDetailPage";
 import SearchPage from "./pages/SearchPage";
+import PolicyPage from "./pages/PolicyPage";
 
 export const ClientLayoutChildren = [
   {
@@ -21,4 +22,8 @@ export const ClientLayoutChildren = [
     path: ROUTER_CLIENT.SEARCH_PAGE,
     element: <SearchPage />,
   },
+  {
+    path: ROUTER_CLIENT.POLICY_PAGE,
+    element: <PolicyPage />,
+  }
 ];

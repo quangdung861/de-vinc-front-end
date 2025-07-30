@@ -39,11 +39,13 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
     };
   }, [isShowSidebarMobile]);
 
-  const SidebarLink = ({ to, children }) => (
-    <Link to={to} onClick={() => setIsShowSidebarMobile(false)}>
-      {children}
-    </Link>
-  );
+  const handleNavigate = (to) => {
+    setIsShowSidebarMobile(false);
+    navigate(to);
+  };
+
+  console.log(firstPathName !== "/" + ROUTER_CLIENT.PRODUCT_LIST.split("/")[1]);
+
 
   return (
     isShowSidebarMobile !== null && (
@@ -104,51 +106,53 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
                 )}
               </li>
             </ul>
-            <ul className="sidebar-mobile-list">
+            <ul className="sidebar-mobile-list second">
               <li
                 className={
-                  // firstPathName !== "/" + ROUTES.USER.HOME.split("/")[1]
-                  //   ? "sidebar-mobile-item"
-                  //   : 
-                  "sidebar-mobile-item sidebar-mobile-item--active"
+                  firstPathName === "/" + ROUTER_CLIENT.HOME.split("/")[1]
+                    ? "sidebar-mobile-item sidebar-mobile-item--active"
+                    :
+                    "sidebar-mobile-item "
                 }
-              // onClick={() => navigate(ROUTES.USER.HOME)}
+                // onClick={() => navigate(ROUTES.USER.HOME)}
+                onClick={() => handleNavigate(ROUTER_CLIENT.HOME)}
               >
-                <SidebarLink to={ROUTER_CLIENT.HOME}>
-                  <div className="sidebar-mobile-item__content">
-                    <i className="fa-solid fa-house content-icon"></i>
-                    <div className="content-text">
-                      Trang chủ
-                    </div>
+
+                <div className="sidebar-mobile-item__content">
+                  <i className="fa-solid fa-house content-icon"></i>
+                  <div className="content-text">
+                    Trang chủ
                   </div>
-                </SidebarLink>
+                </div>
+
               </li>
               <li
                 className={
-                  // firstPathName !== "/" + ROUTES.USER.LEARNING_PATHS.split("/")[1]
-                  //   ? "sidebar-mobile-item"
-                  //   : 
-                  "sidebar-mobile-item sidebar-mobile-item--active"
+                  firstPathName === "/" + ROUTER_CLIENT.PRODUCT_LIST.split("/")[1]
+                    ? "sidebar-mobile-item sidebar-mobile-item--active"
+                    :
+                    "sidebar-mobile-item "
                 }
-              // onClick={() => navigate(ROUTES.USER.LEARNING_PATHS)}
+                // onClick={() => navigate(ROUTES.USER.LEARNING_PATHS)}
+                onClick={() => handleNavigate(ROUTER_CLIENT.PRODUCT_LIST)}
               >
-                <SidebarLink to={ROUTER_CLIENT.PRODUCT_LIST}>
-                  <div className="sidebar-mobile-item__content">
-                    <i className="fa-solid fa-road content-icon"></i>
-                    <div className="content-text" >
-                      Sản phẩm
-                    </div>
+
+                <div className="sidebar-mobile-item__content">
+                  <i className="fa-solid fa-road content-icon"></i>
+                  <div className="content-text" >
+                    Sản phẩm
                   </div>
-                </SidebarLink>
+                </div>
+
               </li>
               <li
                 className={
-                  // firstPathName !== "/" + ROUTES.USER.COURSES.split("/")[1]
-                  //   ? "sidebar-mobile-item"
-                  //   : 
-                  "sidebar-mobile-item sidebar-mobile-item--active"
+                  firstPathName === "/" + "/policy".split("/")[1]
+                    ? "sidebar-mobile-item sidebar-mobile-item--active"
+                    :
+                    "sidebar-mobile-item "
                 }
-              // onClick={() => navigate(ROUTES.USER.COURSES)}
+                onClick={() => handleNavigate(ROUTER_CLIENT.POLICY_PAGE)}
               >
                 <div className="sidebar-mobile-item__content">
                   <i className="fa-solid fa-lightbulb content-icon"></i>
@@ -157,12 +161,11 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
               </li>
               <li
                 className={
-                  // firstPathName !== "/" + ROUTES.USER.BLOG.split("/")[1]
-                  //   ? "sidebar-mobile-item"
-                  //   :
-                  "sidebar-mobile-item sidebar-mobile-item--active"
+                  firstPathName === "/" + "/blog".split("/")[1]
+                    ? "sidebar-mobile-item sidebar-mobile-item--active"
+                    :
+                    "sidebar-mobile-item"
                 }
-              // onClick={() => navigate(ROUTES.USER.BLOG)}
               >
                 <div className="sidebar-mobile-item__content">
                   <i className="fa-solid fa-book content-icon"></i>
