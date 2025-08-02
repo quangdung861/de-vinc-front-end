@@ -11,6 +11,15 @@ export const Wrapper = styled.div`
 export const MainContainer = styled.div`
   margin-top: 144px;
   min-height: calc(100vh - 144px);
+
+  @media only screen and (max-width: 992px) {
+  margin-top: 131px;
+  min-height: calc(100vh - 131px);
+  }
+  @media only screen and (max-width: 768px) {
+  margin-top: 123.6px;
+  min-height: calc(100vh - 123.6px);
+  }
 `;
 
 export const MainContent = styled.div``;
