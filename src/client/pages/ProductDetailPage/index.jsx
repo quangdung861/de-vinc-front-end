@@ -252,8 +252,8 @@ const ProductDetail = () => {
         </div>
         <div className="product-right">
           <div className="product-title">
-            <div className="product-name-box">
-              <div className={clsx("product-name", uiState.isShowFullName && "open")} onClick={() => setUiState({ ...uiState, isShowFullName: !uiState.isShowFullName })}>
+            <div className="product-name-box" onClick={() => setUiState({ ...uiState, isShowFullName: !uiState.isShowFullName })}>
+              <div className={clsx("product-name", uiState.isShowFullName && "open")} >
                 {productDetail.data?.name}
               </div>
               {
