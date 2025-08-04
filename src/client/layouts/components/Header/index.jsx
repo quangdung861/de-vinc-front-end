@@ -147,7 +147,7 @@ const Header = () => {
           <div className="header-left"></div>
           <div className="header-center">
             <div className="promotion-description">
-              Miễn phí giao hàng với đơn hàng từ 399k
+              Miễn phí vận chuyển với đơn hàng từ 399k
             </div>
           </div>
           <div className="header-right">
