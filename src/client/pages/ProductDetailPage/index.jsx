@@ -286,6 +286,7 @@ const ProductDetail = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: false,
+    speed: 300,
     afterChange: (current) => {
       setImageSelected(current);
     },
