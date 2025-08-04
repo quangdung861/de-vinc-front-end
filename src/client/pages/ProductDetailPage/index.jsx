@@ -14,8 +14,12 @@ import { formatCurrency } from "client/utils/currency";
 import { Dropdown, Modal } from "@common";
 import TypicalProduct from "client/layouts/components/TypicalProduct";
 import { set } from "react-hook-form";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import transporImg from "client/assets/images/transpor3.png"
 import securityImg from "client/assets/images/security3.png"
+import placeholder from "client/assets/images/placeholder-5.png"
 
 const fillColorArray = [
   "#f17a45",
@@ -39,7 +43,7 @@ const ProductDetail = () => {
     (state) => state.client.productReducer
   );
   const [imageSelected, setImageSelected] = useState(
-    require("client/assets/images/anh-mau.webp")
+    placeholder
   );
   const [filterRatingData, setFilterRatingData] = useState({
     rate: null,
@@ -94,7 +98,7 @@ const ProductDetail = () => {
   const [isOptionSize, setIsOptionSize] = useState(false);
   const [isFirstSubmit, setIsFirstSubmit] = useState(false);
   useEffect(() => {
-    setImageSelected(getImage(productDetail.data.images));
+    setImageSelected(0);
     setCartInfo({
       ...cartInfo,
       color: productDetail.data?.options?.[0]?.color || '',
@@ -120,7 +124,7 @@ const ProductDetail = () => {
 
     const day2 = datePlus2.getDate();
     const day4 = datePlus4.getDate();
-    const month = datePlus2.getMonth() + 1; 
+    const month = datePlus2.getMonth() + 1;
 
     return (
       <span>
@@ -136,11 +140,31 @@ const ProductDetail = () => {
         <div
           className={clsx(
             "product-image-item",
-            imageSelected === item && "active"
+            imageSelected === index && "active"
           )}
           key={index}
         >
-          <img src={item} alt="" onClick={() => setImageSelected(item)} />
+          <img src={item} alt="" onClick={() => {
+            handleGoToSlide(index);
+          }} />
+        </div>
+      );
+    });
+  };
+
+  const sliderRef = useRef(null);
+
+  const handleGoToSlide = (index) => {
+    sliderRef.current.slickGoTo(index);
+    setImageSelected(index)
+  };
+
+  const renderImageProductCurrent = () => {
+    let images = getImages(productDetail?.data?.images);
+    return images.map((item, index) => {
+      return (
+        <div key={index} className='carousel-item'>
+          <img className="custom-image-current" src={item} alt="" onClick={() => { setImageSelected(index) }} />
         </div>
       );
     });
@@ -190,9 +214,9 @@ const ProductDetail = () => {
           key={index}
           src={image}
           alt=""
-          onClick={() => setImageSelected(image)}
+          onClick={() => { setImageSelected(index); handleGoToSlide(index) }}
           style={
-            image === imageSelected
+            index === imageSelected
               ? {
                 minWidth: "100px",
                 minHeight: "100px",
@@ -251,24 +275,42 @@ const ProductDetail = () => {
     if (isOptionSize && !cartInfo.size) $$.toast("Bạn chưa chọn loại sản phẩm");
   }
 
-  const highlightsData = ["Chất liệu: 95% Cotton Compact - 5% Spandex", "Phù hợp với: mặc ở nhà, đi làm, đi chơi", "Kiểu dáng: Regular Fit dáng suông", "Tự hào sản xuất tại Việt Nam", "Người mẫu: 184 cm, 73 kg, mặc size 2XL"]
-
   const renderHighlights = () => productDetail.data.highlights?.map((item, index) => <div key={index} className="product-features-item">
     ─ &nbsp;{item}
   </div>
   )
+
+  const settings = {
+    dots: false,
+    infinite: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    afterChange: (current) => {
+      setImageSelected(current);
+    },
+  };
 
   return (
     <div className="product-detail-page">
       <div className="product-main">
         <div className="product-left">
           <div className="product-images-container">
-            <div
-              className="product-image-current"
+            <div className="product-image-current"
               onClick={() => setIsShowOverlayModalDetailImage(true)}
             >
-              <img src={imageSelected} alt="" />
+              <Slider ref={sliderRef} {...settings} afterChange={(current) => {
+                // remove aria-hidden if cần thiết ở slide hiện tại
+                const currentSlide = document.querySelector(`.slick-slide[data-index="${current}"]`);
+                currentSlide?.removeAttribute("aria-hidden");
+              }}>
+                {renderImageProductCurrent()}
+              </Slider>
+              <div className="current-photo">
+                {imageSelected + 1}/{productDetail?.data?.images?.length}
+              </div>
             </div>
+            {/* <img src={imageSelected} alt="" /> */}
             <div className="product-image-list">{renderImageProductList()}</div>
           </div>
         </div>
@@ -633,7 +675,7 @@ const ProductDetail = () => {
           <div className="image-show__center">
             <div className="main-image">
               <img
-                src={imageSelected}
+                src={productDetail.data?.images[imageSelected]}
                 alt=""
                 style={{
                   zIndex: 2,
