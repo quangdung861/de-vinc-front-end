@@ -287,11 +287,16 @@ label {
     margin: 0 0 0 4px;
   }
 
+  .image {
+    margin: 0px;
+  }
+
   img {
     width: 100%;
     height: auto;
-    margin: 24px 0;
     object-fit: cover;
+    pointer-events: none;
+    user-select: none;
   }
 }
 
