@@ -215,6 +215,6 @@ export const Wrapper = styled.div`
   }
 
   @media only screen and (max-width: 562px) {
-    padding: 17px 4px 10px;
+    padding: 32px 4px 10px;
   }
 `;
