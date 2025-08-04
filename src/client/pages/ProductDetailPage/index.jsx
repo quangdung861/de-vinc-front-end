@@ -299,11 +299,7 @@ const ProductDetail = () => {
             <div className="product-image-current"
               onClick={() => setIsShowOverlayModalDetailImage(true)}
             >
-              <Slider ref={sliderRef} {...settings} afterChange={(current) => {
-                // remove aria-hidden if cần thiết ở slide hiện tại
-                const currentSlide = document.querySelector(`.slick-slide[data-index="${current}"]`);
-                currentSlide?.removeAttribute("aria-hidden");
-              }}>
+              <Slider ref={sliderRef} {...settings} >
                 {renderImageProductCurrent()}
               </Slider>
               <div className="current-photo">
