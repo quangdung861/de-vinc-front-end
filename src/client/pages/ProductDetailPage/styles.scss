@@ -102,7 +102,11 @@
                     }
                 }
 
-                .product-describe {}
+                .product-describe {
+                    color: #0009;
+                    margin-bottom: 10px;
+                    font-weight: 500;
+                }
 
             }
 
@@ -144,10 +148,29 @@
                 margin-bottom: 20px;
 
                 .product-promotion-infomation__item {
-                    padding: 10px 20px;
+                    display: flex;
+                    align-items: start;
+                    padding: 10px 16px;
                     margin-bottom: 8px;
                     border-radius: 8px;
                     background-color: #f7f7f7;
+
+                    >img {
+                        width: 24px;
+                        height: 24px;
+                        margin-right: 8px;
+                    }
+
+                    .freeship-tag {
+                        color: #08989d;
+                        background-color: #def6f6;
+                        border-radius: 4px;
+                        padding: 2px 4px;
+                    }
+
+                    @media only screen and (max-width: 768px) {
+                        padding: 10px;
+                    }
                 }
             }
 
@@ -663,9 +686,11 @@
 
     @media only screen and (max-width: 998px) {
         padding: 32px;
+
         .product-main {
             padding-bottom: 35px;
         }
+
         .product-description {
             padding-top: 35px;
         }
@@ -673,9 +698,11 @@
 
     @media only screen and (max-width: 768px) {
         padding: 16px;
-         .product-main {
+
+        .product-main {
             padding-bottom: 25px;
         }
+
         .product-description {
             padding-top: 25px;
         }

@@ -14,6 +14,8 @@ import { formatCurrency } from "client/utils/currency";
 import { Dropdown, Modal } from "@common";
 import TypicalProduct from "client/layouts/components/TypicalProduct";
 import { set } from "react-hook-form";
+import transporImg from "client/assets/images/transpor3.png"
+import securityImg from "client/assets/images/security3.png"
 
 const fillColorArray = [
   "#f17a45",
@@ -106,6 +108,26 @@ const ProductDetail = () => {
   // const editor = CKEDITOR.instances.myEditor;
   // const content = editor.getData();
   // console.log(content); // Hiển thị nội dung HTML trong trình chỉnh sửa
+
+  const DeliveryEstimate = () => {
+    const today = new Date();
+
+    const datePlus2 = new Date(today);
+    datePlus2.setDate(today.getDate() + 2);
+
+    const datePlus4 = new Date(today);
+    datePlus4.setDate(today.getDate() + 4);
+
+    const day2 = datePlus2.getDate();
+    const day4 = datePlus4.getDate();
+    const month = datePlus2.getMonth() + 1; 
+
+    return (
+      <span>
+        Đảm bảo giao vào {day2}-{day4} tháng {month}
+      </span>
+    );
+  };
 
   const renderImageProductList = () => {
     let images = getImages(productDetail?.data?.images);
@@ -272,7 +294,7 @@ const ProductDetail = () => {
               readonly={true}
             // onClick={handleRating}
             />{" "}
-            (4.8)
+            (4.9)
           </div>
           <div className="product-price-infomation">
             <div
@@ -298,10 +320,16 @@ const ProductDetail = () => {
           </div>
           <div className="product-promotion-infomation">
             <div className="product-promotion-infomation__item">
-              Miễn phí vận chuyển với đơn hàng từ 399k
+              <img src={transporImg} alt="" />
+              <span>
+                <span className="freeship-tag">
+                  Miễn phí vận chuyển
+                </span> khi mua từ 2 cái · {DeliveryEstimate()}
+              </span>
             </div>
             <div className="product-promotion-infomation__item">
-              Hổ trợ đổi trả tận nơi trong 15 ngày
+              <img src={securityImg} alt="" />
+              Thanh toán khi giao · Chính hãng 100% · Trả hàng miễn phí
             </div>
           </div>
           {/* {isOptionColor && (
@@ -388,7 +416,7 @@ const ProductDetail = () => {
           <div className="product-features">
             <div className="product-features-header">
               <div className="product-features-title">Đặc điểm nổi bật</div>
-              <i className="fa-solid fa-xmark btn-expand"></i>
+              {/* <i className="fa-solid fa-xmark btn-expand"></i> */}
             </div>
             <div className="product-features-content">
               {renderHighlights()}
@@ -632,7 +660,7 @@ const ProductDetail = () => {
 
                 <div className="images" ref={imagesRef}>
                   <div className="image-list__title"> </div>
-                    {renderContainerImages()}
+                  {renderContainerImages()}
                 </div>
               </div>
             )}
