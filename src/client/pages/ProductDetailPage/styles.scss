@@ -14,23 +14,51 @@
             .product-images-container {
                 position: sticky;
                 top: 50px;
+                user-select: none;
 
                 .product-image-current {
-                    aspect-ratio: 1 / 1;
-                    /* hoặc 4/3, 16/9 tùy tỷ lệ ảnh */
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border: var(--boder-dividing);
-                    border-radius: 10px;
+                    position: relative;
 
-                    >img {
+                    .slick-slider {
                         width: 100%;
                         height: 100%;
-                        object-fit: contain;
-                        border-radius: 4px;
-                        cursor: pointer;
+                        border: var(--boder-dividing);
+                        border-radius: 10px;
+
+                        .carousel-item {
+                            aspect-ratio: 1 / 1;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            /* hoặc 4/3, 16/9 tùy tỷ lệ ảnh */
+                            >img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: contain;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            }
+
+                            &:focus-visible {
+                                border: none;
+                                outline: none;
+                            }
+                        }
                     }
+
+                    .current-photo {
+                        font-size: 10px;
+                        line-height: 1;
+                        position: absolute;
+                        bottom: 12px;
+                        right: 12px;
+                        padding: 4px 8px;
+                        border-radius: 16px;
+                        background-color: rgba(0, 0, 0, 0.4);
+                        color: #fff;
+                    }
+
                 }
 
                 .product-image-list {
