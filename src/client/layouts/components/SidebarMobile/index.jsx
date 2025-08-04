@@ -44,9 +44,6 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
     navigate(to);
   };
 
-  console.log(firstPathName !== "/" + ROUTER_CLIENT.PRODUCT_LIST.split("/")[1]);
-
-
   return (
     isShowSidebarMobile !== null && (
       <S.Wrapper>
