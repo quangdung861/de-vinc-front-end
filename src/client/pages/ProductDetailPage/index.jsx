@@ -128,7 +128,7 @@ const ProductDetail = () => {
 
     return (
       <span>
-        Đảm bảo giao vào {day2}-{day4} tháng {month}
+        Đảm bảo nhận từ {day2}-{day4} tháng {month}
       </span>
     );
   };
@@ -367,7 +367,7 @@ const ProductDetail = () => {
             </div>
             <div className="product-promotion-infomation__item">
               <img src={securityImg} alt="" />
-              Thanh toán khi giao · Chính hãng 100% · Trả hàng miễn phí
+              Thanh toán khi nhận · Chính hãng 100% · Trả hàng miễn phí
             </div>
           </div>
           {/* {isOptionColor && (
