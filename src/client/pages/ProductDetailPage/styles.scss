@@ -118,6 +118,7 @@
                     }
 
                     .icon-open-name {
+                        transform: rotate(180deg);
                         position: absolute;
                         bottom: 0px;
                         right: 0px;
@@ -134,12 +135,37 @@
                     color: #0009;
                     margin-bottom: 10px;
                     font-weight: 500;
+
+                    @media only screen and (max-width: 576px) {
+                        display: none;
+                    }
                 }
 
             }
 
             .product-rating {
                 margin-bottom: 12px;
+
+                .product-describe {
+                    display: none;
+                }
+
+                @media only screen and (max-width: 576px) {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    margin-bottom: 8px;
+
+                    >* {
+                        padding-right: 8px;
+                    }
+
+                    .product-describe {
+                        display: block;
+                        color: #0009;
+                        font-weight: 500;
+                    }
+                }
             }
 
             .product-price-infomation {
@@ -147,13 +173,21 @@
                     margin-bottom: 12px;
                     font-size: 24px;
                     font-weight: 500;
+
+                    @media only screen and (max-width: 576px) {
+                        margin-bottom: 8px;
+                    }
                 }
 
                 .price-original-product.throught {
                     font-size: 16px;
-                    font-weight: 400;
+                    font-weight: 500;
                     color: #c4c4c4;
                     text-decoration: line-through;
+
+                    @media only screen and (max-width: 576px) {
+                        margin-bottom: 8px;
+                    }
                 }
 
                 .price-discount-product {
@@ -162,12 +196,21 @@
                     margin-bottom: 12px;
 
                     .price-discount-product__price {
-                        font-size: 24px;
-                        font-weight: 500;
+                        font-size: 28px;
+                        font-weight: 600;
                     }
 
                     .price-discount-product__percent {
                         margin-left: 16px;
+
+                        @media only screen and (max-width: 768px) {
+                            font-size: 16px;
+                        }
+
+                        @media only screen and (max-width: 576px) {
+                            font-size: 14px;
+                            margin-left: 12px;
+                        }
                     }
                 }
             }

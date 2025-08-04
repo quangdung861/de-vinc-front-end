@@ -20,6 +20,7 @@ import "slick-carousel/slick/slick-theme.css";
 import transporImg from "client/assets/images/transpor3.png"
 import securityImg from "client/assets/images/security3.png"
 import placeholder from "client/assets/images/placeholder-5.png"
+import { useMediaQuery } from "react-responsive";
 
 const fillColorArray = [
   "#f17a45",
@@ -286,11 +287,20 @@ const ProductDetail = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: false,
-    speed: 300,
+    speed: 200,
     afterChange: (current) => {
       setImageSelected(current);
     },
   };
+
+  const isLarge = useMediaQuery({ minWidth: 998 }); 
+  const isMedium = useMediaQuery({ minWidth: 768, maxWidth: 997 }); 
+  const isSmall = useMediaQuery({ maxWidth: 767 }); 
+  let ratingSize = 18; 
+
+  if (isLarge) ratingSize = 24;
+  else if (isMedium) ratingSize = 18;
+  else if (isSmall) ratingSize = 16;
 
   return (
     <div className="product-detail-page">
@@ -318,7 +328,7 @@ const ProductDetail = () => {
                 {productDetail.data?.name}
               </div>
               {
-                !uiState.isShowFullName && <span className="icon-open-name">▼</span>
+                uiState.isShowFullName && <span className="icon-open-name">▼</span>
               }
             </div>
             <div className="product-describe">Premium</div>
@@ -326,14 +336,16 @@ const ProductDetail = () => {
           <div className="product-rating">
             <Rating
               allowFraction
-              size={30}
+              size={ratingSize}
               transition
               fillColor={fillColor}
               initialValue={4.5}
               readonly={true}
-            // onClick={handleRating}
             />{" "}
-            (4.9)
+            <span>
+              (4.9)
+            </span>
+            <div className="product-describe">Premium</div>
           </div>
           <div className="product-price-infomation">
             <div
