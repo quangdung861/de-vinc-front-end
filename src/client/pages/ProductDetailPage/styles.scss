@@ -500,6 +500,10 @@
                     align-items: center;
                     padding: 15px 0 20px;
                     font-weight: 600;
+
+                    @media only screen and (max-width: 576px) {
+                        padding: 15px 0 12px;
+                    }
                 }
 
                 .product-features-content {

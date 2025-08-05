@@ -68,6 +68,11 @@ body {
   }
 }
 
+html, body, #root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -316,7 +321,6 @@ label {
 
 
 #root {
-  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     -webkit-appearance: none;
