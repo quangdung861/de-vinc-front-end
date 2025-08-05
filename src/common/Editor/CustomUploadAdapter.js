@@ -13,7 +13,7 @@ export default class CustomUploadAdapter {
             formData.append('upload', file)
             requestApi('/products/cke-upload', 'POST', formData, 'json', 'multipart/form-data').then(res => {
                 resolve({
-                    default: `${getApiUrl()}/${res.data.url}`
+                    default: `${res.data.url}`
                 })
             }).catch(err => {
                 reject(err)
