@@ -55,7 +55,10 @@ export const Container = styled.div`
             align-items: center;
             > i {
               margin-left: 120px;
-            }
+                @media only screen and (max-width: 576px) {
+                  margin-left: 32px;
+                }
+              }
           }
         }
       }
@@ -89,6 +92,9 @@ export const Container = styled.div`
               > i {
                 margin-left: 120px;
                 margin-right: 12px;
+                 @media only screen and (max-width: 576px) {
+                  margin-left: 32px;
+                }
               }
             }
           }

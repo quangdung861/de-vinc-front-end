@@ -31,13 +31,20 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
   //   window.location.reload();
   // };
 
-  useEffect(() => {
-    document.body.style.overflow = isShowSidebarMobile ? "hidden" : "auto";
+useEffect(() => {
+  if (isShowSidebarMobile) {
+    document.documentElement.style.overflow = "hidden"; // html
+    document.body.style.overflow = "hidden"; // body
+  } else {
+    document.documentElement.style.overflow = "auto";
+    document.body.style.overflow = "auto";
+  }
 
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isShowSidebarMobile]);
+  return () => {
+    document.documentElement.style.overflow = "auto";
+    document.body.style.overflow = "auto";
+  };
+}, [isShowSidebarMobile]);
 
   const handleNavigate = (to) => {
     setIsShowSidebarMobile(false);
