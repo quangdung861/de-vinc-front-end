@@ -85,6 +85,10 @@ export const Container = styled.div`
             margin: 20px 0 0 0;
             font-weight: 500;
             cursor: pointer;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* số dòng hiển thị */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
           }
           p {
             margin-top: 8px;
@@ -110,9 +114,8 @@ export const Container = styled.div`
           }
           &__right {
             padding-left: 0;
-            max-width: 70%;
-          }
-        
+            max-width: 100%;
+          }        
         }
       }
     }
