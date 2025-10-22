@@ -171,7 +171,7 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
                   <i className="fa-solid fa-circle-info content-icon"></i>
                   <div className="content-text">Giới thiệu</div>
                 </div>
-              </li>````
+              </li>
               <li className="sidebar-mobile-item">
                 <div className="sidebar-mobile-item__content">
                   <i className="fa-solid fa-user-group content-icon"></i>
