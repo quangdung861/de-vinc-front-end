@@ -28,6 +28,13 @@ export const Wraper = styled.div`
       align-items: center;
       gap: 12px;
     }
+    @media only screen and (max-width: 576px) {
+      .header-content-left {
+         span {
+          display: none;
+        }
+      }
+    }
   }
 
   .create-product-container {
@@ -108,9 +115,17 @@ export const Wraper = styled.div`
         }
       }
       .content-block-main.two {
+        margin-left: -16px;
         .content-section {
-          width: 50%;
+          width: calc(50% - 16px);
+          margin-left: 16px;
+          margin-bottom: 16px;
         }
+        @media only screen and (max-width: 992px) {
+          .content-section {
+            width: 100%;
+          }
+       }
       }
       .content-block-main-describe {
         padding: 20px 24px;
@@ -451,6 +466,21 @@ export const Wraper = styled.div`
           }
         }
       }
+    }
+
+    @media only screen and (max-width: 992px) {
+      flex-direction: column;
+      padding: 32px 16px;
+      .create-product-left {
+      width: 100%;
+      }
+      .create-product-right {
+      width: 100%;
+      }
+    }
+    
+    @media only screen and (max-width: 576px) {
+      padding: 16px 8px;
     }
   }
 

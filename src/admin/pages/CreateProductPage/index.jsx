@@ -705,7 +705,7 @@ const CreateProductPage = () => {
           <Link to={ROUTER_ADMIN.PRODUCT_LIST}>
             <div className="header-content-left">
               <i className="fa-solid fa-chevron-left"></i>
-              Quay lại danh sách sản phẩm
+              <span>Quay lại danh sách sản phẩm</span>
             </div>
           </Link>
           <div className="header-content-right">

@@ -31,20 +31,20 @@ const SidebarMobile = ({ isShowSidebarMobile, setIsShowSidebarMobile }) => {
   //   window.location.reload();
   // };
 
-useEffect(() => {
-  if (isShowSidebarMobile) {
-    document.documentElement.style.overflow = "hidden"; // html
-    document.body.style.overflow = "hidden"; // body
-  } else {
-    document.documentElement.style.overflow = "auto";
-    document.body.style.overflow = "auto";
-  }
+  useEffect(() => {
+    if (isShowSidebarMobile) {
+      document.documentElement.style.overflow = "hidden"; // html
+      document.body.style.overflow = "hidden"; // body
+    } else {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    }
 
-  return () => {
-    document.documentElement.style.overflow = "auto";
-    document.body.style.overflow = "auto";
-  };
-}, [isShowSidebarMobile]);
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [isShowSidebarMobile]);
 
   const handleNavigate = (to) => {
     setIsShowSidebarMobile(false);
@@ -163,19 +163,7 @@ useEffect(() => {
                   <div className="content-text">Chính sách</div>
                 </div>
               </li>
-              <li
-                className={
-                  firstPathName === "/" + "/blog".split("/")[1]
-                    ? "sidebar-mobile-item sidebar-mobile-item--active"
-                    :
-                    "sidebar-mobile-item"
-                }
-              >
-                <div className="sidebar-mobile-item__content">
-                  <i className="fa-solid fa-book content-icon"></i>
-                  <div className="content-text">Blog</div>
-                </div>
-              </li>
+
             </ul>
             <ul className="sidebar-mobile-list">
               <li className="sidebar-mobile-item">
@@ -183,7 +171,7 @@ useEffect(() => {
                   <i className="fa-solid fa-circle-info content-icon"></i>
                   <div className="content-text">Giới thiệu</div>
                 </div>
-              </li>
+              </li>````
               <li className="sidebar-mobile-item">
                 <div className="sidebar-mobile-item__content">
                   <i className="fa-solid fa-user-group content-icon"></i>

@@ -4,6 +4,7 @@ import { Wrapper } from "./styles";
 
 import { Link } from "react-router-dom";
 import Button from "../../../components/Button";
+import { ROUTER_CLIENT } from "client/routes";
 
 const Footer = () => {
   return (
@@ -103,13 +104,13 @@ const Footer = () => {
           <div className="content">
             <ul className="list-content">
               <li>
-                <Link>Chính sách đổi trả</Link>
+                <Link to={ROUTER_CLIENT.POLICY_PAGE}>Chính sách đổi trả</Link>
               </li>
               <li>
-                <Link>Chính sách thành viên</Link>
+                <Link to={ROUTER_CLIENT.POLICY_PAGE}>Chính sách thành viên</Link>
               </li>
               <li>
-                <Link>Chính sách giao hàng</Link>
+                <Link to={ROUTER_CLIENT.POLICY_PAGE}>Chính sách giao hàng</Link>
               </li>
             </ul>
           </div>
