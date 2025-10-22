@@ -739,7 +739,9 @@ const UpdateProductPage = () => {
           <div className="header-content-left">
             <Link to={ROUTER_ADMIN.PRODUCT_LIST}>
               <i className="fa-solid fa-chevron-left"></i>
-              Quay lại danh sách sản phẩm
+              <span>
+                Quay lại danh sách sản phẩm
+              </span>
             </Link>
           </div>
 

@@ -5,10 +5,12 @@ import Sidebar from "../components/Sidebar";
 import { Wraper } from "./styles";
 import AdminProvider from "admin/contexts/AdminProvider";
 import clsx from "clsx";
+import { useMediaQuery } from "react-responsive";
 
 const AdminLayout = () => {
+  const isSmallScreen = useMediaQuery({ maxWidth: 998 });
   const { pathname } = useLocation();
-  const [isShowSidebar, setIsShowSidebar] = useState(true);
+  const [isShowSidebar, setIsShowSidebar] = useState(!isSmallScreen);
   let pathnameLength = pathname.split("/").length;
 
   return (

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from 'routes';
 import clsx from 'clsx';
 
-const Sidebar = ({ isShowSidebar, setIsShowSidebar }) => {
+const Sidebar = ({ isShowSidebar, setIsShowSidebar, isSmallScreen }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [opening, setOpening] = useState("");
