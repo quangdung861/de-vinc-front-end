@@ -10,7 +10,7 @@ import {
 } from "client/redux/actions";
 import { useParams } from "react-router-dom";
 import clsx from "clsx";
-import { formatCurrency } from "client/utils/currency";
+import { formatCurrency } from "client/utils";
 import { Dropdown, Modal } from "@common";
 import TypicalProduct from "client/layouts/components/TypicalProduct";
 import { set } from "react-hook-form";
@@ -39,7 +39,8 @@ const fillColor = "#f17a45";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
-  let { id } = useParams();
+  let { slug } = useParams();
+  const id = slug.split("-").pop();
   const { productDetail, productList } = useSelector(
     (state) => state.client.productReducer
   );
@@ -293,10 +294,10 @@ const ProductDetail = () => {
     },
   };
 
-  const isLarge = useMediaQuery({ minWidth: 998 }); 
-  const isMedium = useMediaQuery({ minWidth: 768, maxWidth: 997 }); 
-  const isSmall = useMediaQuery({ maxWidth: 767 }); 
-  let ratingSize = 18; 
+  const isLarge = useMediaQuery({ minWidth: 998 });
+  const isMedium = useMediaQuery({ minWidth: 768, maxWidth: 997 });
+  const isSmall = useMediaQuery({ maxWidth: 767 });
+  let ratingSize = 18;
 
   if (isLarge) ratingSize = 24;
   else if (isMedium) ratingSize = 18;
