@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react";
 import * as S from "./styles";
 import { useDispatch, useSelector } from "react-redux";
+import clsx from "clsx";
 import {
   clearProductListAction,
   getProductListAction,
 } from "client/redux/actions";
 import { ROUTER_CLIENT } from "client/routes";
-import { generatePath, useNavigate } from "react-router-dom";
 import { Dropdown } from "@common";
 import { NFilterProducts, NFilterProductsSTring } from "./constant";
 import Button from "client/components/Button";
 import SkeletonProduct from "./Skeleton/SkeletonProduct";
 import { getImage } from "client/utils";
 import { formatCurrency } from "client/utils/currency";
-import clsx from "clsx";
+import { useNavigateWithSlug } from "client/utils";
 
 const filterItems = [
   {
@@ -35,7 +35,7 @@ const filterItems = [
 
 const ProductListPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigateWithSlug = useNavigateWithSlug();
   const { productList } = useSelector((state) => state.client.productReducer);
   const [isShowFilterList, setIsShowFilterList] = useState(false);
   const [filterData, setFilterData] = useState({
@@ -61,8 +61,9 @@ const ProductListPage = () => {
     );
   }, [filterData]);
 
-  const handleRedirectDetail = (id) => {
-    navigate(generatePath(ROUTER_CLIENT.PRODUCT_DETAIL, { id }));
+  const handleRedirectDetail = (slug) => {
+    // navigate(generatePath(ROUTER_CLIENT.PRODUCT_DETAIL, { slug }));
+    navigateWithSlug(ROUTER_CLIENT.PRODUCT_DETAIL, slug);
   };
 
   const renderProductList = useMemo(() => {
@@ -76,7 +77,7 @@ const ProductListPage = () => {
                 getImage(item?.images)
               }
               alt=""
-              onClick={() => handleRedirectDetail(item.id)}
+              onClick={() => handleRedirectDetail(item.slug)}
             />
           </div>
           <div className="product-describe">

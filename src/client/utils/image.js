@@ -1,4 +1,3 @@
-import getApiUrl from 'admin/utils/getApiUrl'
 
 export const getImage = (urls) => {
     if (!urls) return require('client/assets/images/placeholder-5.png')
