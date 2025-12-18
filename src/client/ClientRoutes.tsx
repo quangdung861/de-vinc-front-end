@@ -1,9 +1,10 @@
+import React from "react";
 import { ROUTER_CLIENT } from "./routes";
 import HomePage from "./pages/HomePage";
-import ProductListPage from "./pages/ProductListPage";
-import ProductDetail from "./pages/ProductDetailPage";
-import SearchPage from "./pages/SearchPage";
-import PolicyPage from "./pages/PolicyPage";
+const ProductListPage = React.lazy(() => import("./pages/ProductListPage"));
+const ProductDetail = React.lazy(() => import("./pages/ProductDetailPage"));
+const SearchPage = React.lazy(() => import("./pages/SearchPage"));
+const PolicyPage = React.lazy(() => import("./pages/PolicyPage"));
 
 export const ClientLayoutChildren = [
   {
@@ -25,5 +26,5 @@ export const ClientLayoutChildren = [
   {
     path: ROUTER_CLIENT.POLICY_PAGE,
     element: <PolicyPage />,
-  }
+  },
 ];
