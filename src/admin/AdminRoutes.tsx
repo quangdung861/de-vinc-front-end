@@ -1,9 +1,20 @@
+import React from "react";
 import { ROUTER_ADMIN } from "./routes";
-import ProductListPage from "./pages/ProductListPage";
-import DashboardPage from "./pages/DashboardPage";
-import CreateProductPage from "./pages/CreateProductPage";
-import UpdateProductPage from "./pages/UpdateProductPage";
-import PurchaseOrderPage from "./pages/PurchaseOrderPage";
+const DashboardPage = React.lazy(() =>
+  import("./pages/DashboardPage")
+);
+const ProductListPage = React.lazy(() =>
+  import("./pages/ProductListPage")
+);
+const CreateProductPage = React.lazy(() =>
+  import("./pages/CreateProductPage")
+);
+const UpdateProductPage = React.lazy(() =>
+  import("./pages/UpdateProductPage")
+);
+const PurchaseOrderPage = React.lazy(() =>
+  import("./pages/PurchaseOrderPage")
+);
 
 export const AdminLayoutRoutes = [
   {
