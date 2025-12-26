@@ -8,53 +8,9 @@ const Sidebar = ({ isShowSidebar, setIsShowSidebar, isSmallScreen }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [opening, setOpening] = useState("");
-  const [isShowDropdowMenu, setIsShowDropdowMenu] = useState('')
   const newPathname = pathname.split("/").slice(0, 3).join("/");
 
   const actionList = [
-    {
-      name: "Tổng quan",
-      icon: <i className="fa-solid fa-house"></i>,
-      path: ROUTES.ADMIN.DASHBOARD,
-      data: [
-
-      ]
-    },
-    // {
-    //   name: "Đơn hàng",
-    //   icon: <i className="fa-solid fa-wallet"></i>,
-    //   path: ROUTES.ADMIN.ORDERS,
-    //   data: [
-    //     {
-    //       name: "Tạo đơn và giao hàng",
-    //       path: "",
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng",
-    //       path: "",
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng",
-    //       path: "",
-    //     },
-    //   ]
-    // },
-    // {
-    //   name: "Vận chuyển",
-    //   icon: <i className="fa-solid fa-wallet"></i>,
-    //   path: ROUTES.ADMIN.DASHBOARD,
-    //   data: [
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //   ]
-    // },
     {
       name: "Sản phẩm",
       icon: <i className="fa-solid fa-box"></i>,
@@ -63,23 +19,6 @@ const Sidebar = ({ isShowSidebar, setIsShowSidebar, isSmallScreen }) => {
         {
           name: "Danh sách sản phẩm",
           path: ROUTES.ADMIN.PRODUCT_LIST,
-        },
-        {
-          name: "Nhập hàng",
-          path: ROUTES.ADMIN.PURCHASE_ORDERS,
-        }
-      ]
-    },
-    {
-      name: "Khách hàng",
-      icon: <i className="fa-solid fa-user"></i>,
-      path: ROUTES.ADMIN.CUSTOMER_LIST,
-      data: [
-        {
-          name: "Danh sách khách hàng"
-        },
-        {
-          name: "Nhóm khác hàng"
         }
       ]
     },
@@ -89,54 +28,6 @@ const Sidebar = ({ isShowSidebar, setIsShowSidebar, isSmallScreen }) => {
       path: ROUTES.CLIENT.HOME,
       data: []
     },
-    // {
-    //   name: "Marketing",
-    //   icon: <i className="fa-solid fa-wallet"></i>,
-    //   path: ROUTES.ADMIN.DASHBOARD,
-    //   data: [
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //   ]
-    // },
-    // {
-    //   name: "Sổ quỹ",
-    //   icon: <i className="fa-solid fa-wallet"></i>,
-    //   path: ROUTES.ADMIN.DASHBOARD,
-    //   data: [
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //   ]
-    // },
-    // {
-    //   name: "Báo cáo",
-    //   icon: <i className="fa-solid fa-wallet"></i>,
-    //   path: ROUTES.ADMIN.DASHBOARD,
-    //   data: [
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //     {
-    //       name: "Tạo đơn và giao hàng"
-    //     },
-    //   ]
-    // }
   ];
 
   const handleActionSidebar = (action) => {

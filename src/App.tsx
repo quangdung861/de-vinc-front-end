@@ -6,6 +6,8 @@ import ClientLayout from "./client/layouts/ClientLayout";
 import AuthProvider from "contexts/AuthProvider";
 import { ClientLayoutChildren } from "client/ClientRoutes";
 import { AdminLayoutRoutes } from "admin/AdminRoutes";
+import NotFoundPage from "client/pages/NotFoundPaage";
+import { ROUTES } from "routes";
 const AdminLayout = React.lazy(() => import("admin/layouts/AdminLayout"));
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
               <Route path={item.path} element={item.element} key={index} />
             ))}
           </Route>
+          <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </AuthProvider>

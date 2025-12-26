@@ -144,13 +144,13 @@ const Header = () => {
     <>
       <div className={clsx("container", !isShow && "disabled")}>
         <div className="container-top">
-          <div className="header-left"></div>
+          {/* <div className="header-left"></div> */}
           <div className="header-center">
             <div className="promotion-description">
               Miễn phí vận chuyển với đơn hàng từ 399k
             </div>
           </div>
-          <div className="header-right">
+{/*           <div className="header-right">
             <div
               className="--btn-default btn-register"
               onClick={() => setIsShowRegisterModal(true)}
@@ -163,7 +163,7 @@ const Header = () => {
             >
               Đăng nhập
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="container-bottom">
           <div
@@ -265,12 +265,12 @@ const Header = () => {
               >
                 <i className="fa-solid fa-magnifying-glass icon-search"></i>
               </div>
-              <div className="btn-profile">
+              {/* <div className="btn-profile">
                 <i className="fa-solid fa-user"></i>
               </div>
               <div className="btn-cart">
                 <i className="fa-solid fa-bag-shopping"></i>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
