@@ -35,7 +35,7 @@ yarn install
 Create a `.env` file in the root directory and configure the required environment variables to connect to the backend:
 
 ```env
-REACT_APP_API_BASE_URL=your_api_domain
+REACT_APP_API_ORIGIN=your_api_domain
 ```
 
 ### 4. Run the project in development mode

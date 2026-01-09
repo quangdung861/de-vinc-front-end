@@ -1,5 +1,4 @@
 import requestApi from "admin/helpers/api"
-import getApiUrl from "admin/utils/getApiUrl"
 
 export default class CustomUploadAdapter {
     constructor(loader) {
