@@ -24,7 +24,7 @@ Dự án tập trung vào **trải nghiệm người dùng**, **hiệu năng**, 
 git clone https://github.com/quangdung861/de-vinc-front-end.git
 cd de-vinc-front-end
 ```
-### 2. Clone repository
+### 2. Install dependencies
 ```bash
 npm install
 # or
