@@ -1,22 +1,22 @@
-## 📌 Mô tả dự án
+## 📌 Project Description
 
-**De Vinc Front End** là giao diện người dùng cho nền tảng **De Vinc**, được triển khai tại **https://devinc.vn**.  
-Dự án tập trung vào **trải nghiệm người dùng**, **hiệu năng**, và **quản lý trạng thái chính xác**, kết nối trực tiếp với backend để hiển thị và xử lý dữ liệu.
+**De Vinc Front End** is the user interface of the **De Vinc** platform, deployed at **https://devinc.vn**.  
+The project focuses on **user experience**, **performance**, and **accurate state management**, communicating directly with the backend to display and process data efficiently.
 
 ---
 
-## 📦 Công nghệ sử dụng
+## 📦 Technologies Used
 
-| Công nghệ | Mục đích |
-|---------|----------|
+| Technology | Purpose |
+|------------|---------|
 | React | Frontend UI |
-| React Router | Điều hướng |
-| Redux toolkit (saga) / Context API / Hooks | State management |
-| Axios / Fetch | Giao tiếp API |
+| React Router | Client-side routing |
+| Redux Toolkit (Saga) / Context API / Hooks | State management |
+| Axios / Fetch | API communication |
 
 ---
 
-## 🛠 Cài đặt & Chạy project
+## 🛠 Install & Run project
 
 ### 1. Clone repository
 
