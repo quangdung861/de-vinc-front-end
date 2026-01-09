@@ -11,7 +11,6 @@ import styled from "styled-components";
 import { ROUTER_ADMIN } from "admin/routes";
 import { NstatusProducts, NstatusProductsSTring } from "./constant";
 import clsx from "clsx";
-import getApiUrl from "admin/utils/getApiUrl";
 
 const HoverableSpan = styled.span`
   color: #0088ff;

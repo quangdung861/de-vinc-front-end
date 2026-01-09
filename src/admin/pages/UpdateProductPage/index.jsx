@@ -21,7 +21,6 @@ import {
 } from "admin/redux/actions";
 import requestApi from "admin/helpers/api";
 import { produce } from "immer";
-import getApiUrl from "admin/utils/getApiUrl";
 
 const UpdateProductPage = () => {
   let { id } = useParams();
