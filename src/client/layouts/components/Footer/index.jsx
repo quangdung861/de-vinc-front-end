@@ -7,6 +7,8 @@ import Button from "../../../components/Button";
 import { ROUTER_CLIENT } from "client/routes";
 
 const Footer = () => {
+  let now = new Date();
+  let year = now.getFullYear();
   return (
     <Wrapper>
       <div className="footer-container">
@@ -152,7 +154,7 @@ const Footer = () => {
         </div>
         <div className="footer-bottom">
           <div className="foo-bottom-left">
-            © 2016 - 2025 DE VINC. Nền tảng mua sắm hàng đầu Việt Nam
+            © 2016 - {year} DE VINC. Nền tảng mua sắm hàng đầu Việt Nam
           </div>
         </div>
       </div>
