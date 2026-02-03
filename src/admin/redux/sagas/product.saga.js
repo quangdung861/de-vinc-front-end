@@ -5,7 +5,7 @@ import requestApi from "admin/helpers/api";
 
 function* getProductListSaga(action) {
     try {
-        $$.loading(true);
+         $$.startLoading();
         const { params: { items_per_page, page, q } } = action.payload;
         let query = `?items_per_page=${items_per_page}&page=${page}&search=${q}`
         const result = yield requestApi(`/products/${query}`, 'GET', [])
@@ -17,7 +17,7 @@ function* getProductListSaga(action) {
                 meta,
             },
         });
-        $$.loading(false);
+        $$.stopLoading();
     } catch (error) {
         yield put({
             type: FAIL(PRODUCT_ADMIN_ACTION.GET_PRODUCT_LIST),
@@ -25,13 +25,13 @@ function* getProductListSaga(action) {
                 errors: error,
             },
         });
-        $$.loading(false);
+        $$.stopLoading();
     }
 }
 
 function* getProductDetailSaga(action) {
     try {
-        $$.loading(true);
+         $$.startLoading();
         const { data, ...meta } = action.payload;
         const result = yield requestApi(`/products/${data.id}`, 'GET')
         yield put({
@@ -41,7 +41,7 @@ function* getProductDetailSaga(action) {
                 meta,
             },
         });
-        $$.loading(false);
+        $$.stopLoading();
     } catch (error) {
         yield put({
             type: FAIL(PRODUCT_ADMIN_ACTION.GET_PRODUCT_DETAIL),
@@ -49,19 +49,19 @@ function* getProductDetailSaga(action) {
                 errors: error,
             },
         });
-        $$.loading(false);
+        $$.stopLoading();
     }
 }
 
 function* createProductSaga(action) {
     try {
-        $$.loading(true);
+         $$.startLoading();
         const { data, callback } = action.payload;
         yield requestApi(`/products`, 'POST', data)
         yield put({
             type: SUCCESS(PRODUCT_ADMIN_ACTION.CREATE_PRODUCT),
         });
-        $$.loading(false);
+        $$.stopLoading();
         $$.toast('Tạo sản phẩm mới thành công', 'success');
         callback.redirect();
     } catch (error) {
@@ -71,20 +71,20 @@ function* createProductSaga(action) {
                 errors: error,
             },
         });
-        $$.loading(false);
+        $$.stopLoading();
     }
 }
 
 function* updateProductDetailSaga(action) {
     try {
-        $$.loading(true);
+         $$.startLoading();
         const { id, data, callback } = action.payload;
         yield requestApi(`/products/${id}`, 'PUT', data)
-        $$.loading(false);
+        $$.stopLoading();
         $$.toast('Cập nhập sản phẩm thành công', 'success');
         callback.redirect();
     } catch (error) {
-        $$.loading(false);
+        $$.stopLoading();
         $$.toast('Cập nhập sản phẩm không thành công', 'danger');
         throw error;
     }
@@ -92,15 +92,15 @@ function* updateProductDetailSaga(action) {
 
 function* deleteProductSaga(action) {
     try {
-        $$.loading(true);
+         $$.startLoading();
         const { id, callback } = action.payload;
         
         yield requestApi(`/products/${id}`, 'DELETE')
-        $$.loading(false);
+        $$.stopLoading();
         $$.toast('Xoá sản phẩm thành công', 'success');
         callback.redirect();
     } catch (error) {
-        $$.loading(false);
+        $$.stopLoading();
         $$.toast('Xoá sản phẩm không thành công', 'danger');
         throw error;
     }
