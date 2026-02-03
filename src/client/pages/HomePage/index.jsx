@@ -44,9 +44,13 @@ const HomePage = () => {
     return () => dispatch(clearProductListAction())
   }, [])
 
-  const bestSellerProducts = productList?.data?.filter(item => {
-    return bestSellerSlugs.includes(item.slug)
-  })
+  const productMap = new Map(
+    productList?.data?.map(p => [p.slug, p]) ?? []
+  );
+
+  const bestSellerProducts = bestSellerSlugs
+    .map(slug => productMap.get(slug))
+    .filter(Boolean);
 
   return (
     <Wrapper>
