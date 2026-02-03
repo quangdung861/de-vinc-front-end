@@ -5,7 +5,7 @@ import requestApi from "client/helpers/api";
 
 function* getCategoryListSaga() {
     try {
-        $$.loading(true);
+         $$.startLoading();
         const result = yield requestApi(`/categories`, 'GET', [])
         const { data, ...meta } = result.data;
         yield put({
@@ -15,7 +15,7 @@ function* getCategoryListSaga() {
                 meta,
             },
         });
-        $$.loading(false);
+        $$.stopLoading();
     } catch (error) {
         yield put({
             type: FAIL(CATEGORY_CLIENT_ACTION.GET_CATEGORY_LIST),
@@ -23,7 +23,7 @@ function* getCategoryListSaga() {
                 errors: error,
             },
         });
-        $$.loading(false);
+        $$.stopLoading();
     }
 }
 
