@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { clearProductListAction, getProductListAction, getProductListByCategoryAction } from 'client/redux/actions'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER_CLIENT } from 'client/routes'
-import { CATEGORY_ID, CATEGORY_MAP, DEFAULT_ITEMS_PER_PAGE } from './constant'
+import { bestSellerSlugs, CATEGORY_ID, CATEGORY_MAP, DEFAULT_ITEMS_PER_PAGE } from './constant'
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const HomePage = () => {
       },
     }))
 
-     dispatch(getProductListByCategoryAction({
+    dispatch(getProductListByCategoryAction({
       params: {
         items_per_page: DEFAULT_ITEMS_PER_PAGE,
         categoryId: CATEGORY_ID.CLOTHING
@@ -44,12 +44,16 @@ const HomePage = () => {
     return () => dispatch(clearProductListAction())
   }, [])
 
+  const bestSellerProducts = productList?.data?.filter(item => {
+    return bestSellerSlugs.includes(item.slug)
+  })
+
   return (
     <Wrapper>
       <Carousel />
       <div className="wraper-typical-products">
         <span className='products-name'>Sản phẩm bán chạy</span>
-        <TypicalProduct data={productList?.data} />
+        <TypicalProduct data={bestSellerProducts} />
         <div className="wrapper-button">
           <div className='btn-custom' onClick={() => {
             navigate(ROUTER_CLIENT.PRODUCT_LIST)
