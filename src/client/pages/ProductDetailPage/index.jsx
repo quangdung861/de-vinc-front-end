@@ -146,7 +146,7 @@ const ProductDetail = () => {
           )}
           key={index}
         >
-          <img src={item} alt="" onClick={() => {
+          <img src={item?.thumbnail} alt="" onClick={() => {
             handleGoToSlide(index);
           }} />
         </div>
@@ -166,7 +166,7 @@ const ProductDetail = () => {
     return images.map((item, index) => {
       return (
         <div key={index} className='carousel-item'>
-          <img className="custom-image-current" src={item} alt="" onClick={() => { setImageSelected(index) }} />
+          <img className="custom-image-current" src={item?.original} alt="" onClick={() => { setImageSelected(index) }} />
         </div>
       );
     });
@@ -214,7 +214,7 @@ const ProductDetail = () => {
         <img
           className="image-item"
           key={index}
-          src={image}
+          src={image.thumbnail}
           alt=""
           onClick={() => { setImageSelected(index); handleGoToSlide(index) }}
           style={
@@ -685,7 +685,7 @@ const ProductDetail = () => {
           <div className="image-show__center">
             <div className="main-image">
               <img
-                src={productDetail.data?.images[imageSelected]}
+                src={productDetail.data?.images[imageSelected]?.original}
                 alt=""
                 style={{
                   zIndex: 2,

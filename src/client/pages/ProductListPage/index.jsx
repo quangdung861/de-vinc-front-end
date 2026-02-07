@@ -74,7 +74,7 @@ const ProductListPage = () => {
             <img
               className="product-image"
               src={
-                getImage(item?.images)
+                getImage(item?.images)?.thumbnail
               }
               alt=""
               onClick={() => handleRedirectDetail(item.slug)}

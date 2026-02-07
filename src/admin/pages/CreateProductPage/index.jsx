@@ -117,20 +117,28 @@ const CreateProductPage = () => {
 
   const handleFileUpload = async (e, field) => {
     const files = Array.from(e.target.files);
-    let formData = new FormData();
-    files.forEach((file) => {
-      formData.append("images", file);
-    });
+    if (!files) return;
+    try {
+      $$.startLoading();
+      let formData = new FormData();
+      files.forEach((file) => {
+        formData.append("images", file);
+      });
 
-    const result = await requestApi(
-      `/products/uploads`,
-      "POST",
-      formData,
-      "json",
-      "multipart/form-data"
-    );
-    setImages([...images, ...result.data]);
-    field.onChange([...images, ...result.data]);
+      const result = await requestApi(
+        `/products/uploads`,
+        "POST",
+        formData,
+        "json",
+        "multipart/form-data"
+      );
+      setImages([...images, ...result.data]);
+      field.onChange([...images, ...result.data]);
+    } catch (error) {
+      console.error(error)
+    } finally {
+      $$.stopLoading();
+    }
   };
 
   function uploadPlugin(editor) {
@@ -203,7 +211,7 @@ const CreateProductPage = () => {
             <i className={clsx("fa-solid fa-circle-xmark")}></i>
           </span>
           <img
-            src={image}
+            src={image?.thumbnail}
             alt=""
             className="image"
           />
