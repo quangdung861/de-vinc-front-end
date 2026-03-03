@@ -7,7 +7,7 @@ import "../Header/styles.scss";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import { getSearchListAction } from "client/redux/actions";
-import { getImage } from "client/utils";
+import { getImage, useNavigateWithSlug } from "client/utils";
 import { ClientContext } from "client/contexts/ClientProvider";
 import Register from "../Register";
 import SidebarMobile from "../SidebarMobile";
@@ -15,6 +15,7 @@ import SidebarMobile from "../SidebarMobile";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigateWithSlug = useNavigateWithSlug();
   const { isBoxSearch } = useContext(ClientContext);
   const [isShowLoginModal, setIsShowLoginModal] = useState(false);
   const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
@@ -105,12 +106,20 @@ const Header = () => {
     setKeyword("");
   };
 
+  const handleRedirectDetail = (slug) => {
+    navigateWithSlug(ROUTER_CLIENT.PRODUCT_DETAIL, slug);
+    setKeyword("");
+    inputRef.current.value = "";
+    setIsOverlayModal(false);
+  }
+
   const renderProducts = () => {
     if (searchList.data[0]) {
       const product = searchList.data?.map((item, index) => {
         return (
-          <div className="result-item" key={index}>
-            <img src={getImage(item?.images)} alt="" />
+          <div className="result-item" key={index} onClick={() => handleRedirectDetail(item.slug)
+          }>
+            <img src={getImage(item?.images)?.thumbnail} alt="" />
             <span>{item.name}</span>
           </div>
         );
@@ -150,7 +159,7 @@ const Header = () => {
               Miễn phí vận chuyển với đơn hàng từ 399k
             </div>
           </div>
-{/*           <div className="header-right">
+          {/*           <div className="header-right">
             <div
               className="--btn-default btn-register"
               onClick={() => setIsShowRegisterModal(true)}

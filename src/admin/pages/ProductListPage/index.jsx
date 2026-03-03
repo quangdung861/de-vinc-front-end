@@ -49,7 +49,7 @@ const ProductListPage = () => {
           src={
             row.images
               ?
-              row.images[0]
+              row.images[0]?.thumbnail
               : require("admin/assets/images/placeholder-1.png")
           }
           alt=""

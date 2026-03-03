@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { Link, redirect, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import clsx from "clsx";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { Controller, set, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
 import CustomUploadAdapter from "common/Editor/CustomUploadAdapter";
@@ -13,7 +13,6 @@ import { Confirm, Dropdown } from "@common";
 import { Wraper } from "./styles";
 import {
   createCategoryAction,
-  createProductAction,
   deleteProductAction,
   getCategoryListAction,
   getProductDetailAction,
@@ -142,20 +141,28 @@ const UpdateProductPage = () => {
 
   const handleFileUpload = async (e, field) => {
     const files = Array.from(e.target.files);
-    let formData = new FormData();
-    files.forEach((file) => {
-      formData.append("images", file);
-    });
+    if (!files) return;
+    try {
+      $$.startLoading();
+      let formData = new FormData();
+      files.forEach((file) => {
+        formData.append("images", file);
+      });
 
-    const result = await requestApi(
-      `/products/uploads`,
-      "POST",
-      formData,
-      "json",
-      "multipart/form-data"
-    );
-    setImages([...images, ...result.data]);
-    field.onChange([...images, ...result.data]);
+      const result = await requestApi(
+        `/products/uploads`,
+        "POST",
+        formData,
+        "json",
+        "multipart/form-data"
+      );
+      setImages([...images, ...result.data]);
+      field.onChange([...images, ...result.data]);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      $$.stopLoading()
+    }
   };
 
   function uploadPlugin(editor) {
@@ -225,7 +232,7 @@ const UpdateProductPage = () => {
             <i className={clsx("fa-solid fa-circle-xmark")}></i>
           </span>
           <img
-            src={image}
+            src={image?.thumbnail}
             alt=""
             className="image"
           />
@@ -297,7 +304,7 @@ const UpdateProductPage = () => {
         category.name.toLowerCase().includes(categoryKeywords.toLowerCase())
       );
     }
-    return newCategoryList.map((item, index) => {
+    return newCategoryList?.map((item, index) => {
       return (
         <div
           className="category-item"
@@ -568,7 +575,7 @@ const UpdateProductPage = () => {
   const renderProductClassificationTable = () => {
     return infomationForm?.options?.map((option, optionIndex) => {
       if (optionIndex === infomationForm?.options.length - 1 && optionIndex > 0)
-        return;
+        return null;
       const renderSizeRow = option.sizes.map((size, sizeIndex) => {
         if (sizeIndex === option.sizes.length - 1) return [];
         let price = size.price ?? 0;

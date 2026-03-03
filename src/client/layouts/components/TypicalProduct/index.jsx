@@ -17,7 +17,7 @@ const TypicalProduct = ({ data, show }) => {
         return (
             <div className="typical-product-item" key={index} >
                 <div className="typical-product-box-image" onClick={() => handleRedirectDetail(item.slug)}>
-                    <img className="typical-product-image" src={getImage(item?.images)} alt="" />
+                    <img className="typical-product-image" src={getImage(item?.images)?.thumbnail} alt="" />
                 </div>
                 <div className="typical-product-describe">
                     <div className="product-name" onClick={() => handleRedirectDetail(item.slug)}>{item.name}</div>
