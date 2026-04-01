@@ -25,7 +25,6 @@ const UpdateProductPage = () => {
   let { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [active, setActive] = useState(1);
   const [images, setImages] = useState([]);
   const [draggingIndex, setDraggingIndex] = useState(null);
   const [
@@ -57,6 +56,7 @@ const UpdateProductPage = () => {
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -69,6 +69,8 @@ const UpdateProductPage = () => {
       status: 1,
     },
   });
+
+  const status = watch("status");
 
   useEffect(() => {
     dispatch(getCategoryListAction());
@@ -189,7 +191,7 @@ const UpdateProductPage = () => {
     });
     const formatData = {
       ...data,
-      status: active,
+      status,
       price:
         Number(isNaN(data.price) ? data.price.replace(/,/g, "") : data.price) ||
         0,
@@ -1229,11 +1231,9 @@ const UpdateProductPage = () => {
                     <i
                       className={clsx(
                         "fa-solid",
-                        active ? "fa-toggle-on" : "fa-toggle-off disabled"
+                        status ? "fa-toggle-on" : "fa-toggle-off disabled"
                       )}
-                      onClick={() => {
-                        setActive(active ? 0 : 1);
-                      }}
+                      onClick={() => setValue("status", status ? 0 : 1)}
                     ></i>
                   </div>
                 </div>
