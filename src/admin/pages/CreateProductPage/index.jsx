@@ -22,7 +22,6 @@ import { produce } from "immer";
 const CreateProductPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [active, setActive] = useState(1);
   const [images, setImages] = useState([]);
   const [draggingIndex, setDraggingIndex] = useState(null);
   const [
@@ -69,6 +68,7 @@ const CreateProductPage = () => {
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -81,6 +81,8 @@ const CreateProductPage = () => {
       status: 1,
     },
   });
+
+  const status = watch("status");
 
   useEffect(() => {
     dispatch(getCategoryListAction());
@@ -165,7 +167,6 @@ const CreateProductPage = () => {
     });
     const formatData = {
       ...data,
-      status: active,
       price:
         (!isOptions &&
           Number(
@@ -1198,11 +1199,9 @@ const CreateProductPage = () => {
                     <i
                       className={clsx(
                         "fa-solid",
-                        active ? "fa-toggle-on" : "fa-toggle-off disabled"
+                        status ? "fa-toggle-on" : "fa-toggle-off disabled"
                       )}
-                      onClick={() => {
-                        setActive(active ? 0 : 1);
-                      }}
+                      onClick={() => setValue("status", status ? 0 : 1)}
                     ></i>
                   </div>
                 </div>

@@ -18,7 +18,7 @@ export const Wraper = styled.div`
       white-space: nowrap;
       cursor: pointer;
       color: #747c87;
-      > i {
+      i {
         margin-right: 12px;
       }
     }
