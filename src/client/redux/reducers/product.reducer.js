@@ -142,12 +142,25 @@ const productReducer = createReducer(initialState, (builder) => {
         })
         .addCase(FAIL(PRODUCT_CLIENT_ACTION.GET_PRODUCT_DETAIL), (state, action) => {
             const { error } = action.payload;
+            const isNotFound = error.response.status === 404;
             return {
                 ...state,
                 productDetail: {
                     ...state.productDetail,
                     error,
+                    isNotFound,
                     loading: false,
+                },
+            };
+        })
+         .addCase(REQUEST(PRODUCT_CLIENT_ACTION.CLEAR_PRODUCT_DETAIL), (state) => {
+            return {
+                ...state,
+                productDetail: {
+                    data: {},
+                    meta: {},
+                    loading: false,
+                    errors: null,
                 },
             };
         })

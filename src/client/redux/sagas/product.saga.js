@@ -3,6 +3,7 @@ import { debounce, put, takeEvery } from "redux-saga/effects";
 import { REQUEST, SUCCESS, FAIL, PRODUCT_CLIENT_ACTION } from "../constants";
 import requestApi, { buildQuery } from "client/helpers/api";
 import { ITEM_PER_PAGE, PAGE } from "client/constants/api";
+import { clearProductDetailAction } from "../actions";
 
 function* getSearchListSaga(action) {
   try {
@@ -129,7 +130,7 @@ function* getProductDetailSaga(action) {
     yield put({
       type: FAIL(PRODUCT_CLIENT_ACTION.GET_PRODUCT_DETAIL),
       payload: {
-        errors: error,
+        error,
       },
     });
     $$.stopLoading();
@@ -148,6 +149,10 @@ export default function* productSaga() {
   yield takeEvery(
     REQUEST(PRODUCT_CLIENT_ACTION.GET_PRODUCT_DETAIL),
     getProductDetailSaga,
+  );
+  yield takeEvery(
+    REQUEST(PRODUCT_CLIENT_ACTION.CLEAR_PRODUCT_DETAIL),
+    clearProductDetailAction,
   );
   yield debounce(
     300,

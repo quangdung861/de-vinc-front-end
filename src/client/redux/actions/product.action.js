@@ -28,3 +28,6 @@ export const clearProductListAction = createAction(
 export const getSearchListAction = createAction(
   REQUEST(PRODUCT_CLIENT_ACTION.GET_SEARCH_LIST)
 );
+export const clearProductDetailAction = createAction(
+  REQUEST(PRODUCT_CLIENT_ACTION.CLEAR_PRODUCT_DETAIL)
+);
