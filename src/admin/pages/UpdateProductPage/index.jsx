@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomUploadAdapter from "common/Editor/CustomUploadAdapter";
 import { ROUTER_ADMIN } from "admin/routes";
 import { Button } from "admin/components";
-import { Confirm, Dropdown } from "@common";
+import { Confirm, Dropdown, Modal } from "@common";
 import { Wraper } from "./styles";
 import {
   createCategoryAction,
@@ -49,6 +49,7 @@ const UpdateProductPage = () => {
     price: "",
     quantity: "",
   });
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const categoryDropdownRef = useRef(null);
   const {
@@ -237,6 +238,7 @@ const UpdateProductPage = () => {
             src={image?.thumbnail}
             alt=""
             className="image"
+            onClick={() => setSelectedImage(image)}
           />
         </div>
       );
@@ -828,6 +830,24 @@ const UpdateProductPage = () => {
                     )}
                   />
                   {renderProductImage()}
+                  <Modal
+                    isShow={!!selectedImage}
+                    setIsShow={() => setSelectedImage(null)}
+                    modalName="Ảnh"
+                  >
+                    {selectedImage && (
+                      <img
+                        src={selectedImage.original}
+                        alt="Ảnh"
+                        style={{
+                          width: "100%",
+                          maxHeight: "600px",
+                          objectFit: "contain",
+                          marginTop: "12px",
+                        }}
+                      />
+                    )}
+                  </Modal>
                   {errors.images && (
                     <span className="error-message">
                       {errors.images.message}
