@@ -6,7 +6,7 @@ import ClientLayout from "./client/layouts/ClientLayout";
 import AuthProvider from "contexts/AuthProvider";
 import { ClientLayoutChildren } from "client/ClientRoutes";
 import { AdminLayoutRoutes } from "admin/AdminRoutes";
-import NotFoundPage from "client/pages/NotFoundPaage";
+import NotFoundPage from "client/pages/NotFoundPage";
 import { ROUTES } from "routes";
 const AdminLayout = React.lazy(() => import("admin/layouts/AdminLayout"));
 

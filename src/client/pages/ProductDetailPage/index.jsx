@@ -4,6 +4,7 @@ import "./styles.scss";
 import { getImage, getImages } from "client/utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  clearProductDetailAction,
   clearProductListAction,
   getProductDetailAction,
   getProductListAction,
@@ -21,6 +22,7 @@ import transporImg from "client/assets/images/transpor3.png"
 import securityImg from "client/assets/images/security3.png"
 import placeholder from "client/assets/images/placeholder-5.png"
 import { useMediaQuery } from "react-responsive";
+import NotFoundContent from "admin/layouts/components/NotFoundContent";
 
 const fillColorArray = [
   "#f17a45",
@@ -93,7 +95,10 @@ const ProductDetail = () => {
         },
       })
     );
-    return () => dispatch(clearProductListAction());
+    return () => {
+      dispatch(clearProductListAction())
+      dispatch(clearProductDetailAction())
+    };
   }, []);
 
   const [isOptionColor, setIsOptionColor] = useState(false);
@@ -303,6 +308,9 @@ const ProductDetail = () => {
   else if (isMedium) ratingSize = 18;
   else if (isSmall) ratingSize = 16;
 
+  if (productDetail.isNotFound) {
+    return <NotFoundContent />;
+  }
   return (
     <div className="product-detail-page">
       <div className="product-main">
